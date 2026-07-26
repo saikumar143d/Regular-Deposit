@@ -50,17 +50,38 @@
     .modal-overlay.active { opacity: 1; visibility: visible; }
     
     .modal-content {
-      background: white; padding: 24px; border-radius: 16px; width: 85%; max-width: 400px;
+      background: var(--bg); padding: 24px; border-radius: 16px; width: 85%; max-width: 400px;
       max-height: 80vh; overflow-y: auto; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
       transform: translateY(20px) scale(0.95); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
     .modal-overlay.active .modal-content { transform: translateY(0) scale(1); }
     
-    .history-card { background: #f8fafc; border: 1px solid var(--border); padding: 12px; border-radius: 8px; margin-bottom: 10px; font-size: 14px; }
-    .history-card span { font-weight: 600; color: var(--text); }
+    /* IMPROVED HISTORY CARD UI */
+    .history-card { 
+      background: #ffffff; 
+      border: 1px solid var(--border); 
+      padding: 16px; 
+      border-radius: 12px; 
+      margin-bottom: 12px; 
+      box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+    }
+    .hist-header {
+      display: flex; justify-content: space-between; align-items: center;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 10px; margin-bottom: 12px;
+    }
+    .hist-date { font-weight: 600; font-size: 14px; color: var(--text); }
+    .hist-time { font-size: 12px; color: var(--text-light); background: #f1f5f9; padding: 4px 8px; border-radius: 20px; }
+    
+    .hist-row { display: flex; justify-content: space-between; margin-bottom: 6px; font-size: 14px; }
+    .hist-label { color: var(--text-light); }
+    .hist-val { font-weight: 600; color: var(--text); }
+    .val-pending-red { color: #ef4444; }
+    .val-pending-green { color: #10b981; }
     
     #form-section { display: none; }
     .spinner { border: 2.5px solid rgba(255,255,255,0.3); border-top: 2.5px solid white; border-radius: 50%; width: 18px; height: 18px; animation: spin 0.8s linear infinite; display: none; }
+    .spinner-dark { border-color: rgba(37,99,235,0.2); border-top-color: var(--primary); width: 24px; height: 24px; border-width: 3px; display: inline-block; }
     @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
   </style>
 </head>
@@ -137,12 +158,21 @@
     <!-- HISTORY MODAL OVERLAY -->
     <div class="modal-overlay" id="history-modal" onclick="closeHistoryModal(event)">
       <div class="modal-content" onclick="event.stopPropagation()">
-        <h2>Recent Submissions</h2>
-        <p class="sub">Your last 5 records</p>
-        <div id="history-content">
-          <div style="text-align:center; padding: 20px; color: var(--text-light);">Loading history...</div>
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <div>
+            <h2 style="margin:0;">History</h2>
+            <p class="sub" style="margin-bottom:15px;">Your last 5 records</p>
+          </div>
         </div>
-        <button class="btn btn-outline" onclick="closeHistoryModal(event, true)">Close</button>
+        
+        <div id="history-content">
+          <div style="text-align:center; padding: 30px 0;">
+            <div class="spinner spinner-dark"></div>
+            <p style="color: var(--text-light); font-size: 14px; margin-top: 10px;">Loading history...</p>
+          </div>
+        </div>
+        
+        <button class="btn btn-outline" style="background: white;" onclick="closeHistoryModal(event, true)">Close</button>
       </div>
     </div>
 
@@ -152,7 +182,7 @@
     // ==========================================
     // PASTE YOUR NEW APPS SCRIPT WEB APP URL HERE
     // ==========================================
-    const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx-qdcCOELs1hZOcuyGBtMX8s6-k2gKT9UU-5ocS_bh5cOamt3kN2iyyM5US0a_ffy9YA/exec';
+    const APPS_SCRIPT_URL = 'YOUR_WEB_APP_URL_HERE';
     
     let currentStore = {};
     let preloadedHistory = []; 
@@ -174,6 +204,35 @@
       }
     }
 
+    // --- Clean Date Formatter ---
+    // Cleans up the "1899" and "GMT" mess caused by Google Sheets Date objects
+    function formatDateTime(rawDate, rawTime) {
+      let fDate = rawDate;
+      let fTime = rawTime;
+
+      // Format Date
+      const d = new Date(rawDate);
+      if (!isNaN(d.getTime())) {
+        fDate = d.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
+      }
+
+      // Format Time
+      const t = new Date(rawTime);
+      if (!isNaN(t.getTime())) {
+        fTime = t.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', hour12: true });
+      } else if (typeof rawTime === 'string' && rawTime.includes('GMT')) {
+        // Fallback if browser parses it weirdly
+        const match = rawTime.match(/(\d{2}:\d{2}:\d{2})/);
+        if (match) {
+          const parts = match[1].split(':');
+          const hr = parseInt(parts[0]);
+          const ampm = hr >= 12 ? 'PM' : 'AM';
+          fTime = `${hr % 12 || 12}:${parts[1]} ${ampm}`;
+        }
+      }
+      return { fDate, fTime };
+    }
+
     // --- Login & Zero-Latency History Prefetching ---
     async function login() {
       const storeId = document.getElementById('login-id').value.trim();
@@ -190,7 +249,6 @@
         document.getElementById('store-name-display').innerText = res.storeName;
         document.getElementById('store-id-display').innerText = storeId;
         
-        // CSS Transition out
         document.getElementById('login-section').style.opacity = '0';
         setTimeout(() => {
           document.getElementById('login-section').style.display = 'none';
@@ -198,7 +256,7 @@
           loadDraft();
         }, 300);
 
-        // SILENT BACKGROUND PREFETCH: Fetch history immediately so it's ready before they click it
+        // Fetch history silently
         prefetchHistory();
       } else {
         showError('login-error', res.message);
@@ -210,6 +268,11 @@
       const res = await apiCall({ action: 'history', storeId: currentStore.id });
       if (res.success) preloadedHistory = res.history;
       isHistoryLoading = false;
+
+      // FIX: If the modal is currently open waiting for data, render it immediately!
+      if (document.getElementById('history-modal').classList.contains('active')) {
+        renderHistoryData();
+      }
     }
 
     // --- Form & Draft Logic ---
@@ -235,7 +298,7 @@
       }
     }
 
-    // --- Instant Submission Feeling ---
+    // --- Submit Logic ---
     async function submitForm() {
       const cash = document.getElementById('cash').value;
       const deposit = document.getElementById('deposit').value;
@@ -258,10 +321,9 @@
       if (res.success) {
         confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
         
-        // Optimistically add to history array so modal updates instantly!
         preloadedHistory.unshift({
-          date: res.date || new Date().toLocaleDateString(),
-          time: res.time || new Date().toLocaleTimeString(),
+          date: res.date || new Date().toISOString(),
+          time: res.time || new Date().toISOString(),
           deposited: deposit, pending: pending
         });
         if(preloadedHistory.length > 5) preloadedHistory.pop();
@@ -279,13 +341,14 @@
     // --- Modal Popup Logic ---
     function openHistoryModal() {
       const modal = document.getElementById('history-modal');
-      const content = document.getElementById('history-content');
-      modal.classList.add('active'); // CSS activates smooth popup animation
+      modal.classList.add('active'); 
 
       if (isHistoryLoading) {
-         content.innerHTML = '<div style="text-align:center; padding: 20px;">Fetching records...</div>';
-         // Check again in 500ms
-         setTimeout(renderHistoryData, 500);
+         document.getElementById('history-content').innerHTML = `
+           <div style="text-align:center; padding: 30px 0;">
+             <div class="spinner spinner-dark"></div>
+             <p style="color: var(--text-light); font-size: 14px; margin-top: 10px;">Loading history...</p>
+           </div>`;
       } else {
          renderHistoryData();
       }
@@ -293,17 +356,29 @@
 
     function renderHistoryData() {
       const content = document.getElementById('history-content');
-      if (isHistoryLoading) return; // Still loading
       
       if (preloadedHistory.length > 0) {
         let html = '';
         preloadedHistory.forEach(row => {
-          // Format date/time specifically for UI
-          let d = row.date.length > 15 ? new Date(row.date).toLocaleDateString() : row.date;
-          html += `<div class="history-card">
-            <div style="margin-bottom: 4px; font-size:12px; color:var(--text-light)">${d} • ${row.time}</div>
-            <div><span>Deposited:</span> ₹${row.deposited}</div>
-            <div style="color: ${row.pending > 0 ? '#ef4444' : '#10b981'}"><span>Pending:</span> ₹${row.pending}</div>
+          
+          // Apply the clean format to incoming data
+          const { fDate, fTime } = formatDateTime(row.date, row.time);
+          const pendingColorClass = parseFloat(row.pending) > 0 ? 'val-pending-red' : 'val-pending-green';
+
+          html += `
+          <div class="history-card">
+            <div class="hist-header">
+              <span class="hist-date">${fDate}</span>
+              <span class="hist-time">${fTime}</span>
+            </div>
+            <div class="hist-row">
+              <span class="hist-label">Deposited</span>
+              <span class="hist-val">₹${row.deposited}</span>
+            </div>
+            <div class="hist-row">
+              <span class="hist-label">Pending</span>
+              <span class="hist-val ${pendingColorClass}">₹${row.pending}</span>
+            </div>
           </div>`;
         });
         content.innerHTML = html;

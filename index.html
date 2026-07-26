@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>MedPlus Store Portal</title>
+  <title>Franchise Regular Deposit Tracker</title>
   
   <link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiByeD0iMTYiIGZpbGw9IiNDRDFBMjIiLz48cmVjdCB4PSIxMiIgeT0iMTIiIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgcng9IjgiIGZpbGw9IiNGRkYiLz48cGF0aCBkPSJNMjggMjBoOHY4aDh2OGgtOHY4aC04di04aC04di04aDh6IiBmaWxsPSIjNDRCOTQ5Ii8+PC9zdmc+" type="image/svg+xml">
   
@@ -74,6 +74,18 @@
     .modal-overlay.active .modal-content { transform: translateY(0); }
     .modal-pull { width: 40px; height: 5px; background: #C7C7CC; border-radius: 10px; margin: 0 auto 16px auto; }
     
+    /* STICKY FOOTER FOR MODAL */
+    .sticky-footer {
+      position: -webkit-sticky;
+      position: sticky;
+      bottom: -20px;
+      background: var(--bg-color);
+      padding: 16px 20px 20px 20px;
+      margin: 16px -20px -20px -20px;
+      border-top: 0.5px solid var(--border-color);
+      z-index: 10;
+    }
+
     /* SUMMARY PILLS CONTAINER */
     .summary-pills-container {
       display: grid;
@@ -133,7 +145,7 @@
     <!-- LOGIN SECTION -->
     <div class="card" id="login-section" style="text-align: center; padding: 40px 24px;">
       <div class="brand-logo">MedPlus</div>
-      <h2>Store Portal</h2>
+      <h2>Franchise Deposit Tracker</h2>
       <p class="sub">Sign in with your store credentials</p>
       
       <div class="form-group">
@@ -231,7 +243,10 @@
            <!-- Loaded dynamically -->
         </div>
         
-        <button class="btn btn-primary" style="background: #E5E5EA; color: var(--text-main); margin-top: 16px; box-shadow: none;" onclick="closeHistoryModal(event, true)">Close</button>
+        <!-- Sticky Footer containing the Close Button -->
+        <div class="sticky-footer">
+          <button class="btn btn-primary" style="background: #E5E5EA; color: var(--text-main); margin: 0; box-shadow: none;" onclick="closeHistoryModal(event, true)">Close</button>
+        </div>
       </div>
     </div>
     

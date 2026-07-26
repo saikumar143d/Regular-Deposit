@@ -69,12 +69,12 @@
     .holiday-alert-wrapper {
       position: relative;
       border-radius: 16px;
-      padding: 3px; /* Border thickness */
+      padding: 3px; 
       background: linear-gradient(124deg, #ff2400, #e81d1d, #e8b71d, #e3e81d, #1de840, #1ddde8, #2b1de8, #dd00f3, #dd00f3);
       background-size: 400% 400%;
       animation: rainbow-border 4s ease infinite;
       margin-bottom: 20px;
-      display: none; /* Controlled by JS */
+      display: none; 
     }
 
     .holiday-alert-content {
@@ -103,11 +103,31 @@
     .modal-overlay.active .modal-content { transform: translateY(0); }
     .modal-pull { width: 40px; height: 5px; background: #C7C7CC; border-radius: 10px; margin: 0 auto 16px auto; }
     
-    /* STICKY FOOTER */
-    .sticky-footer { position: -webkit-sticky; position: sticky; bottom: -20px; background: var(--bg-color); padding: 16px 20px 20px 20px; margin: 16px -20px -20px -20px; border-top: 0.5px solid var(--border-color); z-index: 10; }
+    /* STICKY HEADER & FOOTER FOR HISTORY MODAL */
+    .sticky-header { 
+      position: -webkit-sticky; 
+      position: sticky; 
+      top: -20px; 
+      background: var(--bg-color); 
+      padding: 20px 20px 16px 20px; 
+      margin: -20px -20px 16px -20px; 
+      z-index: 10; 
+      border-bottom: 1px solid var(--border-color); 
+      border-radius: 24px 24px 0 0;
+    }
+    .sticky-footer { 
+      position: -webkit-sticky; 
+      position: sticky; 
+      bottom: -20px; 
+      background: var(--bg-color); 
+      padding: 16px 20px 20px 20px; 
+      margin: 16px -20px -20px -20px; 
+      border-top: 1px solid var(--border-color); 
+      z-index: 10; 
+    }
 
     /* SUMMARY PILLS */
-    .summary-pills-container { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 20px; }
+    .summary-pills-container { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 0; }
     .summary-pill { background: white; border-radius: 14px; padding: 10px 4px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.03); border: 1px solid var(--border-color); }
     .summary-pill-title { font-size: 10px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: -0.2px; margin-bottom: 4px; }
     .summary-pill-value { font-size: 13.5px; font-weight: 700; color: var(--text-main); }
@@ -145,7 +165,7 @@
       <p class="sub">Sign in with your store credentials</p>
       
       <div class="form-group">
-        <input type="text" id="login-id" placeholder="Store ID (e.g. STR001)" autocomplete="off" list="store-suggestions">
+        <input type="text" id="login-id" placeholder="Store ID (e.g. INAP001)" value="INAP" autocomplete="off" list="store-suggestions">
         <datalist id="store-suggestions"></datalist>
       </div>
       <div class="form-group">
@@ -218,33 +238,39 @@
     <!-- HISTORY MODAL -->
     <div class="modal-overlay" id="history-modal" onclick="closeHistoryModal(event)">
       <div class="modal-content" onclick="event.stopPropagation()">
-        <div class="modal-pull"></div>
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 12px;">
-          <div>
-            <h2 style="margin:0; font-size: 20px;">Monthly History</h2>
-            <p class="sub" style="margin-bottom:0; font-size: 13px;" id="history-month-label">Current Month Summary</p>
-          </div>
-        </div>
         
-        <div class="summary-pills-container" id="summary-pills" style="display: none;">
-          <div class="summary-pill">
-            <div class="summary-pill-title">To Deposit</div>
-            <div class="summary-pill-value" id="summary-to-deposit">₹0</div>
+        <!-- STICKY HEADER ZONE -->
+        <div class="sticky-header">
+          <div class="modal-pull"></div>
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 16px;">
+            <div>
+              <h2 style="margin:0; font-size: 20px;">Monthly History</h2>
+              <p class="sub" style="margin-bottom:0; font-size: 13px;" id="history-month-label">Current Month Summary</p>
+            </div>
           </div>
-          <div class="summary-pill">
-            <div class="summary-pill-title">Ritecure Pmt</div>
-            <div class="summary-pill-value" style="color: var(--success);" id="summary-deposited">₹0</div>
-          </div>
-          <div class="summary-pill">
-            <div class="summary-pill-title">Shortage</div>
-            <div class="summary-pill-value" id="summary-pending">₹0</div>
+          
+          <div class="summary-pills-container" id="summary-pills" style="display: none;">
+            <div class="summary-pill">
+              <div class="summary-pill-title">To Deposit</div>
+              <div class="summary-pill-value" id="summary-to-deposit">₹0</div>
+            </div>
+            <div class="summary-pill">
+              <div class="summary-pill-title">Ritecure Pmt</div>
+              <div class="summary-pill-value" style="color: var(--success);" id="summary-deposited">₹0</div>
+            </div>
+            <div class="summary-pill">
+              <div class="summary-pill-title">Shortage</div>
+              <div class="summary-pill-value" id="summary-pending">₹0</div>
+            </div>
           </div>
         </div>
 
+        <!-- SCROLLABLE LIST ZONE -->
         <div id="history-content">
            <!-- Loaded dynamically -->
         </div>
         
+        <!-- STICKY FOOTER ZONE -->
         <div class="sticky-footer">
           <button class="btn btn-primary" style="background: #E5E5EA; color: var(--text-main); margin: 0; box-shadow: none;" onclick="closeHistoryModal(event, true)">Close</button>
         </div>
@@ -309,14 +335,14 @@
       const tomorrow = new Date(today); tomorrow.setDate(today.getDate() + 1);
       const dayAfter = new Date(today); dayAfter.setDate(today.getDate() + 2);
       
-      const alertEl = document.getElementById('holiday-alert');
+      const wrapperEl = document.getElementById('holiday-alert');
       const titleEl = document.getElementById('alert-title');
       const textEl = document.getElementById('alert-text');
       
       if (isHoliday(today)) {
         titleEl.innerText = "⚠️ It's a Non-Banking Day";
         textEl.innerText = "Your payment approval might be slightly delayed.";
-        alertEl.style.display = 'block';
+        wrapperEl.style.display = 'block';
       } else if (isHoliday(tomorrow) || isHoliday(dayAfter)) {
         let upcomingDates = [];
         if (isHoliday(tomorrow)) upcomingDates.push(tomorrow.toLocaleDateString('en-IN', { day: 'numeric', month: 'short' }));
@@ -326,9 +352,9 @@
         
         titleEl.innerText = "⚠️ Upcoming Non-Banking Day";
         textEl.innerText = `Please deposit the tentative amount for ${dateString} on the prior working day to maintain 100% adherence to Provisional Indents.`;
-        alertEl.style.display = 'block';
+        wrapperEl.style.display = 'block';
       } else {
-        alertEl.style.display = 'none';
+        wrapperEl.style.display = 'none';
       }
     }
 
@@ -566,7 +592,7 @@
       const loginSec = document.getElementById('login-section');
       loginSec.style.display = 'block';
       loginSec.style.opacity = '1';
-      document.getElementById('login-id').value = ''; document.getElementById('login-mobile').value = '';
+      document.getElementById('login-id').value = 'INAP'; document.getElementById('login-mobile').value = '';
     }
 
     function showError(id, msg) {

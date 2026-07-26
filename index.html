@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Store Portal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Confetti Library -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  
+  <style>
+    :root {
+      --primary: #2563eb;
+      --primary-hover: #1d4ed8;
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --text: #0f172a;
+      --text-light: #64748b;
+      --border: #e2e8f0;
+    }
+    
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg);
+      margin: 0;
+      padding: 0;
+      color: var(--text);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Live Header */
+    .top-header {
+      background: var(--primary);
+      color: white;
+      padding: 12px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 14px;
+      font-weight: 500;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .container {
+      padding: 20px;
+      max-width: 500px;
+      margin: 0 auto;
+    }
+
+    .card {
+      background: var(--card);
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+      margin-bottom: 20px;
+    }
+
+    h2 { margin: 0 0 5px 0; font-size: 22px; }
+    p.sub { color: var(--text-light); margin: 0 0 20px 0; font-size: 14px; }
+
+    .form-group { margin-bottom: 16px; }
+    label { display: block; margin-bottom: 6px; font-size: 13px; font-weight: 600; color: var(--text-light); }
+    
+    input, textarea {
+      width: 100%;
+      padding: 12px;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      font-size: 16px; /* Prevents iOS zoom */
+      box-sizing: border-box;
+      transition: border 0.2s;
+      background: #f8fafc;
+    }
+    input:focus, textarea:focus { outline: none; border-color: var(--primary); background: #fff; }
+    input[readonly] { background: #e2e8f0; color: var(--text-light); }
+
+    .btn {
+      width: 100%;
+      padding: 14px;
+      border-radius: 8px;
+      border: none;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      transition: opacity 0.2s;
+    }
+    .btn-primary { background: var(--primary); color: white; margin-top: 10px; }
+    .btn-primary:active { background: var(--primary-hover); }
+    .btn-outline { background: transparent; border: 1.5px solid var(--primary); color: var(--primary); margin-top: 10px;}
+    .btn-danger { background: transparent; color: #ef4444; margin-top: 10px; padding: 10px; font-size: 14px; }
+    
+    .btn:disabled { opacity: 0.6; pointer-events: none; }
+    
+    .draft-badge {
+      display: none;
+      background: #fef3c7;
+      color: #d97706;
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      margin-bottom: 15px;
+      text-align: center;
+    }
+
+    .error-msg { color: #ef4444; font-size: 13px; margin-top: 5px; display: none; text-align: center; font-weight: 500;}
+
+    /* History Modal */
+    .history-card {
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      padding: 12px;
+      border-radius: 8px;
+      margin-bottom: 10px;
+      font-size: 14px;
+    }
+    .history-card span { font-weight: 600; color: var(--text); }
+    
+    #history-modal { display: none; }
+    #form-section { display: none; }
+    
+    /* Loader Spinner */
+    .spinner { border: 3px solid rgba(255,255,255,0.3); border-top: 3px solid white; border-radius: 50%; width: 20px; height: 20px; animation: spin 1s linear infinite; display: none; }
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+  </style>
+</head>
+<body>
+
+  <div class="top-header">
+    <span id="live-date">Loading...</span>
+    <span id="live-time">--:--</span>
+  </div>
+
+  <div class="container">
+    
+    <!-- LOGIN SECTION -->
+    <div class="card" id="login-section">
+      <h2>Store Login</h2>
+      <p class="sub">Access your daily deposit portal</p>
+      
+      <div class="form-group">
+        <label>Store ID</label>
+        <input type="text" id="login-id" placeholder="e.g. STR001" autocomplete="username">
+      </div>
+      <div class="form-group">
+        <label>Mobile Number</label>
+        <input type="tel" id="login-mobile" placeholder="Registered mobile" autocomplete="tel">
+      </div>
+      
+      <div class="error-msg" id="login-error"></div>
+      
+      <button class="btn btn-primary" id="login-btn" onclick="login()">
+        <span class="spinner" id="login-spinner"></span>
+        <span id="login-text">Secure Login</span>
+      </button>
+    </div>
+
+    <!-- FORM SECTION -->
+    <div id="form-section">
+      <div class="card" style="background: #eff6ff; border: 1px solid #bfdbfe; text-align: center; padding: 15px;">
+        <h3 id="store-name-display" style="margin: 0; color: var(--primary);">Store Name</h3>
+        <p style="margin: 5px 0 0 0; font-size: 13px; color: var(--primary);">ID: <span id="store-id-display"></span></p>
+      </div>
+
+      <div class="card">
+        <div class="draft-badge" id="draft-badge">Draft auto-restored</div>
+        
+        <div class="form-group">
+          <label>Cash Collected (POS)</label>
+          <input type="number" id="cash" placeholder="₹ 0" oninput="calculatePending(); saveDraft();">
+        </div>
+        
+        <div class="form-group">
+          <label>Deposited Amount</label>
+          <input type="number" id="deposit" placeholder="₹ 0" oninput="calculatePending(); saveDraft();">
+        </div>
+        
+        <div class="form-group">
+          <label>Pending Amount</label>
+          <input type="number" id="pending" placeholder="₹ 0" readonly>
+        </div>
+        
+        <div class="form-group">
+          <label>Reason (If Pending > 0)</label>
+          <textarea id="reason" rows="2" placeholder="Brief reason..." oninput="saveDraft();"></textarea>
+        </div>
+
+        <div class="error-msg" id="form-error"></div>
+        
+        <button class="btn btn-primary" id="submit-btn" onclick="submitForm()">
+          <span class="spinner" id="submit-spinner"></span>
+          <span id="submit-text">Submit Deposit</span>
+        </button>
+        <button class="btn btn-outline" onclick="fetchHistory()">View History</button>
+        <button class="btn btn-danger" onclick="logout()">Log Out</button>
+      </div>
+    </div>
+
+    <!-- HISTORY MODAL -->
+    <div class="card" id="history-modal">
+      <h2>Recent Submissions</h2>
+      <p class="sub">Last 5 records</p>
+      <div id="history-content">Loading...</div>
+      <button class="btn btn-outline" onclick="document.getElementById('history-modal').style.display='none'">Close History</button>
+    </div>
+
+  </div>
+
+  <script>
+    // ==========================================
+    // REPLACE THIS URL WITH YOUR NEW WEB APP URL
+    // ==========================================
+    const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx-qdcCOELs1hZOcuyGBtMX8s6-k2gKT9UU-5ocS_bh5cOamt3kN2iyyM5US0a_ffy9YA/exec';
+    
+    let currentStore = {};
+
+    // --- Clock Logic ---
+    setInterval(() => {
+      const now = new Date();
+      document.getElementById('live-date').innerText = now.toLocaleDateString('en-IN', { weekday: 'short', month: 'short', day: 'numeric' });
+      document.getElementById('live-time').innerText = now.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+    }, 1000);
+
+    // --- Network Request Helper ---
+    async function apiCall(payload) {
+      try {
+        const response = await fetch(APPS_SCRIPT_URL, {
+          method: 'POST',
+          body: JSON.stringify(payload)
+        });
+        return await response.json();
+      } catch (err) {
+        return { success: false, message: "Network error. Please check your connection." };
+      }
+    }
+
+    // --- Login Logic ---
+    async function login() {
+      const storeId = document.getElementById('login-id').value.trim();
+      const mobile = document.getElementById('login-mobile').value.trim();
+      
+      if (!storeId || !mobile) return showError('login-error', 'Enter both fields.');
+      
+      setLoading('login', true);
+      const res = await apiCall({ action: 'login', storeId, mobile });
+      setLoading('login', false);
+      
+      if (res.success) {
+        currentStore = { id: storeId, name: res.storeName, mapping: res.mapping };
+        document.getElementById('store-name-display').innerText = res.storeName;
+        document.getElementById('store-id-display').innerText = storeId;
+        
+        document.getElementById('login-section').style.display = 'none';
+        document.getElementById('form-section').style.display = 'block';
+        loadDraft();
+      } else {
+        showError('login-error', res.message);
+      }
+    }
+
+    // --- Form & Draft Logic ---
+    function calculatePending() {
+      const c = parseFloat(document.getElementById('cash').value) || 0;
+      const d = parseFloat(document.getElementById('deposit').value) || 0;
+      document.getElementById('pending').value = Math.max(0, c - d);
+    }
+
+    function saveDraft() {
+      const data = {
+        cash: document.getElementById('cash').value,
+        deposit: document.getElementById('deposit').value,
+        reason: document.getElementById('reason').value
+      };
+      localStorage.setItem(`draft_${currentStore.id}`, JSON.stringify(data));
+    }
+
+    function loadDraft() {
+      const saved = localStorage.getItem(`draft_${currentStore.id}`);
+      if (saved) {
+        const data = JSON.parse(saved);
+        document.getElementById('cash').value = data.cash || '';
+        document.getElementById('deposit').value = data.deposit || '';
+        document.getElementById('reason').value = data.reason || '';
+        calculatePending();
+        document.getElementById('draft-badge').style.display = 'block';
+        setTimeout(() => document.getElementById('draft-badge').style.display = 'none', 3000);
+      }
+    }
+
+    // --- Submit Logic ---
+    async function submitForm() {
+      const cash = document.getElementById('cash').value;
+      const deposit = document.getElementById('deposit').value;
+      const pending = document.getElementById('pending').value;
+      const reason = document.getElementById('reason').value;
+
+      if (!cash || !deposit) return showError('form-error', 'Enter Cash and Deposit amounts.');
+      if (parseFloat(pending) > 0 && !reason.trim()) return showError('form-error', 'Reason required for pending amount.');
+
+      setLoading('submit', true);
+      
+      const payload = {
+        action: 'submit',
+        storeId: currentStore.id,
+        mapping: currentStore.mapping,
+        cashCollected: cash,
+        depositedAmount: deposit,
+        pendingAmount: pending,
+        reason: reason
+      };
+
+      const res = await apiCall(payload);
+      setLoading('submit', false);
+
+      if (res.success) {
+        // Trigger Confetti!
+        confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
+        
+        // Clear Draft & Form
+        localStorage.removeItem(`draft_${currentStore.id}`);
+        document.getElementById('cash').value = '';
+        document.getElementById('deposit').value = '';
+        document.getElementById('pending').value = '';
+        document.getElementById('reason').value = '';
+        
+        alert('Data Submitted Successfully!');
+      } else {
+        showError('form-error', res.message);
+      }
+    }
+
+    // --- History Logic ---
+    async function fetchHistory() {
+      document.getElementById('history-modal').style.display = 'block';
+      document.getElementById('history-content').innerHTML = 'Loading records...';
+      
+      const res = await apiCall({ action: 'history', storeId: currentStore.id });
+      
+      if (res.success && res.history.length > 0) {
+        let html = '';
+        res.history.forEach(row => {
+          html += `<div class="history-card">
+            <div><span>Date:</span> ${row.date} | <span>Time:</span> ${row.time}</div>
+            <div><span>Deposited:</span> ₹${row.deposited}</div>
+            <div style="color: ${row.pending > 0 ? '#ef4444' : '#10b981'}"><span>Pending:</span> ₹${row.pending}</div>
+          </div>`;
+        });
+        document.getElementById('history-content').innerHTML = html;
+      } else {
+        document.getElementById('history-content').innerHTML = 'No recent submissions found.';
+      }
+    }
+
+    function logout() {
+      currentStore = {};
+      document.getElementById('form-section').style.display = 'none';
+      document.getElementById('history-modal').style.display = 'none';
+      document.getElementById('login-section').style.display = 'block';
+      document.getElementById('login-id').value = '';
+      document.getElementById('login-mobile').value = '';
+    }
+
+    // --- UI Helpers ---
+    function showError(id, msg) {
+      const el = document.getElementById(id);
+      el.innerText = msg;
+      el.style.display = 'block';
+      setTimeout(() => el.style.display = 'none', 4000);
+    }
+
+    function setLoading(btnId, isLoading) {
+      document.getElementById(`${btnId}-btn`).disabled = isLoading;
+      document.getElementById(`${btnId}-spinner`).style.display = isLoading ? 'inline-block' : 'none';
+      document.getElementById(`${btnId}-text`).style.display = isLoading ? 'none' : 'inline-block';
+    }
+  </script>
+</body>
+</html>

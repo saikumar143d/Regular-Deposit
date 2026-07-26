@@ -3,90 +3,203 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Store Portal</title>
+  <title>MedPlus Store Portal</title>
+  <!-- Using San Francisco / Apple system fonts first -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
   
   <style>
     :root {
-      --primary: #2563eb; --primary-hover: #1d4ed8;
-      --bg: #f8fafc; --card: #ffffff;
-      --text: #0f172a; --text-light: #64748b; --border: #e2e8f0;
+      /* MedPlus Brand Colors */
+      --med-blue: #004F9E;
+      --med-blue-active: #003A75;
+      --med-green: #8CC63F;
+      
+      /* iOS System Colors */
+      --bg-color: #F2F2F7; /* Classic iOS background */
+      --card-bg: #FFFFFF;
+      --text-main: #1C1C1E;
+      --text-muted: #8E8E93;
+      --input-bg: #E5E5EA; /* iOS filled input */
+      --border-color: rgba(60, 60, 67, 0.1);
+      --danger: #FF3B30;
+      --success: #34C759;
     }
     
-    body { font-family: 'Inter', sans-serif; background-color: var(--bg); margin: 0; padding: 0; color: var(--text); -webkit-font-smoothing: antialiased; }
+    body { 
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", sans-serif; 
+      background-color: var(--bg-color); 
+      margin: 0; 
+      padding: 0; 
+      color: var(--text-main); 
+      -webkit-font-smoothing: antialiased; 
+    }
     
-    .top-header { background: var(--primary); color: white; padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; font-size: 14px; font-weight: 500; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+    /* iOS Glassmorphic Header */
+    .top-header { 
+      background: rgba(255, 255, 255, 0.75); 
+      backdrop-filter: blur(12px); 
+      -webkit-backdrop-filter: blur(12px);
+      color: var(--med-blue); 
+      padding: 14px 20px; 
+      display: flex; 
+      justify-content: space-between; 
+      align-items: center; 
+      font-size: 14px; 
+      font-weight: 600; 
+      position: sticky; 
+      top: 0; 
+      z-index: 100; 
+      border-bottom: 0.5px solid var(--border-color);
+    }
+
+    .top-header span {
+      letter-spacing: -0.2px;
+    }
     
-    .container { padding: 20px; max-width: 500px; margin: 0 auto; }
-    .card { background: var(--card); border-radius: 12px; padding: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.04); margin-bottom: 20px; transition: opacity 0.3s; }
+    .container { padding: 20px; max-width: 480px; margin: 0 auto; display: flex; flex-direction: column; gap: 20px; }
     
-    h2 { margin: 0 0 5px 0; font-size: 22px; }
-    p.sub { color: var(--text-light); margin: 0 0 20px 0; font-size: 14px; }
+    /* iOS Style Cards */
+    .card { 
+      background: var(--card-bg); 
+      border-radius: 20px; 
+      padding: 24px; 
+      box-shadow: 0 4px 24px rgba(0,0,0,0.04); 
+      transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1); 
+    }
     
-    .form-group { margin-bottom: 16px; }
-    label { display: block; margin-bottom: 6px; font-size: 13px; font-weight: 600; color: var(--text-light); }
+    /* MedPlus Logo Styling */
+    .brand-logo {
+      font-size: 32px;
+      font-weight: 700;
+      letter-spacing: -1px;
+      color: var(--med-blue);
+      margin-bottom: 5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .brand-logo .green { color: var(--med-green); }
+    .brand-logo .plus-circle {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--med-green);
+      color: white;
+      border-radius: 50%;
+      width: 24px;
+      height: 24px;
+      font-size: 20px;
+      margin-left: 6px;
+      font-weight: 600;
+      line-height: 1;
+    }
+
+    h2 { margin: 0 0 6px 0; font-size: 22px; font-weight: 700; letter-spacing: -0.5px;}
+    p.sub { color: var(--text-muted); margin: 0 0 24px 0; font-size: 15px; }
     
-    input, textarea { width: 100%; padding: 12px; border: 1.5px solid var(--border); border-radius: 8px; font-size: 16px; box-sizing: border-box; transition: all 0.2s; background: #f8fafc; }
-    input:focus, textarea:focus { outline: none; border-color: var(--primary); background: #fff; box-shadow: 0 0 0 3px rgba(37,99,235,0.1); }
-    input[readonly] { background: #e2e8f0; color: var(--text-light); border-color: transparent; }
+    .form-group { margin-bottom: 16px; text-align: left;}
+    label { display: block; margin-bottom: 8px; font-size: 14px; font-weight: 500; color: var(--text-main); margin-left: 4px;}
     
-    .btn { width: 100%; padding: 14px; border-radius: 8px; border: none; font-size: 16px; font-weight: 600; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 8px; transition: all 0.2s; }
-    .btn-primary { background: var(--primary); color: white; margin-top: 10px; }
-    .btn-primary:active { transform: scale(0.98); }
-    .btn-outline { background: transparent; border: 1.5px solid var(--primary); color: var(--primary); margin-top: 10px; }
-    .btn-danger { background: transparent; color: #ef4444; margin-top: 10px; font-size: 14px; }
-    .btn:disabled { opacity: 0.7; pointer-events: none; }
+    /* iOS Style Inputs */
+    input, textarea { 
+      width: 100%; 
+      padding: 16px; 
+      border: none;
+      border-radius: 14px; 
+      font-size: 17px; /* 16px+ prevents iOS auto-zoom */
+      box-sizing: border-box; 
+      transition: all 0.2s; 
+      background: var(--input-bg); 
+      color: var(--text-main);
+      font-family: inherit;
+    }
+    input::placeholder, textarea::placeholder { color: #8E8E93; }
+    input:focus, textarea:focus { 
+      outline: none; 
+      background: #FFFFFF; 
+      box-shadow: 0 0 0 2px var(--med-blue); 
+    }
+    input[readonly] { background: #E5E5EA; color: var(--text-muted); opacity: 0.8; }
     
-    .error-msg { color: #ef4444; font-size: 13px; margin-top: 5px; display: none; text-align: center; font-weight: 500;}
+    /* iOS Style Buttons */
+    .btn { 
+      width: 100%; 
+      padding: 16px; 
+      border-radius: 14px; 
+      border: none; 
+      font-size: 17px; 
+      font-weight: 600; 
+      cursor: pointer; 
+      display: flex; 
+      justify-content: center; 
+      align-items: center; 
+      gap: 8px; 
+      transition: all 0.2s; 
+      letter-spacing: -0.3px;
+    }
+    .btn-primary { background: var(--med-blue); color: white; margin-top: 12px; }
+    .btn-primary:active { background: var(--med-blue-active); transform: scale(0.97); }
+    .btn-outline { background: transparent; border: 1.5px solid var(--med-blue); color: var(--med-blue); margin-top: 12px; }
+    .btn-outline:active { background: rgba(0, 79, 158, 0.1); }
+    .btn-danger { background: transparent; color: var(--danger); margin-top: 8px; font-size: 16px; }
+    .btn-danger:active { background: rgba(255, 59, 48, 0.1); }
+    .btn:disabled { opacity: 0.6; pointer-events: none; }
     
-    /* MODAL POPUP STYLES */
+    .error-msg { color: var(--danger); font-size: 14px; margin-top: 8px; display: none; text-align: center; font-weight: 500; background: rgba(255, 59, 48, 0.1); padding: 10px; border-radius: 10px;}
+    
+    /* iOS MODAL STYLES */
     .modal-overlay {
       position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(15, 23, 42, 0.4); backdrop-filter: blur(4px);
-      display: flex; justify-content: center; align-items: center;
-      z-index: 1000; opacity: 0; visibility: hidden; transition: all 0.3s ease;
+      background: rgba(0, 0, 0, 0.3); backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px);
+      display: flex; justify-content: center; align-items: flex-end; /* Bottom sheet style for iOS */
+      z-index: 1000; opacity: 0; visibility: hidden; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     }
     .modal-overlay.active { opacity: 1; visibility: visible; }
     
     .modal-content {
-      background: var(--bg); padding: 24px; border-radius: 16px; width: 85%; max-width: 400px;
-      max-height: 80vh; overflow-y: auto; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
-      transform: translateY(20px) scale(0.95); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      background: var(--bg-color); padding: 24px; border-radius: 24px 24px 0 0; width: 100%; max-width: 480px;
+      max-height: 85vh; overflow-y: auto; box-shadow: 0 -10px 25px rgba(0,0,0,0.1);
+      transform: translateY(100%); transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      box-sizing: border-box;
     }
-    .modal-overlay.active .modal-content { transform: translateY(0) scale(1); }
+    .modal-overlay.active .modal-content { transform: translateY(0); }
     
-    /* IMPROVED HISTORY CARD UI */
+    /* Modal pull indicator */
+    .modal-pull {
+      width: 40px; height: 5px; background: #C7C7CC; border-radius: 10px; margin: 0 auto 20px auto;
+    }
+    
     .history-card { 
-      background: #ffffff; 
-      border: 1px solid var(--border); 
+      background: var(--card-bg); 
       padding: 16px; 
-      border-radius: 12px; 
+      border-radius: 16px; 
       margin-bottom: 12px; 
-      box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.02);
     }
     .hist-header {
       display: flex; justify-content: space-between; align-items: center;
-      border-bottom: 1px solid var(--border);
-      padding-bottom: 10px; margin-bottom: 12px;
+      border-bottom: 0.5px solid var(--border-color);
+      padding-bottom: 12px; margin-bottom: 12px;
     }
-    .hist-date { font-weight: 600; font-size: 14px; color: var(--text); }
-    .hist-time { font-size: 12px; color: var(--text-light); background: #f1f5f9; padding: 4px 8px; border-radius: 20px; }
+    .hist-date { font-weight: 600; font-size: 15px; color: var(--text-main); }
+    .hist-time { font-size: 13px; color: var(--text-muted); background: var(--input-bg); padding: 4px 10px; border-radius: 20px; font-weight: 500;}
     
-    .hist-row { display: flex; justify-content: space-between; margin-bottom: 6px; font-size: 14px; }
-    .hist-label { color: var(--text-light); }
-    .hist-val { font-weight: 600; color: var(--text); }
-    .val-pending-red { color: #ef4444; }
-    .val-pending-green { color: #10b981; }
+    .hist-row { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 15px; }
+    .hist-label { color: var(--text-muted); }
+    .hist-val { font-weight: 600; color: var(--text-main); }
+    .val-pending-red { color: var(--danger); }
+    .val-pending-green { color: var(--success); }
     
     #form-section { display: none; }
-    .spinner { border: 2.5px solid rgba(255,255,255,0.3); border-top: 2.5px solid white; border-radius: 50%; width: 18px; height: 18px; animation: spin 0.8s linear infinite; display: none; }
-    .spinner-dark { border-color: rgba(37,99,235,0.2); border-top-color: var(--primary); width: 24px; height: 24px; border-width: 3px; display: inline-block; }
+    .spinner { border: 2.5px solid rgba(255,255,255,0.3); border-top: 2.5px solid white; border-radius: 50%; width: 20px; height: 20px; animation: spin 0.8s linear infinite; display: none; }
+    .spinner-dark { border-color: rgba(0,79,158,0.2); border-top-color: var(--med-blue); width: 28px; height: 28px; border-width: 3px; display: inline-block; }
     @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
   </style>
 </head>
 <body>
 
+  <!-- Blurred Top Nav -->
   <div class="top-header">
     <span id="live-date">Loading...</span>
     <span id="live-time">--:--</span>
@@ -95,84 +208,89 @@
   <div class="container">
     
     <!-- LOGIN SECTION -->
-    <div class="card" id="login-section">
-      <h2>Store Login</h2>
-      <p class="sub">Access your daily deposit portal</p>
+    <div class="card" id="login-section" style="text-align: center; padding: 40px 24px;">
+      <div class="brand-logo">
+        Med<span class="green">Plus</span><span class="plus-circle">+</span>
+      </div>
+      <h2>Store Portal</h2>
+      <p class="sub">Sign in with your store credentials</p>
       
       <div class="form-group">
-        <label>Store ID</label>
-        <input type="text" id="login-id" placeholder="e.g. STR001" autocomplete="username">
+        <input type="text" id="login-id" placeholder="Store ID (e.g. STR001)" autocomplete="username">
       </div>
       <div class="form-group">
-        <label>Mobile Number</label>
-        <input type="tel" id="login-mobile" placeholder="Registered mobile" autocomplete="tel">
+        <input type="tel" id="login-mobile" placeholder="Registered Mobile Number" autocomplete="tel">
       </div>
       
       <div class="error-msg" id="login-error"></div>
       
       <button class="btn btn-primary" id="login-btn" onclick="login()">
         <span class="spinner" id="login-spinner"></span>
-        <span id="login-text">Secure Login</span>
+        <span id="login-text">Sign In</span>
       </button>
     </div>
 
     <!-- FORM SECTION -->
     <div id="form-section">
-      <div class="card" style="background: #eff6ff; border: 1px solid #bfdbfe; text-align: center; padding: 15px;">
-        <h3 id="store-name-display" style="margin: 0; color: var(--primary);">Store Name</h3>
-        <p style="margin: 5px 0 0 0; font-size: 13px; color: var(--primary);">ID: <span id="store-id-display"></span></p>
+      <!-- Store Badge -->
+      <div class="card" style="background: rgba(140, 198, 63, 0.1); border: 1px solid rgba(140, 198, 63, 0.3); text-align: center; padding: 16px;">
+        <h3 id="store-name-display" style="margin: 0; color: var(--med-blue); font-size: 18px; letter-spacing: -0.3px;">Store Name</h3>
+        <p style="margin: 4px 0 0 0; font-size: 14px; color: var(--med-blue); opacity: 0.8;">ID: <span id="store-id-display" style="font-weight: 600;"></span></p>
       </div>
 
+      <!-- Deposit Form -->
       <div class="card">
         <div class="form-group">
           <label>Cash Collected (POS)</label>
-          <input type="number" id="cash" placeholder="₹ 0" oninput="calculatePending(); saveDraft();">
+          <input type="number" id="cash" placeholder="₹ 0.00" oninput="calculatePending(); saveDraft();">
         </div>
         
         <div class="form-group">
           <label>Deposited Amount</label>
-          <input type="number" id="deposit" placeholder="₹ 0" oninput="calculatePending(); saveDraft();">
+          <input type="number" id="deposit" placeholder="₹ 0.00" oninput="calculatePending(); saveDraft();">
         </div>
         
         <div class="form-group">
           <label>Pending Amount</label>
-          <input type="number" id="pending" placeholder="₹ 0" readonly>
+          <input type="number" id="pending" placeholder="₹ 0.00" readonly>
         </div>
         
         <div class="form-group">
           <label>Reason (If Pending > 0)</label>
-          <textarea id="reason" rows="2" placeholder="Brief reason..." oninput="saveDraft();"></textarea>
+          <textarea id="reason" rows="3" placeholder="Please provide a brief explanation..." oninput="saveDraft();"></textarea>
         </div>
 
         <div class="error-msg" id="form-error"></div>
         
         <button class="btn btn-primary" id="submit-btn" onclick="submitForm()">
           <span class="spinner" id="submit-spinner"></span>
-          <span id="submit-text">Submit Deposit</span>
+          <span id="submit-text">Submit Daily Deposit</span>
         </button>
         <button class="btn btn-outline" onclick="openHistoryModal()">View History</button>
-        <button class="btn btn-danger" onclick="logout()">Log Out</button>
+        <button class="btn btn-danger" onclick="logout()">Sign Out</button>
       </div>
     </div>
 
-    <!-- HISTORY MODAL OVERLAY -->
+    <!-- iOS BOTTOM SHEET HISTORY MODAL -->
     <div class="modal-overlay" id="history-modal" onclick="closeHistoryModal(event)">
       <div class="modal-content" onclick="event.stopPropagation()">
-        <div style="display:flex; justify-content:space-between; align-items:center;">
+        <div class="modal-pull"></div>
+        
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 20px;">
           <div>
-            <h2 style="margin:0;">History</h2>
-            <p class="sub" style="margin-bottom:15px;">Your last 5 records</p>
+            <h2 style="margin:0; font-size: 24px;">History</h2>
+            <p class="sub" style="margin-bottom:0;">Your last 5 submissions</p>
           </div>
         </div>
         
         <div id="history-content">
-          <div style="text-align:center; padding: 30px 0;">
+          <div style="text-align:center; padding: 40px 0;">
             <div class="spinner spinner-dark"></div>
-            <p style="color: var(--text-light); font-size: 14px; margin-top: 10px;">Loading history...</p>
+            <p style="color: var(--text-muted); font-size: 15px; margin-top: 12px; font-weight: 500;">Fetching records...</p>
           </div>
         </div>
         
-        <button class="btn btn-outline" style="background: white;" onclick="closeHistoryModal(event, true)">Close</button>
+        <button class="btn btn-outline" style="background: white; border-color: transparent; background: #E5E5EA; color: var(--text-main); margin-top: 20px;" onclick="closeHistoryModal(event, true)">Close</button>
       </div>
     </div>
 
@@ -200,28 +318,24 @@
         const response = await fetch(APPS_SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) });
         return await response.json();
       } catch (err) {
-        return { success: false, message: "Network error." };
+        return { success: false, message: "Network error. Check connection." };
       }
     }
 
     // --- Clean Date Formatter ---
-    // Cleans up the "1899" and "GMT" mess caused by Google Sheets Date objects
     function formatDateTime(rawDate, rawTime) {
       let fDate = rawDate;
       let fTime = rawTime;
 
-      // Format Date
       const d = new Date(rawDate);
       if (!isNaN(d.getTime())) {
         fDate = d.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
       }
 
-      // Format Time
       const t = new Date(rawTime);
       if (!isNaN(t.getTime())) {
         fTime = t.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', hour12: true });
       } else if (typeof rawTime === 'string' && rawTime.includes('GMT')) {
-        // Fallback if browser parses it weirdly
         const match = rawTime.match(/(\d{2}:\d{2}:\d{2})/);
         if (match) {
           const parts = match[1].split(':');
@@ -238,7 +352,7 @@
       const storeId = document.getElementById('login-id').value.trim();
       const mobile = document.getElementById('login-mobile').value.trim();
       
-      if (!storeId || !mobile) return showError('login-error', 'Enter both fields.');
+      if (!storeId || !mobile) return showError('login-error', 'Please enter both fields.');
       
       setLoading('login', true);
       const res = await apiCall({ action: 'login', storeId, mobile });
@@ -250,13 +364,27 @@
         document.getElementById('store-id-display').innerText = storeId;
         
         document.getElementById('login-section').style.opacity = '0';
+        document.getElementById('login-section').style.transform = 'scale(0.95)';
+        
         setTimeout(() => {
           document.getElementById('login-section').style.display = 'none';
-          document.getElementById('form-section').style.display = 'block';
+          document.getElementById('login-section').style.transform = 'scale(1)';
+          
+          const formSec = document.getElementById('form-section');
+          formSec.style.display = 'block';
+          
+          // Animate form in
+          formSec.style.opacity = '0';
+          formSec.style.transform = 'translateY(10px)';
+          requestAnimationFrame(() => {
+            formSec.style.transition = 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)';
+            formSec.style.opacity = '1';
+            formSec.style.transform = 'translateY(0)';
+          });
+          
           loadDraft();
         }, 300);
 
-        // Fetch history silently
         prefetchHistory();
       } else {
         showError('login-error', res.message);
@@ -269,7 +397,6 @@
       if (res.success) preloadedHistory = res.history;
       isHistoryLoading = false;
 
-      // FIX: If the modal is currently open waiting for data, render it immediately!
       if (document.getElementById('history-modal').classList.contains('active')) {
         renderHistoryData();
       }
@@ -319,7 +446,8 @@
       setLoading('submit', false);
 
       if (res.success) {
-        confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
+        // MedPlus color confetti
+        confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: ['#004F9E', '#8CC63F', '#ffffff'] });
         
         preloadedHistory.unshift({
           date: res.date || new Date().toISOString(),
@@ -345,9 +473,9 @@
 
       if (isHistoryLoading) {
          document.getElementById('history-content').innerHTML = `
-           <div style="text-align:center; padding: 30px 0;">
+           <div style="text-align:center; padding: 40px 0;">
              <div class="spinner spinner-dark"></div>
-             <p style="color: var(--text-light); font-size: 14px; margin-top: 10px;">Loading history...</p>
+             <p style="color: var(--text-muted); font-size: 15px; margin-top: 12px; font-weight: 500;">Fetching records...</p>
            </div>`;
       } else {
          renderHistoryData();
@@ -360,8 +488,6 @@
       if (preloadedHistory.length > 0) {
         let html = '';
         preloadedHistory.forEach(row => {
-          
-          // Apply the clean format to incoming data
           const { fDate, fTime } = formatDateTime(row.date, row.time);
           const pendingColorClass = parseFloat(row.pending) > 0 ? 'val-pending-red' : 'val-pending-green';
 
@@ -383,7 +509,7 @@
         });
         content.innerHTML = html;
       } else {
-        content.innerHTML = '<div style="text-align:center; padding: 20px; color: var(--text-light);">No recent submissions found.</div>';
+        content.innerHTML = '<div style="text-align:center; padding: 30px; color: var(--text-muted); font-weight: 500;">No recent submissions found.</div>';
       }
     }
 
@@ -396,8 +522,14 @@
     function logout() {
       currentStore = {}; preloadedHistory = [];
       document.getElementById('form-section').style.display = 'none';
-      document.getElementById('login-section').style.display = 'block';
-      document.getElementById('login-section').style.opacity = '1';
+      
+      const loginSec = document.getElementById('login-section');
+      loginSec.style.display = 'block';
+      
+      requestAnimationFrame(() => {
+        loginSec.style.opacity = '1';
+      });
+      
       document.getElementById('login-id').value = '';
       document.getElementById('login-mobile').value = '';
     }

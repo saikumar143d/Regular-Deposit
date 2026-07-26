@@ -53,7 +53,7 @@
     .btn-primary { background: var(--med-primary); color: white; margin-top: 10px; box-shadow: 0 4px 12px rgba(205, 26, 34, 0.2); }
     .btn-primary:active { background: var(--med-primary-active); transform: scale(0.97); box-shadow: 0 2px 6px rgba(205, 26, 34, 0.2); }
     
-    /* Compact Buttons inside the Store Header */
+    /* Compact Buttons inside Store Badge */
     .btn-row { display: flex; gap: 10px; margin-top: 12px; }
     .btn-compact { flex: 1; padding: 10px; border-radius: 10px; font-size: 13.5px; font-weight: 600; cursor: pointer; border: 1.5px solid; background: transparent; transition: all 0.2s; }
     .btn-history { border-color: var(--med-primary); color: var(--med-primary); }
@@ -70,10 +70,39 @@
     /* MODALS */
     .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(5px); display: flex; justify-content: center; align-items: flex-end; z-index: 1000; opacity: 0; visibility: hidden; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
     .modal-overlay.active { opacity: 1; visibility: visible; }
-    .modal-content { background: var(--bg-color); padding: 24px; border-radius: 24px 24px 0 0; width: 100%; max-width: 480px; max-height: 85vh; overflow-y: auto; box-shadow: 0 -10px 25px rgba(0,0,0,0.1); transform: translateY(100%); transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1); box-sizing: border-box; }
+    .modal-content { background: var(--bg-color); padding: 20px; border-radius: 24px 24px 0 0; width: 100%; max-width: 480px; max-height: 88vh; overflow-y: auto; box-shadow: 0 -10px 25px rgba(0,0,0,0.1); transform: translateY(100%); transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1); box-sizing: border-box; }
     .modal-overlay.active .modal-content { transform: translateY(0); }
-    .modal-pull { width: 40px; height: 5px; background: #C7C7CC; border-radius: 10px; margin: 0 auto 20px auto; }
+    .modal-pull { width: 40px; height: 5px; background: #C7C7CC; border-radius: 10px; margin: 0 auto 16px auto; }
     
+    /* SUMMARY PILLS CONTAINER */
+    .summary-pills-container {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+    .summary-pill {
+      background: white;
+      border-radius: 14px;
+      padding: 10px 6px;
+      text-align: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+      border: 1px solid var(--border-color);
+    }
+    .summary-pill-title {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: -0.2px;
+      margin-bottom: 4px;
+    }
+    .summary-pill-value {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
     .history-card { background: var(--card-bg); padding: 16px; border-radius: 16px; margin-bottom: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.03); }
     .hist-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 0.5px solid var(--border-color); padding-bottom: 12px; margin-bottom: 12px; }
     .hist-date { font-weight: 600; font-size: 14px; color: var(--text-main); }
@@ -175,18 +204,34 @@
     <div class="modal-overlay" id="history-modal" onclick="closeHistoryModal(event)">
       <div class="modal-content" onclick="event.stopPropagation()">
         <div class="modal-pull"></div>
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 20px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 12px;">
           <div>
-            <h2 style="margin:0; font-size: 22px;">History</h2>
-            <p class="sub" style="margin-bottom:0;">Live records</p>
+            <h2 style="margin:0; font-size: 20px;">Monthly History</h2>
+            <p class="sub" style="margin-bottom:0; font-size: 13px;" id="history-month-label">Current Month Summary</p>
           </div>
         </div>
         
+        <!-- Monthly Summary Pills -->
+        <div class="summary-pills-container" id="summary-pills" style="display: none;">
+          <div class="summary-pill">
+            <div class="summary-pill-title">To Deposit</div>
+            <div class="summary-pill-value" id="summary-to-deposit">₹0</div>
+          </div>
+          <div class="summary-pill">
+            <div class="summary-pill-title">Deposited</div>
+            <div class="summary-pill-value" style="color: var(--success);" id="summary-deposited">₹0</div>
+          </div>
+          <div class="summary-pill">
+            <div class="summary-pill-title">Shortage</div>
+            <div class="summary-pill-value" id="summary-pending">₹0</div>
+          </div>
+        </div>
+
         <div id="history-content">
            <!-- Loaded dynamically -->
         </div>
         
-        <button class="btn btn-primary" style="background: #E5E5EA; color: var(--text-main); margin-top: 20px; box-shadow: none;" onclick="closeHistoryModal(event, true)">Close</button>
+        <button class="btn btn-primary" style="background: #E5E5EA; color: var(--text-main); margin-top: 16px; box-shadow: none;" onclick="closeHistoryModal(event, true)">Close</button>
       </div>
     </div>
     
@@ -387,7 +432,6 @@
       setLoading('submit', false);
 
       if (res.success) {
-        // Setup Receipt Details
         const { fDate, fTime } = formatDateTime(res.date || new Date().toISOString(), res.time || new Date().toISOString());
         document.getElementById('receipt-date').innerText = fDate;
         document.getElementById('receipt-time').innerText = fTime;
@@ -398,15 +442,11 @@
         receiptPending.innerText = '₹' + pending;
         receiptPending.style.color = parseFloat(pending) > 0 ? 'var(--danger)' : 'var(--success)';
         
-        // Clear forms
         localStorage.removeItem(`draft_${currentStore.id}`);
         document.getElementById('cash').value = ''; document.getElementById('deposit').value = '';
         document.getElementById('pending').value = ''; document.getElementById('reason').value = '';
 
-        // Show Receipt Overlay
         document.getElementById('receipt-modal').classList.add('active');
-        
-        // Trigger Confetti ON TOP of the modal (zIndex 2000 > overlay 1000)
         confetti({ zIndex: 2000, particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: ['#CD1A22', '#44B949', '#ffffff'] });
       } else {
         showError('form-error', res.message);
@@ -421,10 +461,12 @@
     function openHistoryModal() {
       const modal = document.getElementById('history-modal');
       modal.classList.add('active'); 
+      
+      document.getElementById('summary-pills').style.display = 'none';
       document.getElementById('history-content').innerHTML = `
         <div style="text-align:center; padding: 40px 0;">
           <div class="spinner spinner-dark"></div>
-          <p style="color: var(--text-muted); font-size: 14px; margin-top: 12px; font-weight: 500;">Fetching latest records...</p>
+          <p style="color: var(--text-muted); font-size: 14px; margin-top: 12px; font-weight: 500;">Fetching monthly records...</p>
         </div>`;
       fetchLatestHistory();
     }
@@ -441,11 +483,39 @@
 
     function renderHistoryData() {
       const content = document.getElementById('history-content');
-      if (preloadedHistory.length > 0) {
+      const now = new Date();
+      const currentMonth = now.getMonth();
+      const currentYear = now.getFullYear();
+
+      // Filter history for current month only
+      const currentMonthRecords = preloadedHistory.filter(row => {
+        const itemDate = new Date(row.date);
+        return !isNaN(itemDate.getTime()) && 
+               itemDate.getMonth() === currentMonth && 
+               itemDate.getFullYear() === currentYear;
+      });
+
+      // Update month label header
+      const monthName = now.toLocaleDateString('en-IN', { month: 'long', year: 'numeric' });
+      document.getElementById('history-month-label').innerText = `${monthName}`;
+
+      if (currentMonthRecords.length > 0) {
+        let totalToDeposit = 0;
+        let totalDeposited = 0;
+        let totalPending = 0;
         let html = '';
-        preloadedHistory.forEach(row => {
+
+        currentMonthRecords.forEach(row => {
           const { fDate, fTime } = formatDateTime(row.date, row.time);
-          const pendingColorClass = parseFloat(row.pending) > 0 ? 'var(--danger)' : 'var(--success)';
+          const toDepVal = parseFloat(row.toDeposit) || 0;
+          const depVal = parseFloat(row.deposited) || 0;
+          const pendVal = parseFloat(row.pending) || 0;
+
+          totalToDeposit += toDepVal;
+          totalDeposited += depVal;
+          totalPending += pendVal;
+
+          const pendingColorClass = pendVal > 0 ? 'var(--danger)' : 'var(--success)';
 
           html += `
           <div class="history-card">
@@ -453,13 +523,25 @@
               <span class="hist-date">${fDate}</span>
               <span class="hist-time">${fTime}</span>
             </div>
-            <div class="hist-row"><span class="hist-label">Deposited</span><span class="hist-val">₹${row.deposited}</span></div>
-            <div class="hist-row"><span class="hist-label">Pending</span><span class="hist-val" style="color:${pendingColorClass}">₹${row.pending}</span></div>
+            <div class="hist-row"><span class="hist-label">To Deposit</span><span class="hist-val">₹${toDepVal.toLocaleString('en-IN')}</span></div>
+            <div class="hist-row"><span class="hist-label">Deposited</span><span class="hist-val">₹${depVal.toLocaleString('en-IN')}</span></div>
+            <div class="hist-row"><span class="hist-label">Pending</span><span class="hist-val" style="color:${pendingColorClass}">₹${pendVal.toLocaleString('en-IN')}</span></div>
           </div>`;
         });
+
+        // Update Summary Pills
+        document.getElementById('summary-to-deposit').innerText = '₹' + totalToDeposit.toLocaleString('en-IN');
+        document.getElementById('summary-deposited').innerText = '₹' + totalDeposited.toLocaleString('en-IN');
+        
+        const pendPill = document.getElementById('summary-pending');
+        pendPill.innerText = '₹' + totalPending.toLocaleString('en-IN');
+        pendPill.style.color = totalPending > 0 ? 'var(--danger)' : 'var(--success)';
+
+        document.getElementById('summary-pills').style.display = 'grid';
         content.innerHTML = html;
       } else {
-        content.innerHTML = '<div style="text-align:center; padding: 30px; color: var(--text-muted); font-weight: 500;">No submissions found.</div>';
+        document.getElementById('summary-pills').style.display = 'none';
+        content.innerHTML = `<div style="text-align:center; padding: 30px; color: var(--text-muted); font-weight: 500;">No submissions found for ${monthName}.</div>`;
       }
     }
 

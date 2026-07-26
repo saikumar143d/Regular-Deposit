@@ -26,7 +26,6 @@
       --success: #34C759;
       --warning-bg: #FFF8E1;
       --warning-text: #8F6000;
-      --warning-border: #FFC107;
     }
     
     body { font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", sans-serif; background-color: var(--bg-color); margin: 0; padding: 0; color: var(--text-main); -webkit-font-smoothing: antialiased; }
@@ -34,7 +33,7 @@
     .top-header { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); color: var(--med-primary); padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; font-size: 13px; font-weight: 600; position: sticky; top: 0; z-index: 100; border-bottom: 0.5px solid var(--border-color); box-shadow: 0 2px 10px rgba(0,0,0,0.02);}
     
     .container { padding: 16px; max-width: 480px; margin: 0 auto; display: flex; flex-direction: column; gap: 16px; }
-    .card { background: var(--card-bg); border-radius: 20px; padding: 24px; box-shadow: 0 4px 24px rgba(0,0,0,0.04); transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+    .card { background: var(--card-bg); border-radius: 20px; padding: 24px; box-shadow: 0 4px 24px rgba(0,0,0,0.04); }
     
     .brand-logo { font-size: 36px; font-weight: 700; letter-spacing: -1.5px; color: var(--med-primary); margin-bottom: 4px; display: flex; align-items: center; justify-content: center; }
 
@@ -44,93 +43,101 @@
     .form-group { margin-bottom: 16px; text-align: left;}
     label { display: block; margin-bottom: 8px; font-size: 13.5px; font-weight: 600; color: var(--text-main); margin-left: 4px; letter-spacing: -0.2px;}
     
-    input, textarea { width: 100%; padding: 14px 16px; border: 1.5px solid transparent; border-radius: 12px; font-size: 16px; box-sizing: border-box; transition: all 0.25s ease; background: var(--input-bg); color: var(--text-main); font-family: inherit; }
+    input, textarea { width: 100%; padding: 14px 16px; border: 1.5px solid transparent; border-radius: 12px; font-size: 16px; box-sizing: border-box; transition: all 0.15s ease; background: var(--input-bg); color: var(--text-main); font-family: inherit; }
     input::placeholder, textarea::placeholder { color: #A1A1A6; }
     input:focus, textarea:focus { outline: none; background: #FFFFFF; border-color: var(--med-primary); box-shadow: 0 4px 12px rgba(205, 26, 34, 0.08); }
     input[readonly] { background: #E5E5EA; color: var(--text-muted); opacity: 0.8; }
     
-    .btn { width: 100%; padding: 16px; border-radius: 14px; border: none; font-size: 16px; font-weight: 600; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 8px; transition: all 0.2s; letter-spacing: -0.3px; }
+    .btn { width: 100%; padding: 16px; border-radius: 14px; border: none; font-size: 16px; font-weight: 600; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 8px; transition: all 0.15s; letter-spacing: -0.3px; }
     .btn-primary { background: var(--med-primary); color: white; margin-top: 10px; box-shadow: 0 4px 12px rgba(205, 26, 34, 0.2); }
     .btn-primary:active { background: var(--med-primary-active); transform: scale(0.97); box-shadow: 0 2px 6px rgba(205, 26, 34, 0.2); }
     
-    /* Compact Buttons inside Store Badge */
+    /* Compact Buttons & Animations */
     .btn-row { display: flex; gap: 10px; margin-top: 12px; }
-    .btn-compact { flex: 1; padding: 10px; border-radius: 10px; font-size: 13.5px; font-weight: 600; cursor: pointer; border: 1.5px solid; background: transparent; transition: all 0.2s; }
+    .btn-compact { flex: 1; display: flex; align-items: center; justify-content: center; gap: 6px; padding: 10px; border-radius: 10px; font-size: 13.5px; font-weight: 600; cursor: pointer; border: 1.5px solid; background: transparent; transition: all 0.15s; }
     .btn-history { border-color: var(--med-primary); color: var(--med-primary); }
     .btn-history:active { background: rgba(205, 26, 34, 0.1); }
     .btn-danger-outline { border-color: var(--danger); color: var(--danger); }
     .btn-danger-outline:active { background: rgba(255, 59, 48, 0.1); }
     
+    .icon-animated { width: 16px; height: 16px; flex-shrink: 0; }
+    
+    /* Animation: Reverse spin for history (going back in time) */
+    @keyframes reverse-spin { 100% { transform: rotate(-360deg); } }
+    .anim-history { animation: reverse-spin 6s linear infinite; }
+    
+    /* Animation: Slide right for logout */
+    @keyframes slide-bounce { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(3px); } }
+    .anim-logout { animation: slide-bounce 1.5s ease-in-out infinite; }
+    
     .error-msg { color: var(--danger); font-size: 13.5px; margin-top: 8px; display: none; text-align: center; font-weight: 500; background: rgba(255, 59, 48, 0.1); padding: 10px; border-radius: 10px;}
     
-    /* HOLIDAY ALERT BANNER */
-    .holiday-alert { background-color: var(--warning-bg); color: var(--warning-text); padding: 12px 14px; border-radius: 12px; margin-bottom: 20px; font-size: 13px; line-height: 1.4; display: none; border: 1px solid rgba(255, 193, 7, 0.4); border-left: 4px solid var(--warning-border); text-align: left; }
+    /* ANIMATED RAINBOW HOLIDAY ALERT BANNER */
+    .holiday-alert {
+      position: relative;
+      background-color: var(--warning-bg);
+      color: var(--warning-text);
+      padding: 14px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+      font-size: 13px;
+      line-height: 1.4;
+      display: none;
+      text-align: left;
+      z-index: 1;
+      background-clip: padding-box;
+      border: 3.5px solid transparent; 
+    }
+    
+    .holiday-alert::before {
+      content: "";
+      position: absolute;
+      top: -3.5px; left: -3.5px; right: -3.5px; bottom: -3.5px;
+      border-radius: 14px;
+      background: linear-gradient(124deg, #ff2400, #e81d1d, #e8b71d, #e3e81d, #1de840, #1ddde8, #2b1de8, #dd00f3, #dd00f3);
+      background-size: 400% 400%;
+      z-index: -1;
+      animation: rainbow-border 3s ease infinite;
+    }
+
+    @keyframes rainbow-border {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
     .holiday-alert strong { display: block; margin-bottom: 4px; font-size: 14px; color: #724D00;}
 
     /* MODALS */
-    .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(5px); display: flex; justify-content: center; align-items: flex-end; z-index: 1000; opacity: 0; visibility: hidden; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+    .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(5px); display: flex; justify-content: center; align-items: flex-end; z-index: 1000; opacity: 0; visibility: hidden; transition: opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1); }
     .modal-overlay.active { opacity: 1; visibility: visible; }
-    .modal-content { background: var(--bg-color); padding: 20px; border-radius: 24px 24px 0 0; width: 100%; max-width: 480px; max-height: 88vh; overflow-y: auto; box-shadow: 0 -10px 25px rgba(0,0,0,0.1); transform: translateY(100%); transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1); box-sizing: border-box; }
+    .modal-content { background: var(--bg-color); padding: 20px; border-radius: 24px 24px 0 0; width: 100%; max-width: 480px; max-height: 88vh; overflow-y: auto; box-shadow: 0 -10px 25px rgba(0,0,0,0.1); transform: translateY(100%); transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1); box-sizing: border-box; }
     .modal-overlay.active .modal-content { transform: translateY(0); }
     .modal-pull { width: 40px; height: 5px; background: #C7C7CC; border-radius: 10px; margin: 0 auto 16px auto; }
     
-    /* STICKY FOOTER FOR MODAL */
-    .sticky-footer {
-      position: -webkit-sticky;
-      position: sticky;
-      bottom: -20px;
-      background: var(--bg-color);
-      padding: 16px 20px 20px 20px;
-      margin: 16px -20px -20px -20px;
-      border-top: 0.5px solid var(--border-color);
-      z-index: 10;
-    }
+    /* STICKY FOOTER */
+    .sticky-footer { position: -webkit-sticky; position: sticky; bottom: -20px; background: var(--bg-color); padding: 16px 20px 20px 20px; margin: 16px -20px -20px -20px; border-top: 0.5px solid var(--border-color); z-index: 10; }
 
     /* SUMMARY PILLS CONTAINER */
-    .summary-pills-container {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 8px;
-      margin-bottom: 20px;
-    }
-    .summary-pill {
-      background: white;
-      border-radius: 14px;
-      padding: 10px 6px;
-      text-align: center;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.03);
-      border: 1px solid var(--border-color);
-    }
-    .summary-pill-title {
-      font-size: 11px;
-      font-weight: 600;
-      color: var(--text-muted);
-      text-transform: uppercase;
-      letter-spacing: -0.2px;
-      margin-bottom: 4px;
-    }
-    .summary-pill-value {
-      font-size: 14px;
-      font-weight: 700;
-      color: var(--text-main);
-    }
+    .summary-pills-container { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 20px; }
+    .summary-pill { background: white; border-radius: 14px; padding: 10px 4px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.03); border: 1px solid var(--border-color); }
+    .summary-pill-title { font-size: 10px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: -0.2px; margin-bottom: 4px; }
+    .summary-pill-value { font-size: 13.5px; font-weight: 700; color: var(--text-main); }
 
     .history-card { background: var(--card-bg); padding: 16px; border-radius: 16px; margin-bottom: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.03); }
     .hist-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 0.5px solid var(--border-color); padding-bottom: 12px; margin-bottom: 12px; }
     .hist-date { font-weight: 600; font-size: 14px; color: var(--text-main); }
     .hist-time { font-size: 12px; color: var(--text-muted); background: var(--input-bg); padding: 4px 8px; border-radius: 20px; font-weight: 500;}
-    .hist-row { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 14px; }
+    .hist-row { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 13.5px; }
     .hist-label { color: var(--text-muted); font-weight: 500;}
-    .hist-val { font-weight: 600; color: var(--text-main); }
+    .hist-val { font-weight: 600; color: var(--text-main); text-align: right; max-width: 50%; word-break: break-word;}
     
-    /* Receipt Specific Styles */
     .success-icon { width: 60px; height: 60px; background: var(--success); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 28px; margin: 0 auto 16px auto; box-shadow: 0 4px 12px rgba(52, 199, 89, 0.3); }
     .receipt-highlight { font-size: 20px; font-weight: 700; color: var(--text-main); margin-bottom: 24px; line-height: 1.3; letter-spacing: -0.4px;}
     
     #form-section { display: none; }
     .spinner { border: 2.5px solid rgba(255,255,255,0.3); border-top: 2.5px solid white; border-radius: 50%; width: 20px; height: 20px; animation: spin 0.8s linear infinite; display: none; }
     .spinner-dark { border-color: rgba(205, 26, 34, 0.2); border-top-color: var(--med-primary); width: 24px; height: 24px; border-width: 3px; display: inline-block; }
-    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
   </style>
 </head>
 <body>
@@ -167,14 +174,26 @@
     <!-- FORM SECTION -->
     <div id="form-section">
       
-      <!-- Compact Store Info Badge + Action Buttons -->
       <div class="card" style="background: linear-gradient(135deg, rgba(205, 26, 34, 0.03) 0%, rgba(205, 26, 34, 0.08) 100%); border: 1px solid rgba(205, 26, 34, 0.15); text-align: center; padding: 16px; border-radius: 16px;">
         <h3 id="store-name-display" style="margin: 0; color: var(--med-primary); font-size: 17px; letter-spacing: -0.3px; font-weight: 700;">Store Name</h3>
         <p style="margin: 2px 0 0 0; font-size: 13px; color: var(--med-primary); opacity: 0.85;">Store ID: <span id="store-id-display" style="font-weight: 600;"></span></p>
         
         <div class="btn-row">
-          <button class="btn-compact btn-history" onclick="openHistoryModal()">View History</button>
-          <button class="btn-compact btn-danger-outline" onclick="logout()">Sign Out</button>
+          <button class="btn-compact btn-history" onclick="openHistoryModal()">
+            <svg class="icon-animated anim-history" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"></circle>
+              <polyline points="12 6 12 12 16 14"></polyline>
+            </svg>
+            View History
+          </button>
+          <button class="btn-compact btn-danger-outline" onclick="logout()">
+            <svg class="icon-animated anim-logout" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+              <polyline points="16 17 21 12 16 7"></polyline>
+              <line x1="21" y1="12" x2="9" y2="12"></line>
+            </svg>
+            Sign Out
+          </button>
         </div>
       </div>
 
@@ -183,7 +202,7 @@
         <!-- DYNAMIC HOLIDAY ALERT BANNER -->
         <div class="holiday-alert" id="holiday-alert">
           <strong id="alert-title">⚠️ Upcoming Non-Banking Day</strong>
-          <span id="alert-text">Please deposit the tentative amount...</span>
+          <span id="alert-text">Please deposit...</span>
         </div>
 
         <div class="form-group">
@@ -191,7 +210,7 @@
           <input type="number" id="cash" placeholder="₹ 0.00" oninput="calculatePending(); saveDraft();">
         </div>
         <div class="form-group">
-          <label>Deposited Amount</label>
+          <label>Payment done to Ritecure Account</label>
           <input type="number" id="deposit" placeholder="₹ 0.00" oninput="calculatePending(); saveDraft();">
         </div>
         <div class="form-group">
@@ -223,14 +242,13 @@
           </div>
         </div>
         
-        <!-- Monthly Summary Pills -->
         <div class="summary-pills-container" id="summary-pills" style="display: none;">
           <div class="summary-pill">
             <div class="summary-pill-title">To Deposit</div>
             <div class="summary-pill-value" id="summary-to-deposit">₹0</div>
           </div>
           <div class="summary-pill">
-            <div class="summary-pill-title">Deposited</div>
+            <div class="summary-pill-title">Ritecure Pmt</div>
             <div class="summary-pill-value" style="color: var(--success);" id="summary-deposited">₹0</div>
           </div>
           <div class="summary-pill">
@@ -243,7 +261,6 @@
            <!-- Loaded dynamically -->
         </div>
         
-        <!-- Sticky Footer containing the Close Button -->
         <div class="sticky-footer">
           <button class="btn btn-primary" style="background: #E5E5EA; color: var(--text-main); margin: 0; box-shadow: none;" onclick="closeHistoryModal(event, true)">Close</button>
         </div>
@@ -268,7 +285,7 @@
             <span class="hist-val" id="receipt-store">--</span>
           </div>
           <div class="hist-row">
-            <span class="hist-label">Deposited</span>
+            <span class="hist-label">Payment to Ritecure</span>
             <span class="hist-val" id="receipt-deposit">--</span>
           </div>
           <div class="hist-row" style="margin-bottom: 0;">
@@ -292,11 +309,10 @@
     let currentStore = {};
     let preloadedHistory = []; 
 
-    // --- Holiday Checking Logic ---
     function isHoliday(dateObj) {
       const day = dateObj.getDay();
-      if (day === 0) return true; // Sunday
-      if (day === 6) { // Saturday
+      if (day === 0) return true; 
+      if (day === 6) { 
         const date = dateObj.getDate();
         const weekOfMonth = Math.ceil(date / 7);
         if (weekOfMonth === 2 || weekOfMonth === 4) return true; 
@@ -314,19 +330,25 @@
       const textEl = document.getElementById('alert-text');
       
       if (isHoliday(today)) {
-        titleEl.innerText = "⚠️ Non-Banking Day";
-        textEl.innerText = "It's a non-banking/holiday. Your payment approval might be slightly delayed.";
+        titleEl.innerText = "⚠️ It's a Non-Banking Day";
+        textEl.innerText = "Your payment approval might be slightly delayed.";
         alertEl.style.display = 'block';
       } else if (isHoliday(tomorrow) || isHoliday(dayAfter)) {
+        
+        let upcomingDates = [];
+        if (isHoliday(tomorrow)) upcomingDates.push(tomorrow.toLocaleDateString('en-IN', { day: 'numeric', month: 'short' }));
+        if (isHoliday(dayAfter)) upcomingDates.push(dayAfter.toLocaleDateString('en-IN', { day: 'numeric', month: 'short' }));
+        
+        const dateString = upcomingDates.join(" and ");
+        
         titleEl.innerText = "⚠️ Upcoming Non-Banking Day";
-        textEl.innerText = "Please deposit the tentative amount for these days on the prior working day to maintain 100% adherence to Provisional Indents.";
+        textEl.innerText = `Please deposit the tentative amount for ${dateString} on the prior working day to maintain 100% adherence to Provisional Indents.`;
         alertEl.style.display = 'block';
       } else {
         alertEl.style.display = 'none';
       }
     }
 
-    // --- Clock & Date Update ---
     setInterval(() => {
       const now = new Date();
       document.getElementById('live-date').innerText = now.toLocaleDateString('en-IN', { weekday: 'long', day: '2-digit', month: 'short', year: 'numeric' });
@@ -357,7 +379,6 @@
       return { fDate, fTime };
     }
 
-    // --- Suggestion Feature ---
     document.getElementById('login-id').addEventListener('input', async function(e) {
       const val = e.target.value.trim();
       if (val.length === 7) {
@@ -388,25 +409,18 @@
         document.getElementById('store-name-display').innerText = res.storeName;
         document.getElementById('store-id-display').innerText = storeId;
         
-        document.getElementById('login-section').style.opacity = '0';
-        document.getElementById('login-section').style.transform = 'scale(0.95)';
-        
         checkHolidayAlert();
         
-        setTimeout(() => {
-          document.getElementById('login-section').style.display = 'none';
-          document.getElementById('login-section').style.transform = 'scale(1)';
-          const formSec = document.getElementById('form-section');
-          formSec.style.display = 'block';
-          formSec.style.opacity = '0';
-          formSec.style.transform = 'translateY(10px)';
-          requestAnimationFrame(() => {
-            formSec.style.transition = 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)';
-            formSec.style.opacity = '1';
-            formSec.style.transform = 'translateY(0)';
-          });
-          loadDraft();
-        }, 300);
+        document.getElementById('login-section').style.display = 'none';
+        const formSec = document.getElementById('form-section');
+        formSec.style.display = 'block';
+        
+        requestAnimationFrame(() => {
+          formSec.style.opacity = '1';
+          formSec.style.transform = 'translateY(0)';
+        });
+        
+        loadDraft();
       } else {
         showError('login-error', res.message);
       }
@@ -502,7 +516,6 @@
       const currentMonth = now.getMonth();
       const currentYear = now.getFullYear();
 
-      // Filter history for current month only
       const currentMonthRecords = preloadedHistory.filter(row => {
         const itemDate = new Date(row.date);
         return !isNaN(itemDate.getTime()) && 
@@ -510,7 +523,6 @@
                itemDate.getFullYear() === currentYear;
       });
 
-      // Update month label header
       const monthName = now.toLocaleDateString('en-IN', { month: 'long', year: 'numeric' });
       document.getElementById('history-month-label').innerText = `${monthName}`;
 
@@ -539,12 +551,11 @@
               <span class="hist-time">${fTime}</span>
             </div>
             <div class="hist-row"><span class="hist-label">To Deposit</span><span class="hist-val">₹${toDepVal.toLocaleString('en-IN')}</span></div>
-            <div class="hist-row"><span class="hist-label">Deposited</span><span class="hist-val">₹${depVal.toLocaleString('en-IN')}</span></div>
+            <div class="hist-row"><span class="hist-label">Payment to Ritecure</span><span class="hist-val">₹${depVal.toLocaleString('en-IN')}</span></div>
             <div class="hist-row"><span class="hist-label">Pending</span><span class="hist-val" style="color:${pendingColorClass}">₹${pendVal.toLocaleString('en-IN')}</span></div>
           </div>`;
         });
 
-        // Update Summary Pills
         document.getElementById('summary-to-deposit').innerText = '₹' + totalToDeposit.toLocaleString('en-IN');
         document.getElementById('summary-deposited').innerText = '₹' + totalDeposited.toLocaleString('en-IN');
         
@@ -571,7 +582,7 @@
       document.getElementById('form-section').style.display = 'none';
       const loginSec = document.getElementById('login-section');
       loginSec.style.display = 'block';
-      requestAnimationFrame(() => { loginSec.style.opacity = '1'; });
+      loginSec.style.opacity = '1';
       document.getElementById('login-id').value = ''; document.getElementById('login-mobile').value = '';
     }
 
@@ -579,6 +590,7 @@
       const el = document.getElementById(id); el.innerText = msg; el.style.display = 'block';
       setTimeout(() => el.style.display = 'none', 4000);
     }
+    
     function setLoading(btnId, isLoading) {
       document.getElementById(`${btnId}-btn`).disabled = isLoading;
       document.getElementById(`${btnId}-spinner`).style.display = isLoading ? 'inline-block' : 'none';

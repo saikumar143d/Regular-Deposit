@@ -7,7 +7,6 @@
   
   <link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiByeD0iMTYiIGZpbGw9IiNDRDFBMjIiLz48cmVjdCB4PSIxMiIgeT0iMTIiIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgcng9IjgiIGZpbGw9IiNGRkYiLz48cGF0aCBkPSJNMjggMjBoOHY4aDh2OGgtOHY4aC04di04aC04di04aDh6IiBmaWxsPSIjNDRCOTQ5Ii8+PC9zdmc+" type="image/svg+xml">
   
-  <!-- Fonts & Material Symbols -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
   
@@ -48,11 +47,17 @@
     .form-group { margin-bottom: 16px; text-align: left;}
     label { display: block; margin-bottom: 8px; font-size: 13.5px; font-weight: 600; color: var(--text-main); margin-left: 4px; letter-spacing: -0.2px;}
     
-    input, textarea, select { width: 100%; padding: 14px 16px; border: 1.5px solid transparent; border-radius: 12px; font-size: 16px; box-sizing: border-box; transition: all 0.15s ease; background: var(--input-bg); color: var(--text-main); font-family: inherit; }
+    input, textarea { width: 100%; padding: 14px 16px; border: 1.5px solid transparent; border-radius: 12px; font-size: 16px; box-sizing: border-box; transition: all 0.15s ease; background: var(--input-bg); color: var(--text-main); font-family: inherit; }
     input::placeholder, textarea::placeholder { color: #A1A1A6; }
-    input:focus, textarea:focus, select:focus { outline: none; background: #FFFFFF; border-color: var(--med-primary); box-shadow: 0 4px 12px rgba(205, 26, 34, 0.08); }
+    input:focus, textarea:focus { outline: none; background: #FFFFFF; border-color: var(--med-primary); box-shadow: 0 4px 12px rgba(205, 26, 34, 0.08); }
     input[readonly] { background: #E5E5EA; color: var(--text-muted); opacity: 0.8; }
-    select { appearance: none; background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%238E8E93%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E"); background-repeat: no-repeat; background-position: right 16px top 50%; background-size: 12px auto; }
+
+    /* CUSTOM DROPDOWN UI FOR OPS STORE SELECTION */
+    .custom-dropdown { position: relative; }
+    .dropdown-list { position: absolute; top: 100%; left: 0; right: 0; background: white; border: 1px solid var(--border-color); border-radius: 12px; max-height: 220px; overflow-y: auto; box-shadow: 0 10px 25px rgba(0,0,0,0.1); z-index: 50; display: none; text-align: left; margin-top: 4px;}
+    .dropdown-item { padding: 12px 16px; border-bottom: 1px solid var(--border-color); font-size: 15px; color: var(--text-main); cursor: pointer; transition: background 0.1s;}
+    .dropdown-item:last-child { border-bottom: none; }
+    .dropdown-item:active { background: var(--input-bg); }
 
     .btn { width: 100%; padding: 16px; border-radius: 14px; border: none; font-size: 16px; font-weight: 600; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 8px; transition: all 0.15s; letter-spacing: -0.3px; }
     .btn-primary { background: var(--med-primary); color: white; margin-top: 10px; box-shadow: 0 4px 12px rgba(205, 26, 34, 0.2); }
@@ -86,9 +91,9 @@
     .sticky-footer { position: -webkit-sticky; position: sticky; bottom: -20px; background: var(--bg-color); padding: 16px 20px 20px 20px; margin: 16px -20px -20px -20px; border-top: 1px solid var(--border-color); z-index: 10; }
 
     .summary-pills-container { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 0; }
-    .summary-pill { background: white; border-radius: 14px; padding: 10px 4px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.03); border: 1px solid var(--border-color); }
-    .summary-pill-title { font-size: 10px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: -0.2px; margin-bottom: 4px; }
-    .summary-pill-value { font-size: 13.5px; font-weight: 700; color: var(--text-main); }
+    .summary-pill { background: white; border-radius: 14px; padding: 12px 6px; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.04); border: 1px solid var(--border-color); }
+    .summary-pill-title { font-size: 10px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: -0.2px; margin-bottom: 6px; }
+    .summary-pill-value { font-size: 14px; font-weight: 700; color: var(--text-main); }
 
     .history-card { background: var(--card-bg); padding: 16px; border-radius: 16px; margin-bottom: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.03); }
     .hist-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 0.5px solid var(--border-color); padding-bottom: 12px; margin-bottom: 12px; }
@@ -121,7 +126,6 @@
       <div class="brand-logo">MedPlus</div>
       <h2>Franchise Deposit Tracker</h2>
       
-      <!-- Login Type Toggle -->
       <div class="login-toggle">
         <div class="toggle-btn active" id="tab-store" onclick="switchLoginMode('store')">Store User</div>
         <div class="toggle-btn" id="tab-ops" onclick="switchLoginMode('ops')">Ops Team</div>
@@ -147,20 +151,23 @@
       </button>
     </div>
 
-    <!-- OPS TEAM: STORE SELECTION SECTION -->
+    <!-- OPS TEAM: CUSTOM DROPDOWN STORE SELECTION -->
     <div class="card" id="ops-selection-section" style="text-align: center;">
       <div class="brand-logo" style="font-size: 28px; margin-bottom: 10px;">MedPlus</div>
       <h3 style="margin:0 0 4px 0;">Welcome, <span id="ops-name-display" style="color: var(--med-primary);"></span></h3>
       <p class="sub" style="margin-bottom: 24px;" id="ops-role-display"></p>
       
-      <div class="form-group">
-        <label>Select a store to manage:</label>
-        <select id="ops-store-select">
-          <!-- Options populated dynamically -->
-        </select>
+      <div class="form-group custom-dropdown">
+        <label>Search and select a store:</label>
+        <input type="text" id="ops-store-input" placeholder="Enter Store ID or Name..." autocomplete="off">
+        <div class="dropdown-list" id="ops-store-list">
+          <!-- Populated dynamically via JS -->
+        </div>
       </div>
       
-      <button class="btn btn-primary" onclick="proceedToOpsStore()">Continue to Store</button>
+      <div class="error-msg" id="ops-select-error" style="margin-bottom: 16px;"></div>
+      
+      <button class="btn btn-primary" onclick="proceedToOpsStore()">Continue to Dashboard</button>
       <button class="btn btn-compact btn-gray-outline" style="width: 100%; border:none;" onclick="logout()">Cancel</button>
     </div>
 
@@ -172,11 +179,11 @@
         <p style="margin: 2px 0 0 0; font-size: 13px; color: var(--med-primary); opacity: 0.85;">Store ID: <span id="store-id-display" style="font-weight: 600;"></span></p>
         
         <div class="btn-row">
-          <button class="btn-compact btn-history" onclick="openHistoryModal()">
+          <!-- Ops user gets a "Change Store" button, Store user gets "History" directly on screen -->
+          <button class="btn-compact btn-history" id="btn-form-history" onclick="openHistoryModal()">
             <span class="material-symbols-outlined">history</span> History
           </button>
           
-          <!-- Ops user gets a "Change Store" button, Store user gets "Sign Out" -->
           <button class="btn-compact btn-gray-outline" id="btn-change-store" onclick="changeOpsStore()" style="display:none; margin-top:0;">
             <span class="material-symbols-outlined">swap_horiz</span> Change
           </button>
@@ -187,9 +194,17 @@
         </div>
       </div>
 
-      <div class="card">
+      <!-- DEDICATED OPS SUMMARY DASHBOARD (Hidden for Store Users) -->
+      <div class="card" id="ops-summary-card" style="display:none;">
+        <h3 style="margin-top:0; margin-bottom: 16px; font-size: 18px;">Monthly Overview</h3>
+        <div id="ops-summary-content">
+          <div style="text-align:center; padding: 20px;"><div class="spinner spinner-dark"></div></div>
+        </div>
+      </div>
+
+      <!-- DEPOSIT INPUT FORM (Hidden for Ops Users) -->
+      <div class="card" id="input-card">
         
-        <!-- STABLE BACKGROUND HOLIDAY ALERT BANNER -->
         <div class="holiday-alert-wrapper" id="holiday-alert">
           <div class="holiday-alert-content">
             <strong id="alert-title">⚠️ Upcoming Non-Banking Day</strong>
@@ -310,9 +325,9 @@
     // ==========================================
     const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx-qdcCOELs1hZOcuyGBtMX8s6-k2gKT9UU-5ocS_bh5cOamt3kN2iyyM5US0a_ffy9YA/exec';
     
-    let loginMode = 'store'; // 'store' or 'ops'
+    let loginMode = 'store'; 
     let currentStore = {};
-    let opsAllowedStores = []; // Only populated if Ops
+    let opsAllowedStores = []; 
     let preloadedHistory = []; 
 
     // --- Login Toggle Logic ---
@@ -334,6 +349,49 @@
       }
     }
 
+    // --- Custom Dropdown Logic ---
+    function renderOpsStoreList(filter = '') {
+      const listEl = document.getElementById('ops-store-list');
+      listEl.innerHTML = '';
+      const filtered = opsAllowedStores.filter(s =>
+        s.id.toLowerCase().includes(filter.toLowerCase()) ||
+        s.name.toLowerCase().includes(filter.toLowerCase())
+      );
+
+      if (filtered.length === 0) {
+        listEl.innerHTML = '<div class="dropdown-item" style="color: var(--text-muted); text-align: center;">No stores found</div>';
+      } else {
+        filtered.forEach(s => {
+          const div = document.createElement('div');
+          div.className = 'dropdown-item';
+          div.innerText = `${s.id} - ${s.name}`;
+          div.onclick = () => {
+            document.getElementById('ops-store-input').value = s.id;
+            listEl.style.display = 'none';
+          };
+          listEl.appendChild(div);
+        });
+      }
+    }
+
+    document.getElementById('ops-store-input').addEventListener('focus', () => {
+      document.getElementById('ops-store-list').style.display = 'block';
+      renderOpsStoreList(document.getElementById('ops-store-input').value);
+    });
+    
+    document.getElementById('ops-store-input').addEventListener('input', (e) => {
+      document.getElementById('ops-store-list').style.display = 'block';
+      renderOpsStoreList(e.target.value);
+    });
+    
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('.custom-dropdown')) {
+        const listEl = document.getElementById('ops-store-list');
+        if(listEl) listEl.style.display = 'none';
+      }
+    });
+
+    // --- Date & Holiday Logic ---
     function isHoliday(dateObj) {
       const day = dateObj.getDay();
       if (day === 0) return true; 
@@ -379,8 +437,7 @@
       document.getElementById('live-time').innerText = now.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
     }, 1000);
 
-    checkHolidayAlert();
-
+    // --- Network / API ---
     async function apiCall(payload) {
       try {
         const response = await fetch(APPS_SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) });
@@ -404,7 +461,7 @@
     }
 
     document.getElementById('login-id').addEventListener('input', async function(e) {
-      if (loginMode === 'ops') return; // Don't suggest stores for Ops Employee ID
+      if (loginMode === 'ops') return; 
       const val = e.target.value.trim();
       if (val.length === 7) {
         const res = await apiCall({ action: 'searchStores', query: val });
@@ -438,20 +495,15 @@
         document.getElementById('login-section').style.display = 'none';
         
         if (loginMode === 'store') {
-          // Standard Store Flow
           currentStore = { id: id, name: res.storeName, mapping: res.mapping };
           setupFormScreen();
         } else {
-          // Ops Flow
           opsAllowedStores = res.allowedStores;
           document.getElementById('ops-name-display').innerText = res.opsUser.name;
           document.getElementById('ops-role-display').innerText = res.opsUser.designation;
           
-          const select = document.getElementById('ops-store-select');
-          select.innerHTML = '<option value="">-- Choose a Store --</option>';
-          opsAllowedStores.forEach(s => {
-            select.innerHTML += `<option value="${s.id}">${s.id} - ${s.name}</option>`;
-          });
+          document.getElementById('ops-store-input').value = '';
+          document.getElementById('ops-select-error').style.display = 'none';
           
           document.getElementById('ops-selection-section').style.display = 'block';
         }
@@ -461,23 +513,22 @@
     }
 
     function proceedToOpsStore() {
-      const select = document.getElementById('ops-store-select');
-      const storeId = select.value;
-      if (!storeId) {
-        alert("Please select a store from the list.");
+      const inputVal = document.getElementById('ops-store-input').value.trim();
+      const selected = opsAllowedStores.find(s => s.id.toLowerCase() === inputVal.toLowerCase());
+      
+      if (!selected) {
+        showError('ops-select-error', 'Please select a valid store from the list.');
         return;
       }
       
-      const selected = opsAllowedStores.find(s => s.id === storeId);
       currentStore = { id: selected.id, name: selected.name, mapping: selected.mapping };
-      
       document.getElementById('ops-selection-section').style.display = 'none';
       setupFormScreen();
     }
     
     function changeOpsStore() {
       document.getElementById('form-section').style.display = 'none';
-      document.getElementById('ops-store-select').value = ""; // Reset dropdown
+      document.getElementById('ops-store-input').value = ""; 
       document.getElementById('ops-selection-section').style.display = 'block';
     }
 
@@ -485,21 +536,83 @@
       document.getElementById('store-name-display').innerText = currentStore.name;
       document.getElementById('store-id-display').innerText = currentStore.id;
       
-      // Adjust Action Buttons based on Role
       if (loginMode === 'ops') {
+        // OPS VIEW: Hide inputs, show summary dashboard, change buttons
         document.getElementById('btn-change-store').style.display = 'flex';
         document.getElementById('btn-form-logout').style.display = 'none';
+        document.getElementById('btn-form-history').style.display = 'none'; // Replaced by summary card button
+        
+        document.getElementById('input-card').style.display = 'none';
+        document.getElementById('ops-summary-card').style.display = 'block';
+        
+        document.getElementById('form-section').style.display = 'block';
+        fetchAndRenderOpsSummary();
       } else {
+        // STORE VIEW: Show inputs, hide summary dashboard, show standard buttons
         document.getElementById('btn-change-store').style.display = 'none';
         document.getElementById('btn-form-logout').style.display = 'flex';
+        document.getElementById('btn-form-history').style.display = 'flex';
+        
+        document.getElementById('input-card').style.display = 'block';
+        document.getElementById('ops-summary-card').style.display = 'none';
+        
+        checkHolidayAlert();
+        document.getElementById('form-section').style.display = 'block';
+        loadDraft();
       }
-
-      checkHolidayAlert();
-      
-      document.getElementById('form-section').style.display = 'block';
-      loadDraft();
     }
 
+    // --- Ops Dashboard Specific Logic ---
+    async function fetchAndRenderOpsSummary() {
+      document.getElementById('ops-summary-content').innerHTML = `<div style="text-align:center; padding: 20px;"><div class="spinner spinner-dark"></div></div>`;
+      const res = await apiCall({ action: 'history', storeId: currentStore.id });
+      
+      if (res.success) {
+        preloadedHistory = res.history;
+        
+        const now = new Date();
+        const currentMonth = now.getMonth();
+        const currentYear = now.getFullYear();
+
+        const currentMonthRecords = preloadedHistory.filter(row => {
+          const itemDate = new Date(row.date);
+          return !isNaN(itemDate.getTime()) && itemDate.getMonth() === currentMonth && itemDate.getFullYear() === currentYear;
+        });
+
+        let totalToDeposit = 0, totalDeposited = 0, totalPending = 0;
+        currentMonthRecords.forEach(row => {
+          totalToDeposit += parseFloat(row.toDeposit) || 0;
+          totalDeposited += parseFloat(row.deposited) || 0;
+          totalPending += parseFloat(row.pending) || 0;
+        });
+
+        const pendingColorClass = totalPending > 0 ? 'var(--danger)' : 'var(--success)';
+
+        document.getElementById('ops-summary-content').innerHTML = `
+          <div class="summary-pills-container">
+            <div class="summary-pill">
+              <div class="summary-pill-title">To Deposit</div>
+              <div class="summary-pill-value">₹${totalToDeposit.toLocaleString('en-IN')}</div>
+            </div>
+            <div class="summary-pill">
+              <div class="summary-pill-title">Ritecure Pmt</div>
+              <div class="summary-pill-value" style="color: var(--success);">₹${totalDeposited.toLocaleString('en-IN')}</div>
+            </div>
+            <div class="summary-pill">
+              <div class="summary-pill-title">Shortage</div>
+              <div class="summary-pill-value" style="color: ${pendingColorClass};">₹${totalPending.toLocaleString('en-IN')}</div>
+            </div>
+          </div>
+          <button class="btn btn-outline" style="margin-top: 16px;" onclick="openHistoryModal()">
+            <span class="material-symbols-outlined" style="margin-right: 6px;">list_alt</span> View Detailed History
+          </button>
+        `;
+      } else {
+        document.getElementById('ops-summary-content').innerHTML = `<div class="error-msg" style="display:block;">Failed to load summary</div>`;
+      }
+    }
+
+    // --- Store Input Logic ---
     function calculatePending() {
       const c = parseFloat(document.getElementById('cash').value) || 0;
       const d = parseFloat(document.getElementById('deposit').value) || 0;
@@ -526,7 +639,6 @@
         document.getElementById('reason').value = data.reason || '';
         calculatePending();
       } else {
-        // Clear if no draft
         document.getElementById('net-sale').value = '';
         document.getElementById('cash').value = '';
         document.getElementById('deposit').value = '';
@@ -562,13 +674,8 @@
         receiptPending.innerText = '₹' + pending;
         receiptPending.style.color = parseFloat(pending) > 0 ? 'var(--danger)' : 'var(--success)';
         
-        // Ops users get a "Close" button. Store users get a "Close & Log Out" button.
         const receiptBtn = document.getElementById('btn-receipt-close');
-        if (loginMode === 'ops') {
-          receiptBtn.innerText = "Close";
-        } else {
-          receiptBtn.innerText = "Close & Log Out";
-        }
+        receiptBtn.innerText = "Close & Log Out";
 
         localStorage.removeItem(`draft_${currentStore.id}`);
         document.getElementById('net-sale').value = '';
@@ -586,23 +693,26 @@
     
     function closeReceiptAndLogout() {
       document.getElementById('receipt-modal').classList.remove('active');
-      if (loginMode === 'store') {
-        logout();
-      }
-      // If ops, they just stay on the form screen (or they can click Change Store)
+      logout();
     }
 
+    // --- History Modal Logic ---
     function openHistoryModal() {
       const modal = document.getElementById('history-modal');
       modal.classList.add('active'); 
       
-      document.getElementById('summary-pills').style.display = 'none';
-      document.getElementById('history-content').innerHTML = `
-        <div style="text-align:center; padding: 40px 0;">
-          <div class="spinner spinner-dark"></div>
-          <p style="color: var(--text-muted); font-size: 14px; margin-top: 12px; font-weight: 500;">Fetching monthly records...</p>
-        </div>`;
-      fetchLatestHistory();
+      // If we already fetched history for the Ops Summary, just render it immediately.
+      if (loginMode === 'ops' && preloadedHistory.length > 0) {
+        renderHistoryData();
+      } else {
+        document.getElementById('summary-pills').style.display = 'none';
+        document.getElementById('history-content').innerHTML = `
+          <div style="text-align:center; padding: 40px 0;">
+            <div class="spinner spinner-dark"></div>
+            <p style="color: var(--text-muted); font-size: 14px; margin-top: 12px; font-weight: 500;">Fetching monthly records...</p>
+          </div>`;
+        fetchLatestHistory();
+      }
     }
 
     async function fetchLatestHistory() {
@@ -703,6 +813,7 @@
     function setLoading(btnId, isLoading) {
       document.getElementById(`${btnId}-btn`).disabled = isLoading;
       document.getElementById(`${btnId}-spinner`).style.display = isLoading ? 'inline-block' : 'none';
+      
       const loginContent = document.getElementById('login-btn-content');
       const submitText = document.getElementById('submit-text');
       

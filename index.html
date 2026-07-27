@@ -114,9 +114,9 @@
     .sticky-footer { position: -webkit-sticky; position: sticky; bottom: -20px; background: var(--bg-color); padding: 16px 20px 20px 20px; margin: 16px -20px -20px -20px; border-top: 1px solid var(--border-color); z-index: 10; }
 
     .summary-pills-container { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 0; }
-    .summary-pill { background: white; border-radius: 14px; padding: 12px 4px; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.04); border: 1px solid var(--border-color); }
-    .summary-pill-title { font-size: 10px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: -0.2px; margin-bottom: 6px; }
-    .summary-pill-value { font-size: 14px; font-weight: 700; color: var(--text-main); }
+    .summary-pill { background: white; border-radius: 14px; padding: 10px 4px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.03); border: 1px solid var(--border-color); }
+    .summary-pill-title { font-size: 10px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: -0.2px; margin-bottom: 4px; }
+    .summary-pill-value { font-size: 13.5px; font-weight: 700; color: var(--text-main); }
 
     .history-card { background: var(--card-bg); padding: 16px; border-radius: 16px; margin-bottom: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.03); }
     .hist-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 0.5px solid var(--border-color); padding-bottom: 12px; margin-bottom: 12px; }
@@ -240,7 +240,8 @@
         </div>
 
         <div class="form-group">
-          <label>Net Sale (POS)</label>
+          <!-- DYNAMIC NET SALE LABEL -->
+          <label id="net-sale-label">Net Sale (as per the POS)</label>
           <input type="text" inputmode="numeric" id="net-sale" placeholder="₹ 0" oninput="formatCurrencyInput(this); saveDraft();">
         </div>
 
@@ -366,7 +367,6 @@
         opsUserObj = data.opsUser || null;
         opsAllowedStores = data.opsAllowed || [];
         
-        // Match the toggle visually
         if (loginMode === 'ops') {
           document.getElementById('mode-toggle').checked = true;
           handleToggleChange(document.getElementById('mode-toggle'), true);
@@ -385,6 +385,14 @@
             document.getElementById('ops-selection-section').style.display = 'block';
           }
         }
+      }
+    });
+
+    // --- Logout Protection ---
+    window.addEventListener('beforeunload', function (e) {
+      if (currentStore && currentStore.id) {
+        e.preventDefault();
+        e.returnValue = ''; 
       }
     });
 
@@ -504,6 +512,7 @@
         let upcomingDates = [];
         if (isHoliday(tomorrow)) upcomingDates.push(tomorrow.toLocaleDateString('en-IN', { day: 'numeric', month: 'short' }));
         if (isHoliday(dayAfter)) upcomingDates.push(dayAfter.toLocaleDateString('en-IN', { day: 'numeric', month: 'short' }));
+        
         const dateString = upcomingDates.join(" and ");
         
         titleEl.innerText = "⚠️ Upcoming Non-Banking Day";
@@ -518,8 +527,16 @@
       const now = new Date();
       document.getElementById('live-date').innerText = now.toLocaleDateString('en-IN', { weekday: 'long', day: '2-digit', month: 'short', year: 'numeric' });
       document.getElementById('live-time').innerText = now.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+      
+      // Dynamic Net Sale Label update
+      const yesterday = new Date(now);
+      yesterday.setDate(now.getDate() - 1);
+      const yestDateString = yesterday.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
+      const netSaleLabel = document.getElementById('net-sale-label');
+      if (netSaleLabel) {
+        netSaleLabel.innerText = `Net Sale (as per the POS) - ${yestDateString}`;
+      }
     }, 1000);
-    checkHolidayAlert();
 
     // --- API & Core Functionality ---
     async function apiCall(payload) {
@@ -888,15 +905,10 @@
     function setLoading(btnId, isLoading) {
       document.getElementById(`${btnId}-btn`).disabled = isLoading;
       document.getElementById(`${btnId}-spinner`).style.display = isLoading ? 'inline-block' : 'none';
-      
       const loginContent = document.getElementById('login-btn-content');
       const submitText = document.getElementById('submit-text');
-      
-      if (btnId === 'login' && loginContent) {
-        loginContent.style.display = isLoading ? 'none' : 'flex';
-      } else if (btnId === 'submit' && submitText) {
-        submitText.style.display = isLoading ? 'none' : 'inline-block';
-      }
+      if (btnId === 'login' && loginContent) loginContent.style.display = isLoading ? 'none' : 'flex';
+      else if (btnId === 'submit' && submitText) submitText.style.display = isLoading ? 'none' : 'inline-block';
     }
   </script>
 </body>

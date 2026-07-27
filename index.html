@@ -7,6 +7,7 @@
   
   <link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiByeD0iMTYiIGZpbGw9IiNDRDFBMjIiLz48cmVjdCB4PSIxMiIgeT0iMTIiIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgcng9IjgiIGZpbGw9IiNGRkYiLz48cGF0aCBkPSJNMjggMjBoOHY4aDh2OGgtOHY4aC04di04aC04di04aDh6IiBmaWxsPSIjNDRCOTQ5Ii8+PC9zdmc+" type="image/svg+xml">
   
+  <!-- Fonts & Material Symbols -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
   
@@ -27,8 +28,26 @@
       --success: #34C759;
     }
     
-    body { font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", sans-serif; background-color: var(--bg-color); margin: 0; padding: 0; color: var(--text-main); -webkit-font-smoothing: antialiased; }
+    /* PREVENT TEXT SELECTION & LONG PRESS */
+    html, body { 
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", sans-serif; 
+      background-color: var(--bg-color); 
+      margin: 0; padding: 0; color: var(--text-main); 
+      -webkit-font-smoothing: antialiased; 
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+      -khtml-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+    }
     
+    /* Allow selection inside inputs only */
+    input, textarea, select {
+      -webkit-user-select: auto;
+      user-select: auto;
+    }
+
     .top-header { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); color: var(--med-primary); padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; font-size: 13px; font-weight: 600; position: sticky; top: 0; z-index: 100; border-bottom: 0.5px solid var(--border-color); box-shadow: 0 2px 10px rgba(0,0,0,0.02);}
     
     .container { padding: 16px; max-width: 480px; margin: 0 auto; display: flex; flex-direction: column; gap: 16px; }
@@ -37,12 +56,17 @@
     .brand-logo { font-size: 36px; font-weight: 700; letter-spacing: -1.5px; color: var(--med-primary); margin-bottom: 4px; display: flex; align-items: center; justify-content: center; }
 
     h2 { margin: 0 0 6px 0; font-size: 22px; font-weight: 700; letter-spacing: -0.5px;}
-    p.sub { color: var(--text-muted); margin: 0 0 24px 0; font-size: 14px; }
+    p.sub { color: var(--text-muted); margin: 0 0 20px 0; font-size: 14px; }
     
-    /* SEGMENTED TOGGLE */
-    .login-toggle { display: flex; background: var(--input-bg); border-radius: 12px; padding: 4px; margin-bottom: 24px; }
-    .toggle-btn { flex: 1; padding: 10px; text-align: center; font-size: 14px; font-weight: 600; color: var(--text-muted); border-radius: 10px; cursor: pointer; transition: all 0.2s ease; }
-    .toggle-btn.active { background: #FFFFFF; color: var(--text-main); box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+    /* MODERN LOGIN TOGGLE SWITCH */
+    .toggle-wrapper { display: flex; justify-content: center; margin-bottom: 24px; }
+    .toggle-checkbox { display: none; }
+    .toggle-label { position: relative; display: flex; align-items: center; width: 240px; height: 44px; background-color: var(--input-bg); border-radius: 22px; cursor: pointer; padding: 4px; box-sizing: border-box; border: 1px solid var(--border-color); box-shadow: inset 0 2px 4px rgba(0,0,0,0.02); }
+    .toggle-slider { position: absolute; top: 4px; left: 4px; width: calc(50% - 4px); height: calc(100% - 8px); background-color: #FFFFFF; border-radius: 18px; box-shadow: 0 2px 8px rgba(0,0,0,0.12); transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); z-index: 0; }
+    .toggle-checkbox:checked + .toggle-label .toggle-slider { transform: translateX(100%); }
+    .toggle-option { flex: 1; text-align: center; font-size: 13.5px; font-weight: 600; color: var(--text-muted); z-index: 1; transition: color 0.3s ease; }
+    .toggle-checkbox:not(:checked) + .toggle-label .opt-store { color: var(--med-primary); }
+    .toggle-checkbox:checked + .toggle-label .opt-ops { color: var(--med-primary); }
 
     .form-group { margin-bottom: 16px; text-align: left;}
     label { display: block; margin-bottom: 8px; font-size: 13.5px; font-weight: 600; color: var(--text-main); margin-left: 4px; letter-spacing: -0.2px;}
@@ -121,26 +145,26 @@
   <div class="container">
     
     <!-- LOGIN SECTION -->
-    <div class="card" id="login-section" style="text-align: center; padding: 30px 24px;">
+    <div class="card" id="login-section" style="text-align: center; padding: 40px 24px;">
       <div class="brand-logo">MedPlus</div>
       <h2>Franchise Deposit Tracker</h2>
       <p class="sub" id="login-subtitle">Sign in with your store credentials</p>
       
-      <!-- Login Mode Toggle -->
-      <div class="login-toggle">
-        <div class="toggle-btn active" id="tab-store" onclick="switchLoginMode('store')">Store User</div>
-        <div class="toggle-btn" id="tab-ops" onclick="switchLoginMode('ops')">Ops Team</div>
+      <!-- New Toggle Switch -->
+      <div class="toggle-wrapper">
+        <input type="checkbox" id="mode-toggle" class="toggle-checkbox" onchange="handleToggleChange(this)">
+        <label class="toggle-label" for="mode-toggle">
+          <span class="toggle-option opt-store">Store User</span>
+          <span class="toggle-option opt-ops">Ops Team</span>
+          <div class="toggle-slider"></div>
+        </label>
       </div>
       
       <div class="form-group">
-        <label id="login-id-label" style="display:none;">Store ID</label>
-        <!-- Added oninput for Uppercase & No Spaces -->
         <input type="text" id="login-id" placeholder="Store ID (e.g. INAP001)" value="INAP" autocomplete="off" list="store-suggestions" oninput="this.value = this.value.toUpperCase().replace(/\s/g, '')">
         <datalist id="store-suggestions"></datalist>
       </div>
       <div class="form-group">
-        <label id="login-mobile-label" style="display:none;">Mobile Number</label>
-        <!-- Added oninput for Numbers Only -->
         <input type="tel" id="login-mobile" placeholder="Registered Mobile Number" autocomplete="tel" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
       </div>
       
@@ -194,7 +218,7 @@
         </div>
       </div>
 
-      <!-- OPS DASHBOARD (Hidden for Store Users) -->
+      <!-- OPS DASHBOARD -->
       <div class="card" id="ops-summary-card" style="display:none;">
         <h3 style="margin-top:0; margin-bottom: 16px; font-size: 18px;">Monthly Overview</h3>
         <div id="ops-summary-content">
@@ -329,15 +353,49 @@
     let loginMode = 'store'; 
     let currentStore = {};
     let opsAllowedStores = []; 
+    let opsUserObj = null;
     let preloadedHistory = []; 
 
-    // --- Logout Protection ---
-    window.addEventListener('beforeunload', function (e) {
-      if (currentStore && currentStore.id) {
-        e.preventDefault();
-        e.returnValue = ''; // Shows the browser's "Leave site?" warning
+    // --- SESSION RESTORE ON LOAD ---
+    document.addEventListener('DOMContentLoaded', () => {
+      const session = localStorage.getItem('franchise_session');
+      if (session) {
+        const data = JSON.parse(session);
+        loginMode = data.mode;
+        currentStore = data.store || {};
+        opsUserObj = data.opsUser || null;
+        opsAllowedStores = data.opsAllowed || [];
+        
+        // Match the toggle visually
+        if (loginMode === 'ops') {
+          document.getElementById('mode-toggle').checked = true;
+          handleToggleChange(document.getElementById('mode-toggle'), true);
+        }
+        
+        document.getElementById('login-section').style.display = 'none';
+        
+        if (loginMode === 'store') {
+          setupFormScreen();
+        } else if (loginMode === 'ops') {
+          if (currentStore && currentStore.id) {
+            setupFormScreen();
+          } else {
+            document.getElementById('ops-name-display').innerText = opsUserObj.name;
+            document.getElementById('ops-role-display').innerText = opsUserObj.designation;
+            document.getElementById('ops-selection-section').style.display = 'block';
+          }
+        }
       }
     });
+
+    function saveSession() {
+      localStorage.setItem('franchise_session', JSON.stringify({
+        mode: loginMode,
+        store: currentStore,
+        opsUser: opsUserObj,
+        opsAllowed: opsAllowedStores
+      }));
+    }
 
     // --- Currency Formatter Logic ---
     function getRawNumber(formattedValue) {
@@ -356,25 +414,22 @@
     }
 
     // --- Toggle Logic ---
-    function switchLoginMode(mode) {
-      loginMode = mode;
+    function handleToggleChange(cb, skipClear = false) {
       const idInput = document.getElementById('login-id');
       document.getElementById('login-error').style.display = 'none';
       
-      if (mode === 'store') {
-        document.getElementById('tab-store').classList.add('active');
-        document.getElementById('tab-ops').classList.remove('active');
-        idInput.placeholder = "Store ID (e.g. INAP001)";
-        idInput.value = "INAP";
-        document.getElementById('login-subtitle').innerText = "Sign in with your store credentials";
-        document.getElementById('login-btn-text').innerText = "Sign In";
-      } else {
-        document.getElementById('tab-ops').classList.add('active');
-        document.getElementById('tab-store').classList.remove('active');
+      if(cb.checked) {
+        loginMode = 'ops';
         idInput.placeholder = "Employee ID (e.g. EMP123)";
-        idInput.value = "";
+        if(!skipClear) idInput.value = "";
         document.getElementById('login-subtitle').innerText = "Sign in as Operations Team";
         document.getElementById('login-btn-text').innerText = "Sign In to Ops";
+      } else {
+        loginMode = 'store';
+        idInput.placeholder = "Store ID (e.g. INAP001)";
+        if(!skipClear) idInput.value = "INAP";
+        document.getElementById('login-subtitle').innerText = "Sign in with your store credentials";
+        document.getElementById('login-btn-text').innerText = "Sign In";
       }
     }
 
@@ -525,11 +580,15 @@
         
         if (loginMode === 'store') {
           currentStore = { id: id, name: res.storeName, mapping: res.mapping };
+          saveSession();
           setupFormScreen();
         } else {
           opsAllowedStores = res.allowedStores;
-          document.getElementById('ops-name-display').innerText = res.opsUser.name;
-          document.getElementById('ops-role-display').innerText = res.opsUser.designation;
+          opsUserObj = res.opsUser;
+          saveSession();
+          
+          document.getElementById('ops-name-display').innerText = opsUserObj.name;
+          document.getElementById('ops-role-display').innerText = opsUserObj.designation;
           
           document.getElementById('ops-store-input').value = '';
           document.getElementById('ops-select-error').style.display = 'none';
@@ -550,11 +609,15 @@
       }
       
       currentStore = { id: selected.id, name: selected.name, mapping: selected.mapping };
+      saveSession();
+      
       document.getElementById('ops-selection-section').style.display = 'none';
       setupFormScreen();
     }
     
     function changeOpsStore() {
+      currentStore = {};
+      saveSession();
       document.getElementById('form-section').style.display = 'none';
       document.getElementById('ops-store-input').value = ""; 
       document.getElementById('ops-selection-section').style.display = 'block';
@@ -652,7 +715,6 @@
       if (parseFloat(pending) > 0 && !reason.trim()) return showError('form-error', 'Reason required for pending amount.');
 
       setLoading('submit', true);
-      // SENDING RAW NUMBERS TO SHEET
       const payload = { action: 'submit', storeId: currentStore.id, mapping: currentStore.mapping, netSale: netSale, cashCollected: cash, depositedAmount: deposit, pendingAmount: pending, reason: reason };
       const res = await apiCall(payload);
       setLoading('submit', false);
@@ -804,11 +866,17 @@
     }
 
     function logout() {
-      currentStore = {}; opsAllowedStores = []; preloadedHistory = []; 
+      localStorage.removeItem('franchise_session');
+      currentStore = {}; opsAllowedStores = []; opsUserObj = null; preloadedHistory = []; 
+      
       document.getElementById('form-section').style.display = 'none';
       document.getElementById('ops-selection-section').style.display = 'none';
+      
       document.getElementById('login-section').style.display = 'block';
-      document.getElementById('login-id').value = loginMode === 'store' ? 'INAP' : ''; 
+      
+      document.getElementById('mode-toggle').checked = false;
+      handleToggleChange(document.getElementById('mode-toggle'));
+      
       document.getElementById('login-mobile').value = '';
     }
 
@@ -820,10 +888,15 @@
     function setLoading(btnId, isLoading) {
       document.getElementById(`${btnId}-btn`).disabled = isLoading;
       document.getElementById(`${btnId}-spinner`).style.display = isLoading ? 'inline-block' : 'none';
+      
       const loginContent = document.getElementById('login-btn-content');
       const submitText = document.getElementById('submit-text');
-      if (btnId === 'login' && loginContent) loginContent.style.display = isLoading ? 'none' : 'flex';
-      else if (btnId === 'submit' && submitText) submitText.style.display = isLoading ? 'none' : 'inline-block';
+      
+      if (btnId === 'login' && loginContent) {
+        loginContent.style.display = isLoading ? 'none' : 'flex';
+      } else if (btnId === 'submit' && submitText) {
+        submitText.style.display = isLoading ? 'none' : 'inline-block';
+      }
     }
   </script>
 </body>

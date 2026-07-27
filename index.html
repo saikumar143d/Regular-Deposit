@@ -30,6 +30,8 @@
     body { font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", sans-serif; background-color: var(--bg-color); margin: 0; padding: 0; color: var(--text-main); -webkit-font-smoothing: antialiased; }
     
     .top-header { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); color: var(--med-primary); padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; font-size: 13px; font-weight: 600; position: sticky; top: 0; z-index: 100; border-bottom: 0.5px solid var(--border-color); box-shadow: 0 2px 10px rgba(0,0,0,0.02);}
+    .header-switch { display: flex; align-items: center; gap: 4px; cursor: pointer; opacity: 0.85; transition: opacity 0.2s ease; padding: 4px 8px; border-radius: 8px; background: rgba(205, 26, 34, 0.08); }
+    .header-switch:active { opacity: 1; background: rgba(205, 26, 34, 0.15); }
     
     .container { padding: 16px; max-width: 480px; margin: 0 auto; display: flex; flex-direction: column; gap: 16px; }
     .card { background: var(--card-bg); border-radius: 20px; padding: 24px; box-shadow: 0 4px 24px rgba(0,0,0,0.04); }
@@ -37,13 +39,8 @@
     .brand-logo { font-size: 36px; font-weight: 700; letter-spacing: -1.5px; color: var(--med-primary); margin-bottom: 4px; display: flex; align-items: center; justify-content: center; }
 
     h2 { margin: 0 0 6px 0; font-size: 22px; font-weight: 700; letter-spacing: -0.5px;}
-    p.sub { color: var(--text-muted); margin: 0 0 20px 0; font-size: 14px; }
+    p.sub { color: var(--text-muted); margin: 0 0 24px 0; font-size: 14px; }
     
-    /* SEGMENTED TOGGLE CSS */
-    .login-toggle { display: flex; background: var(--input-bg); border-radius: 12px; padding: 4px; margin-bottom: 24px; }
-    .toggle-btn { flex: 1; padding: 10px; text-align: center; font-size: 14px; font-weight: 600; color: var(--text-muted); border-radius: 10px; cursor: pointer; transition: all 0.2s ease; }
-    .toggle-btn.active { background: #FFFFFF; color: var(--text-main); box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
-
     .form-group { margin-bottom: 16px; text-align: left;}
     label { display: block; margin-bottom: 8px; font-size: 13.5px; font-weight: 600; color: var(--text-main); margin-left: 4px; letter-spacing: -0.2px;}
     
@@ -52,7 +49,6 @@
     input:focus, textarea:focus { outline: none; background: #FFFFFF; border-color: var(--med-primary); box-shadow: 0 4px 12px rgba(205, 26, 34, 0.08); }
     input[readonly] { background: #E5E5EA; color: var(--text-muted); opacity: 0.8; }
 
-    /* CUSTOM DROPDOWN UI FOR OPS STORE SELECTION */
     .custom-dropdown { position: relative; }
     .dropdown-list { position: absolute; top: 100%; left: 0; right: 0; background: white; border: 1px solid var(--border-color); border-radius: 12px; max-height: 220px; overflow-y: auto; box-shadow: 0 10px 25px rgba(0,0,0,0.1); z-index: 50; display: none; text-align: left; margin-top: 4px;}
     .dropdown-item { padding: 12px 16px; border-bottom: 1px solid var(--border-color); font-size: 15px; color: var(--text-main); cursor: pointer; transition: background 0.1s;}
@@ -91,9 +87,9 @@
     .sticky-footer { position: -webkit-sticky; position: sticky; bottom: -20px; background: var(--bg-color); padding: 16px 20px 20px 20px; margin: 16px -20px -20px -20px; border-top: 1px solid var(--border-color); z-index: 10; }
 
     .summary-pills-container { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 0; }
-    .summary-pill { background: white; border-radius: 14px; padding: 12px 6px; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.04); border: 1px solid var(--border-color); }
+    .summary-pill { background: white; border-radius: 14px; padding: 12px 4px; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.04); border: 1px solid var(--border-color); }
     .summary-pill-title { font-size: 10px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: -0.2px; margin-bottom: 6px; }
-    .summary-pill-value { font-size: 14px; font-weight: 700; color: var(--text-main); }
+    .summary-pill-value { font-size: 13.5px; font-weight: 700; color: var(--text-main); }
 
     .history-card { background: var(--card-bg); padding: 16px; border-radius: 16px; margin-bottom: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.03); }
     .hist-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 0.5px solid var(--border-color); padding-bottom: 12px; margin-bottom: 12px; }
@@ -114,30 +110,33 @@
 </head>
 <body>
 
+  <!-- TOP HEADER WITH MINIMAL OPS TOGGLE -->
   <div class="top-header">
-    <span id="live-date">Loading...</span>
-    <span id="live-time">--:--</span>
+    <div style="display:flex; gap:6px;">
+      <span id="live-date">Loading...</span>
+      <span id="live-time" style="opacity:0.8;">--:--</span>
+    </div>
+    
+    <!-- Minimal Mode Switch -->
+    <div class="header-switch" onclick="toggleLoginMode()" id="header-mode-switch">
+      <span class="material-symbols-outlined" id="header-mode-icon" style="font-size:16px;">admin_panel_settings</span>
+      <span id="header-mode-text" style="font-size:11px; text-transform:uppercase; letter-spacing:0.5px;">Ops Login</span>
+    </div>
   </div>
 
   <div class="container">
     
     <!-- LOGIN SECTION -->
-    <div class="card" id="login-section" style="text-align: center; padding: 30px 24px;">
+    <div class="card" id="login-section" style="text-align: center; padding: 40px 24px;">
       <div class="brand-logo">MedPlus</div>
       <h2>Franchise Deposit Tracker</h2>
-      
-      <div class="login-toggle">
-        <div class="toggle-btn active" id="tab-store" onclick="switchLoginMode('store')">Store User</div>
-        <div class="toggle-btn" id="tab-ops" onclick="switchLoginMode('ops')">Ops Team</div>
-      </div>
+      <p class="sub" id="login-subtitle">Sign in with your store credentials</p>
       
       <div class="form-group">
-        <label id="login-id-label" style="display:none;">Store ID</label>
         <input type="text" id="login-id" placeholder="Store ID (e.g. INAP001)" value="INAP" autocomplete="off" list="store-suggestions">
         <datalist id="store-suggestions"></datalist>
       </div>
       <div class="form-group">
-        <label id="login-mobile-label" style="display:none;">Mobile Number</label>
         <input type="tel" id="login-mobile" placeholder="Registered Mobile Number" autocomplete="tel">
       </div>
       
@@ -146,7 +145,7 @@
       <button class="btn btn-primary" id="login-btn" onclick="login()">
         <span class="spinner" id="login-spinner"></span>
         <span id="login-btn-content" style="display:flex; align-items:center; gap:6px;">
-          <span class="material-symbols-outlined">lock</span> Sign In
+          <span class="material-symbols-outlined">lock</span> <span id="login-btn-text">Sign In</span>
         </span>
       </button>
     </div>
@@ -167,23 +166,25 @@
       
       <div class="error-msg" id="ops-select-error" style="margin-bottom: 16px;"></div>
       
-      <button class="btn btn-primary" onclick="proceedToOpsStore()">Continue to Dashboard</button>
+      <button class="btn btn-primary" onclick="proceedToOpsStore()">View Store Data</button>
       <button class="btn btn-compact btn-gray-outline" style="width: 100%; border:none;" onclick="logout()">Cancel</button>
     </div>
 
-    <!-- FORM SECTION -->
+    <!-- FORM SECTION / OPS DASHBOARD -->
     <div id="form-section">
       
+      <!-- Store Identity Header -->
       <div class="card" style="background: linear-gradient(135deg, rgba(205, 26, 34, 0.03) 0%, rgba(205, 26, 34, 0.08) 100%); border: 1px solid rgba(205, 26, 34, 0.15); text-align: center; padding: 16px; border-radius: 16px;">
         <h3 id="store-name-display" style="margin: 0; color: var(--med-primary); font-size: 17px; letter-spacing: -0.3px; font-weight: 700;">Store Name</h3>
         <p style="margin: 2px 0 0 0; font-size: 13px; color: var(--med-primary); opacity: 0.85;">Store ID: <span id="store-id-display" style="font-weight: 600;"></span></p>
         
         <div class="btn-row">
-          <!-- Ops user gets a "Change Store" button, Store user gets "History" directly on screen -->
+          <!-- Shown ONLY for Store users -->
           <button class="btn-compact btn-history" id="btn-form-history" onclick="openHistoryModal()">
             <span class="material-symbols-outlined">history</span> History
           </button>
           
+          <!-- Shown ONLY for Ops users -->
           <button class="btn-compact btn-gray-outline" id="btn-change-store" onclick="changeOpsStore()" style="display:none; margin-top:0;">
             <span class="material-symbols-outlined">swap_horiz</span> Change
           </button>
@@ -194,15 +195,19 @@
         </div>
       </div>
 
-      <!-- DEDICATED OPS SUMMARY DASHBOARD (Hidden for Store Users) -->
+      <!-- DEDICATED OPS SUMMARY DASHBOARD -->
       <div class="card" id="ops-summary-card" style="display:none;">
         <h3 style="margin-top:0; margin-bottom: 16px; font-size: 18px;">Monthly Overview</h3>
         <div id="ops-summary-content">
           <div style="text-align:center; padding: 20px;"><div class="spinner spinner-dark"></div></div>
         </div>
+        
+        <h3 style="margin-top:24px; margin-bottom: 16px; font-size: 18px; border-top: 1px solid var(--border-color); padding-top: 20px;">Detailed History</h3>
+        <!-- Direct history injection for Ops -->
+        <div id="ops-detailed-history"></div>
       </div>
 
-      <!-- DEPOSIT INPUT FORM (Hidden for Ops Users) -->
+      <!-- DEPOSIT INPUT FORM (Store Users Only) -->
       <div class="card" id="input-card">
         
         <div class="holiday-alert-wrapper" id="holiday-alert">
@@ -243,7 +248,7 @@
       </div>
     </div>
 
-    <!-- HISTORY MODAL -->
+    <!-- HISTORY MODAL (For Store Users) -->
     <div class="modal-overlay" id="history-modal" onclick="closeHistoryModal(event)">
       <div class="modal-content" onclick="event.stopPropagation()">
         
@@ -258,11 +263,11 @@
           
           <div class="summary-pills-container" id="summary-pills" style="display: none;">
             <div class="summary-pill">
-              <div class="summary-pill-title">To Deposit</div>
+              <div class="summary-pill-title">To be Deposited</div>
               <div class="summary-pill-value" id="summary-to-deposit">₹0</div>
             </div>
             <div class="summary-pill">
-              <div class="summary-pill-title">Ritecure Pmt</div>
+              <div class="summary-pill-title">Payment Done</div>
               <div class="summary-pill-value" style="color: var(--success);" id="summary-deposited">₹0</div>
             </div>
             <div class="summary-pill">
@@ -304,7 +309,7 @@
             <span class="hist-val" id="receipt-netsale">--</span>
           </div>
           <div class="hist-row">
-            <span class="hist-label">Payment to Ritecure</span>
+            <span class="hist-label">Payment Done</span>
             <span class="hist-val" id="receipt-deposit">--</span>
           </div>
           <div class="hist-row" style="margin-bottom: 0;">
@@ -330,22 +335,30 @@
     let opsAllowedStores = []; 
     let preloadedHistory = []; 
 
-    // --- Login Toggle Logic ---
-    function switchLoginMode(mode) {
-      loginMode = mode;
+    // --- Minimal Header Login Switch ---
+    function toggleLoginMode() {
+      loginMode = loginMode === 'store' ? 'ops' : 'store';
       const idInput = document.getElementById('login-id');
       document.getElementById('login-error').style.display = 'none';
       
-      if (mode === 'store') {
-        document.getElementById('tab-store').classList.add('active');
-        document.getElementById('tab-ops').classList.remove('active');
+      if (loginMode === 'store') {
         idInput.placeholder = "Store ID (e.g. INAP001)";
         idInput.value = "INAP";
+        document.getElementById('login-subtitle').innerText = "Sign in with your store credentials";
+        document.getElementById('login-btn-text').innerText = "Sign In";
+        
+        // Update header UI
+        document.getElementById('header-mode-icon').innerText = "admin_panel_settings";
+        document.getElementById('header-mode-text').innerText = "Ops Login";
       } else {
-        document.getElementById('tab-ops').classList.add('active');
-        document.getElementById('tab-store').classList.remove('active');
         idInput.placeholder = "Employee ID (e.g. EMP123)";
         idInput.value = "";
+        document.getElementById('login-subtitle').innerText = "Sign in as Operations Team";
+        document.getElementById('login-btn-text').innerText = "Sign In to Ops";
+        
+        // Update header UI
+        document.getElementById('header-mode-icon').innerText = "storefront";
+        document.getElementById('header-mode-text').innerText = "Store Login";
       }
     }
 
@@ -436,6 +449,8 @@
       document.getElementById('live-date').innerText = now.toLocaleDateString('en-IN', { weekday: 'long', day: '2-digit', month: 'short', year: 'numeric' });
       document.getElementById('live-time').innerText = now.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
     }, 1000);
+
+    checkHolidayAlert();
 
     // --- Network / API ---
     async function apiCall(payload) {
@@ -537,10 +552,9 @@
       document.getElementById('store-id-display').innerText = currentStore.id;
       
       if (loginMode === 'ops') {
-        // OPS VIEW: Hide inputs, show summary dashboard, change buttons
         document.getElementById('btn-change-store').style.display = 'flex';
-        document.getElementById('btn-form-logout').style.display = 'none';
-        document.getElementById('btn-form-history').style.display = 'none'; // Replaced by summary card button
+        document.getElementById('btn-form-logout').style.display = 'flex'; // Ops can completely log out from here too
+        document.getElementById('btn-form-history').style.display = 'none'; 
         
         document.getElementById('input-card').style.display = 'none';
         document.getElementById('ops-summary-card').style.display = 'block';
@@ -548,7 +562,6 @@
         document.getElementById('form-section').style.display = 'block';
         fetchAndRenderOpsSummary();
       } else {
-        // STORE VIEW: Show inputs, hide summary dashboard, show standard buttons
         document.getElementById('btn-change-store').style.display = 'none';
         document.getElementById('btn-form-logout').style.display = 'flex';
         document.getElementById('btn-form-history').style.display = 'flex';
@@ -562,40 +575,100 @@
       }
     }
 
-    // --- Ops Dashboard Specific Logic ---
+    // --- History / Ops Dashboard Rendering ---
     async function fetchAndRenderOpsSummary() {
       document.getElementById('ops-summary-content').innerHTML = `<div style="text-align:center; padding: 20px;"><div class="spinner spinner-dark"></div></div>`;
+      document.getElementById('ops-detailed-history').innerHTML = '';
+      
       const res = await apiCall({ action: 'history', storeId: currentStore.id });
       
       if (res.success) {
         preloadedHistory = res.history;
-        
-        const now = new Date();
-        const currentMonth = now.getMonth();
-        const currentYear = now.getFullYear();
+        renderHistoryData(); 
+      } else {
+        document.getElementById('ops-summary-content').innerHTML = `<div class="error-msg" style="display:block;">Failed to load summary</div>`;
+      }
+    }
 
-        const currentMonthRecords = preloadedHistory.filter(row => {
-          const itemDate = new Date(row.date);
-          return !isNaN(itemDate.getTime()) && itemDate.getMonth() === currentMonth && itemDate.getFullYear() === currentYear;
-        });
+    function openHistoryModal() {
+      const modal = document.getElementById('history-modal');
+      modal.classList.add('active'); 
+      
+      document.getElementById('summary-pills').style.display = 'none';
+      document.getElementById('history-content').innerHTML = `
+        <div style="text-align:center; padding: 40px 0;">
+          <div class="spinner spinner-dark"></div>
+          <p style="color: var(--text-muted); font-size: 14px; margin-top: 12px; font-weight: 500;">Fetching monthly records...</p>
+        </div>`;
+      fetchLatestHistory();
+    }
 
-        let totalToDeposit = 0, totalDeposited = 0, totalPending = 0;
+    async function fetchLatestHistory() {
+      const res = await apiCall({ action: 'history', storeId: currentStore.id });
+      if (res.success) {
+        preloadedHistory = res.history;
+      }
+      if (document.getElementById('history-modal').classList.contains('active')) {
+        renderHistoryData();
+      }
+    }
+
+    function renderHistoryData() {
+      const now = new Date();
+      const currentMonth = now.getMonth();
+      const currentYear = now.getFullYear();
+
+      const currentMonthRecords = preloadedHistory.filter(row => {
+        const itemDate = new Date(row.date);
+        return !isNaN(itemDate.getTime()) && 
+               itemDate.getMonth() === currentMonth && 
+               itemDate.getFullYear() === currentYear;
+      });
+
+      const monthName = now.toLocaleDateString('en-IN', { month: 'long', year: 'numeric' });
+      
+      let totalToDeposit = 0, totalDeposited = 0, totalPending = 0;
+      let listHtml = '';
+
+      if (currentMonthRecords.length > 0) {
         currentMonthRecords.forEach(row => {
-          totalToDeposit += parseFloat(row.toDeposit) || 0;
-          totalDeposited += parseFloat(row.deposited) || 0;
-          totalPending += parseFloat(row.pending) || 0;
+          const { fDate, fTime } = formatDateTime(row.date, row.time);
+          const toDepVal = parseFloat(row.toDeposit) || 0;
+          const depVal = parseFloat(row.deposited) || 0;
+          const pendVal = parseFloat(row.pending) || 0;
+
+          totalToDeposit += toDepVal;
+          totalDeposited += depVal;
+          totalPending += pendVal;
+
+          const pendingColorClass = pendVal > 0 ? 'var(--danger)' : 'var(--success)';
+
+          listHtml += `
+          <div class="history-card">
+            <div class="hist-header">
+              <span class="hist-date">${fDate}</span>
+              <span class="hist-time">${fTime}</span>
+            </div>
+            <div class="hist-row"><span class="hist-label">To be Deposited</span><span class="hist-val">₹${toDepVal.toLocaleString('en-IN')}</span></div>
+            <div class="hist-row"><span class="hist-label">Payment Done</span><span class="hist-val">₹${depVal.toLocaleString('en-IN')}</span></div>
+            <div class="hist-row"><span class="hist-label">Pending</span><span class="hist-val" style="color:${pendingColorClass}">₹${pendVal.toLocaleString('en-IN')}</span></div>
+          </div>`;
         });
+      } else {
+        listHtml = `<div style="text-align:center; padding: 30px; color: var(--text-muted); font-weight: 500;">No submissions found for ${monthName}.</div>`;
+      }
 
+      // Inject dynamically based on mode
+      if (loginMode === 'ops') {
         const pendingColorClass = totalPending > 0 ? 'var(--danger)' : 'var(--success)';
-
-        document.getElementById('ops-summary-content').innerHTML = `
+        const pillsHtml = `
           <div class="summary-pills-container">
             <div class="summary-pill">
-              <div class="summary-pill-title">To Deposit</div>
+              <div class="summary-pill-title">To be Deposited</div>
               <div class="summary-pill-value">₹${totalToDeposit.toLocaleString('en-IN')}</div>
             </div>
             <div class="summary-pill">
-              <div class="summary-pill-title">Ritecure Pmt</div>
+              <div class="summary-pill-title">Payment Done</div>
               <div class="summary-pill-value" style="color: var(--success);">₹${totalDeposited.toLocaleString('en-IN')}</div>
             </div>
             <div class="summary-pill">
@@ -603,12 +676,22 @@
               <div class="summary-pill-value" style="color: ${pendingColorClass};">₹${totalPending.toLocaleString('en-IN')}</div>
             </div>
           </div>
-          <button class="btn btn-outline" style="margin-top: 16px;" onclick="openHistoryModal()">
-            <span class="material-symbols-outlined" style="margin-right: 6px;">list_alt</span> View Detailed History
-          </button>
         `;
+        document.getElementById('ops-summary-content').innerHTML = pillsHtml;
+        document.getElementById('ops-detailed-history').innerHTML = listHtml;
       } else {
-        document.getElementById('ops-summary-content').innerHTML = `<div class="error-msg" style="display:block;">Failed to load summary</div>`;
+        document.getElementById('history-month-label').innerText = `${monthName}`;
+        if (currentMonthRecords.length > 0) {
+          document.getElementById('summary-to-deposit').innerText = '₹' + totalToDeposit.toLocaleString('en-IN');
+          document.getElementById('summary-deposited').innerText = '₹' + totalDeposited.toLocaleString('en-IN');
+          const pendPill = document.getElementById('summary-pending');
+          pendPill.innerText = '₹' + totalPending.toLocaleString('en-IN');
+          pendPill.style.color = totalPending > 0 ? 'var(--danger)' : 'var(--success)';
+          document.getElementById('summary-pills').style.display = 'grid';
+        } else {
+          document.getElementById('summary-pills').style.display = 'none';
+        }
+        document.getElementById('history-content').innerHTML = listHtml;
       }
     }
 
@@ -620,12 +703,7 @@
     }
     
     function saveDraft() {
-      const data = { 
-        netSale: document.getElementById('net-sale').value,
-        cash: document.getElementById('cash').value, 
-        deposit: document.getElementById('deposit').value, 
-        reason: document.getElementById('reason').value 
-      };
+      const data = { netSale: document.getElementById('net-sale').value, cash: document.getElementById('cash').value, deposit: document.getElementById('deposit').value, reason: document.getElementById('reason').value };
       localStorage.setItem(`draft_${currentStore.id}`, JSON.stringify(data));
     }
     
@@ -674,9 +752,6 @@
         receiptPending.innerText = '₹' + pending;
         receiptPending.style.color = parseFloat(pending) > 0 ? 'var(--danger)' : 'var(--success)';
         
-        const receiptBtn = document.getElementById('btn-receipt-close');
-        receiptBtn.innerText = "Close & Log Out";
-
         localStorage.removeItem(`draft_${currentStore.id}`);
         document.getElementById('net-sale').value = '';
         document.getElementById('cash').value = ''; 
@@ -694,96 +769,6 @@
     function closeReceiptAndLogout() {
       document.getElementById('receipt-modal').classList.remove('active');
       logout();
-    }
-
-    // --- History Modal Logic ---
-    function openHistoryModal() {
-      const modal = document.getElementById('history-modal');
-      modal.classList.add('active'); 
-      
-      // If we already fetched history for the Ops Summary, just render it immediately.
-      if (loginMode === 'ops' && preloadedHistory.length > 0) {
-        renderHistoryData();
-      } else {
-        document.getElementById('summary-pills').style.display = 'none';
-        document.getElementById('history-content').innerHTML = `
-          <div style="text-align:center; padding: 40px 0;">
-            <div class="spinner spinner-dark"></div>
-            <p style="color: var(--text-muted); font-size: 14px; margin-top: 12px; font-weight: 500;">Fetching monthly records...</p>
-          </div>`;
-        fetchLatestHistory();
-      }
-    }
-
-    async function fetchLatestHistory() {
-      const res = await apiCall({ action: 'history', storeId: currentStore.id });
-      if (res.success) {
-        preloadedHistory = res.history;
-      }
-      if (document.getElementById('history-modal').classList.contains('active')) {
-        renderHistoryData();
-      }
-    }
-
-    function renderHistoryData() {
-      const content = document.getElementById('history-content');
-      const now = new Date();
-      const currentMonth = now.getMonth();
-      const currentYear = now.getFullYear();
-
-      const currentMonthRecords = preloadedHistory.filter(row => {
-        const itemDate = new Date(row.date);
-        return !isNaN(itemDate.getTime()) && 
-               itemDate.getMonth() === currentMonth && 
-               itemDate.getFullYear() === currentYear;
-      });
-
-      const monthName = now.toLocaleDateString('en-IN', { month: 'long', year: 'numeric' });
-      document.getElementById('history-month-label').innerText = `${monthName}`;
-
-      if (currentMonthRecords.length > 0) {
-        let totalToDeposit = 0;
-        let totalDeposited = 0;
-        let totalPending = 0;
-        let html = '';
-
-        currentMonthRecords.forEach(row => {
-          const { fDate, fTime } = formatDateTime(row.date, row.time);
-          const toDepVal = parseFloat(row.toDeposit) || 0;
-          const depVal = parseFloat(row.deposited) || 0;
-          const pendVal = parseFloat(row.pending) || 0;
-
-          totalToDeposit += toDepVal;
-          totalDeposited += depVal;
-          totalPending += pendVal;
-
-          const pendingColorClass = pendVal > 0 ? 'var(--danger)' : 'var(--success)';
-
-          html += `
-          <div class="history-card">
-            <div class="hist-header">
-              <span class="hist-date">${fDate}</span>
-              <span class="hist-time">${fTime}</span>
-            </div>
-            <div class="hist-row"><span class="hist-label">To Deposit</span><span class="hist-val">₹${toDepVal.toLocaleString('en-IN')}</span></div>
-            <div class="hist-row"><span class="hist-label">Payment to Ritecure</span><span class="hist-val">₹${depVal.toLocaleString('en-IN')}</span></div>
-            <div class="hist-row"><span class="hist-label">Pending</span><span class="hist-val" style="color:${pendingColorClass}">₹${pendVal.toLocaleString('en-IN')}</span></div>
-          </div>`;
-        });
-
-        document.getElementById('summary-to-deposit').innerText = '₹' + totalToDeposit.toLocaleString('en-IN');
-        document.getElementById('summary-deposited').innerText = '₹' + totalDeposited.toLocaleString('en-IN');
-        
-        const pendPill = document.getElementById('summary-pending');
-        pendPill.innerText = '₹' + totalPending.toLocaleString('en-IN');
-        pendPill.style.color = totalPending > 0 ? 'var(--danger)' : 'var(--success)';
-
-        document.getElementById('summary-pills').style.display = 'grid';
-        content.innerHTML = html;
-      } else {
-        document.getElementById('summary-pills').style.display = 'none';
-        content.innerHTML = `<div style="text-align:center; padding: 30px; color: var(--text-muted); font-weight: 500;">No submissions found for ${monthName}.</div>`;
-      }
     }
 
     function closeHistoryModal(e, force = false) {

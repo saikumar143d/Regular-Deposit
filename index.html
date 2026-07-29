@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Franchise Regular Deposit Tracker</title>
+  <title>Franchise Deposit Dashboard</title>
   
   <link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiByeD0iMTYiIGZpbGw9IiNDRDFBMjIiLz48cmVjdCB4PSIxMiIgeT0iMTIiIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgcng9IjgiIGZpbGw9IiNGRkYiLz48cGF0aCBkPSJNMjggMjBoOHY4aDh2OGgtOHY4aC04di04aC04di04aDh6IiBmaWxsPSIjNDRCOTQ5Ii8+PC9zdmc+" type="image/svg+xml">
   
   <!-- Fonts & Material Symbols -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
   
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
@@ -28,16 +28,14 @@
       --success: #34C759;
     }
     
-    /* -----------------------------------------------------
-       GLOBAL NATIVE-APP FEEL (Anti-Selection)
-       ----------------------------------------------------- */
+    /* --------------------------------------------------------------------
+       GLOBAL NATIVE APP CONSTRAINTS (Anti-selection)
+       -------------------------------------------------------------------- */
     html, body { 
       font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif; 
       background-color: var(--bg-color); 
       margin: 0; padding: 0; color: var(--text-main); 
       -webkit-font-smoothing: antialiased; 
-      
-      /* Disable Text Selection and Long Press Highlights */
       -webkit-touch-callout: none;
       -webkit-user-select: none;
       -khtml-user-select: none;
@@ -46,15 +44,14 @@
       user-select: none;
     }
     
-    /* Re-enable selection ONLY in input fields */
     input, textarea, select { 
       -webkit-user-select: auto; 
       user-select: auto; 
     }
 
-    /* -----------------------------------------------------
-       MOBILE-FIRST DESIGN (Default base layout)
-       ----------------------------------------------------- */
+    /* --------------------------------------------------------------------
+       CORE MOBILE STYLES (Default base layer)
+       -------------------------------------------------------------------- */
     .top-header { background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; border-bottom: 0.5px solid var(--border-color); box-shadow: 0 4px 16px rgba(0,0,0,0.03); min-height: 44px; }
     .header-logo-small { font-weight: 800; font-size: 18px; color: var(--med-primary); letter-spacing: -0.5px;}
     .header-time-block { text-align: right; }
@@ -63,7 +60,7 @@
     .header-store-name { font-size: 16.5px; font-weight: 800; color: var(--text-main); letter-spacing: -0.3px; line-height: 1.1;}
     .header-store-meta { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--text-main); font-weight: 700;}
     
-    .shortage-pill { background: #FFF0F0; border: 1px solid rgba(255, 59, 48, 0.3); color: var(--danger); padding: 2px 6px; border-radius: 6px; font-size: 10.5px; font-weight: 800; display: none; }
+    .shortage-pill { background: #FFF0F0; border: 1px solid rgba(255, 59, 48, 0.3); color: var(--danger); padding: 2px 6px; border-radius: 6px; font-size: 10.5px; font-weight: 800; display: none; align-items: center;}
     
     .address-pill { display: inline-flex; align-items: center; gap: 3px; background: var(--input-bg); border: 1px solid var(--border-color); color: var(--text-muted); padding: 2px 8px; border-radius: 8px; font-size: 10.5px; font-weight: 600; max-width: 140px; }
     .address-text { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -92,8 +89,6 @@
     .toggle-checkbox:not(:checked) + .toggle-label .opt-store { color: var(--med-primary); }
     .toggle-checkbox:checked + .toggle-label .opt-ops { color: var(--med-primary); }
 
-    .desktop-grid { display: flex; flex-direction: column; }
-    
     .form-group { margin-bottom: 16px; text-align: left;}
     label { display: block; margin-bottom: 8px; font-size: 13.5px; font-weight: 700; color: var(--text-main); margin-left: 4px; letter-spacing: -0.2px;}
     
@@ -129,7 +124,7 @@
 
     .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(5px); display: flex; justify-content: center; align-items: flex-end; z-index: 1000; opacity: 0; visibility: hidden; transition: opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1); }
     .modal-overlay.active { opacity: 1; visibility: visible; }
-    .modal-content { background: var(--bg-color); padding: 20px; border-radius: 24px 24px 0 0; width: 100%; max-width: 480px; max-height: 88vh; overflow-y: auto; box-shadow: 0 -10px 25px rgba(0,0,0,0.1); transform: translateY(100%); transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1); box-sizing: border-box; }
+    .modal-content { background: var(--bg-color); padding: 20px; border-radius: 24px 24px 0 0; width: 100%; max-width: 480px; max-height: 88vh; overflow-y: auto; box-shadow: 0 -10px 25px rgba(0,0,0,0.1); transform: translateY(100%); transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); box-sizing: border-box; }
     .modal-overlay.active .modal-content { transform: translateY(0); }
     .modal-pull { width: 40px; height: 5px; background: #C7C7CC; border-radius: 10px; margin: 0 auto 16px auto; }
     
@@ -152,83 +147,107 @@
     .success-icon { width: 60px; height: 60px; background: var(--success); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 28px; margin: 0 auto 16px auto; box-shadow: 0 4px 12px rgba(52, 199, 89, 0.3); }
     .receipt-highlight { font-size: 20px; font-weight: 800; color: var(--text-main); margin-bottom: 24px; line-height: 1.3; letter-spacing: -0.4px;}
     
+    .desktop-only { display: none !important; }
+    .desktop-grid-row { display: block; }
+    
     #ops-selection-section, #form-section { display: none; }
     .spinner { border: 2.5px solid rgba(255,255,255,0.3); border-top: 2.5px solid white; border-radius: 50%; width: 20px; height: 20px; animation: spin 0.8s linear infinite; display: none; }
     .spinner-dark { border-color: rgba(205, 26, 34, 0.2); border-top-color: var(--med-primary); width: 24px; height: 24px; border-width: 3px; display: inline-block; }
     @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-    /* -----------------------------------------------------
-       EXTRAORDINARY DESKTOP UI REVAMP
-       ----------------------------------------------------- */
-    @media (min-width: 800px) {
+    /* --------------------------------------------------------------------
+       EXTRAORDINARY DESKTOP UPGRADE (min-width: 850px)
+       -------------------------------------------------------------------- */
+    @media (min-width: 850px) {
       body {
-        background-color: #F2F2F7;
+        background-color: #F0F2F5;
         background-image: 
-          radial-gradient(circle at 15% 50%, rgba(205, 26, 34, 0.04), transparent 25%),
-          radial-gradient(circle at 85% 30%, rgba(68, 185, 73, 0.04), transparent 25%);
+          radial-gradient(circle at 10% 20%, rgba(205, 26, 34, 0.04) 0%, transparent 40%),
+          radial-gradient(circle at 90% 80%, rgba(68, 185, 73, 0.04) 0%, transparent 40%);
         background-attachment: fixed;
       }
       
-      .top-header { padding: 16px 40px; }
-      .header-logo-small { font-size: 22px; }
-      .header-store-name { font-size: 22px; }
-      .header-store-meta { font-size: 14px; }
-      .address-pill { font-size: 12.5px; max-width: 350px; padding: 4px 12px; }
-      
-      .action-bar { max-width: 800px; padding: 24px 0 0 0; }
-      .action-pill { padding: 10px 24px; font-size: 14.5px; border-radius: 12px; transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); }
-      .action-pill:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.06); }
+      .mobile-only { display: none !important; }
+      .desktop-only { display: flex !important; }
 
-      .container { max-width: 800px; padding: 40px 24px; gap: 24px; }
-      .card { padding: 40px; border-radius: 24px; box-shadow: 0 12px 48px rgba(0,0,0,0.06); }
-      
-      .form-group label { font-size: 14.5px; margin-bottom: 10px; }
-      input, textarea, select { padding: 16px 20px; font-size: 16px; border-radius: 14px; }
-      .btn { padding: 18px; font-size: 17px; border-radius: 16px; }
-      .btn-primary:hover { box-shadow: 0 6px 16px rgba(205, 26, 34, 0.3); transform: translateY(-1px); }
+      .top-header { padding: 16px 40px; box-shadow: 0 2px 20px rgba(0,0,0,0.02); }
+      .header-logo-small { font-size: 24px; font-weight: 900; }
+      .header-time-block #live-time { font-size: 16px; }
 
-      /* Desktop Login Layout */
-      .desktop-login-layout {
-        display: flex; align-items: center; padding: 60px !important; gap: 60px;
-        text-align: left !important;
+      .container { max-width: 1100px; padding: 60px 24px; gap: 40px; }
+      
+      .card { 
+        border-radius: 32px; 
+        box-shadow: 0 24px 48px -12px rgba(0,0,0,0.08), inset 0 1px 1px rgba(255,255,255,0.8); 
+        padding: 48px;
       }
-      .login-left { flex: 1; }
-      .login-left .brand-logo { justify-content: flex-start; font-size: 56px; margin-bottom: 16px; background: linear-gradient(135deg, #CD1A22 0%, #A8151B 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-      .login-left h2 { font-size: 32px; margin-bottom: 12px; letter-spacing: -1px; }
-      .login-left .sub { font-size: 16px; margin-bottom: 0; }
       
-      .login-right { flex: 1; background: var(--input-bg); padding: 32px; border-radius: 24px; border: 1px solid var(--border-color); box-shadow: 0 8px 32px rgba(0,0,0,0.04); text-align: center; }
-      .login-right .toggle-wrapper { margin-bottom: 32px; width: 100%; }
-      .login-right .toggle-label { width: 100%; height: 48px; }
-      .login-right input { background: #FFFFFF; }
+      input, textarea, select { border-radius: 16px; padding: 18px 20px; border: 2px solid transparent; }
+      input:focus, textarea:focus { background: #FFFFFF; border-color: rgba(205, 26, 34, 0.3); box-shadow: 0 0 0 4px rgba(205, 26, 34, 0.08), inset 0 2px 4px rgba(0,0,0,0.01); }
+      
+      .btn { border-radius: 16px; padding: 20px; font-size: 17px; }
+      .btn-primary { background: linear-gradient(180deg, #E6202A 0%, #CD1A22 100%); box-shadow: 0 8px 16px rgba(205, 26, 34, 0.25), inset 0 1px 1px rgba(255,255,255,0.3); border: 1px solid #A8151B; }
+      .btn-primary:active { box-shadow: 0 2px 4px rgba(205, 26, 34, 0.2), inset 0 2px 4px rgba(0,0,0,0.2); transform: translateY(1px); }
+      .btn-primary:hover { filter: brightness(1.05); transform: translateY(-2px); }
 
-      /* Desktop Grid for Forms */
-      .desktop-grid { flex-direction: row; gap: 24px; }
-      .desktop-grid > .form-group { flex: 1; margin-bottom: 16px; }
+      /* Desktop Login Grid */
+      .desktop-login-wrapper {
+        display: grid; grid-template-columns: 1fr 1fr; align-items: center; padding: 0 !important; overflow: hidden;
+      }
+      .login-left {
+        background: linear-gradient(145deg, #CD1A22, #A8151B); padding: 80px 60px; color: white; height: 100%; display: flex; flex-direction: column; justify-content: center;
+      }
+      .login-left .brand-logo { color: white; justify-content: flex-start; font-size: 56px; margin-bottom: 24px; text-shadow: 0 4px 12px rgba(0,0,0,0.2);}
+      .login-left h2 { color: white; font-size: 36px; margin-bottom: 16px; line-height: 1.2; letter-spacing: -1px;}
+      .login-left p { color: rgba(255,255,255,0.8); font-size: 18px; }
+      
+      .login-right { padding: 60px; }
+      .login-right .toggle-wrapper { width: 100%; margin-bottom: 40px; }
+      .login-right .toggle-label { width: 100%; height: 56px; border-radius: 28px; }
+      .login-right .toggle-slider { border-radius: 24px; height: calc(100% - 8px); }
+      .login-right .toggle-option { font-size: 15px; }
 
-      /* Desktop Modals */
+      /* Desktop Main App Layout */
+      .dashboard-grid {
+        display: grid; grid-template-columns: 350px 1fr; gap: 40px; align-items: start;
+      }
+
+      /* Desktop Sidebar */
+      .desktop-sidebar {
+        display: flex !important; flex-direction: column; gap: 24px; position: sticky; top: 120px;
+      }
+      .sidebar-card {
+        background: var(--card-bg); border-radius: 32px; padding: 32px; box-shadow: 0 24px 48px -12px rgba(0,0,0,0.06), inset 0 1px 1px rgba(255,255,255,0.8); text-align: center;
+      }
+      .sidebar-store-name { font-size: 24px; font-weight: 800; color: var(--text-main); margin-bottom: 4px; line-height: 1.2;}
+      .sidebar-store-id { font-size: 14px; font-weight: 700; color: var(--med-primary); margin-bottom: 16px;}
+      .sidebar-address { display: inline-flex; align-items: center; gap: 6px; background: var(--input-bg); padding: 8px 16px; border-radius: 12px; font-size: 12.5px; font-weight: 600; color: var(--text-muted); text-align: left; line-height: 1.4; border: 1px solid var(--border-color);}
+      .sidebar-btn { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 18px; border-radius: 16px; font-size: 15px; font-weight: 700; cursor: pointer; transition: all 0.2s; border: 1.5px solid var(--border-color); background: var(--card-bg); color: var(--text-main); box-shadow: 0 4px 12px rgba(0,0,0,0.02);}
+      .sidebar-btn:hover { background: var(--input-bg); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.06); }
+      .sidebar-btn:active { transform: translateY(0); }
+      .sidebar-btn.danger { color: var(--danger); border-color: rgba(255,59,48,0.3); background: #FFF4F4;}
+      .sidebar-btn.danger:hover { background: #FFE8E8; }
+
+      .desktop-grid-row { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+      
+      /* Modals for Desktop */
       .modal-overlay { align-items: center; padding: 40px; }
-      .modal-content { max-width: 700px; transform: scale(0.95) !important; opacity: 0; padding: 32px; border-radius: 24px; max-height: 85vh; }
+      .modal-content { max-width: 800px; transform: scale(0.95) !important; opacity: 0; padding: 48px; border-radius: 32px; max-height: 85vh; }
       .modal-overlay.active .modal-content { transform: scale(1) !important; opacity: 1; }
       .modal-pull { display: none; }
-      .sticky-header { padding: 32px 32px 20px 32px; margin: -32px -32px 24px -32px; top: -32px; border-radius: 24px 24px 0 0; }
-      .sticky-footer { padding: 20px 32px 32px 32px; margin: 24px -32px -32px -32px; bottom: -32px; border-radius: 0 0 24px 24px; }
+      .sticky-header { padding: 48px 48px 24px 48px; margin: -48px -48px 24px -48px; top: -48px; border-radius: 32px 32px 0 0; }
+      .sticky-footer { padding: 24px 48px 48px 48px; margin: 24px -48px -48px -48px; bottom: -48px; border-radius: 0 0 32px 32px; }
 
-      /* Desktop History Cards */
-      .history-card { display: flex; align-items: center; justify-content: space-between; padding: 24px 32px; transition: transform 0.2s; }
-      .history-card:hover { transform: scale(1.01); box-shadow: 0 6px 20px rgba(0,0,0,0.05); }
-      .hist-header { border-bottom: none; padding-bottom: 0; margin-bottom: 0; flex-direction: column; align-items: flex-start; gap: 6px; width: auto; min-width: 160px; }
+      /* Desktop History View */
+      .history-card { display: flex; align-items: center; justify-content: space-between; padding: 24px 32px; transition: transform 0.2s; border-radius: 20px;}
+      .history-card:hover { transform: scale(1.02); box-shadow: 0 12px 32px rgba(0,0,0,0.06); }
+      .hist-header { border-bottom: none; padding-bottom: 0; margin-bottom: 0; flex-direction: column; align-items: flex-start; gap: 6px; width: 160px; }
       .hist-row { margin-bottom: 0; flex-direction: column; align-items: flex-end; gap: 6px; flex: 1; text-align: right; }
       .hist-label { font-size: 11px; letter-spacing: 0.5px; }
-      .hist-val { font-size: 16px; }
+      .hist-val { font-size: 17px; }
 
-      /* Ops Dash */
-      .desktop-ops-select { padding: 60px !important; }
-      .desktop-ops-select .brand-logo { font-size: 48px; background: linear-gradient(135deg, #CD1A22 0%, #A8151B 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;}
-      .desktop-ops-select h3 { font-size: 32px; }
-      
       .summary-pills-container { gap: 24px; }
-      .summary-pill { padding: 24px; border-radius: 20px; }
+      .summary-pill { padding: 24px; border-radius: 20px; box-shadow: 0 8px 24px rgba(0,0,0,0.03); }
       .summary-pill-title { font-size: 12px; margin-bottom: 8px; }
       .summary-pill-value { font-size: 24px; }
     }
@@ -246,12 +265,12 @@
       </div>
     </div>
 
-    <div id="header-logged-in" style="display:none; justify-content:space-between; width:100%; align-items:center;">
+    <div id="header-logged-in" class="mobile-only" style="display:none; justify-content:space-between; width:100%; align-items:center;">
       <div class="header-store-info">
         <span class="header-store-name" id="header-store-name">Store Name</span>
         <div class="header-store-meta">
           <span id="header-store-id">ID</span>
-          <div class="address-pill" id="header-store-address-pill">
+          <div class="address-pill">
             <span class="material-symbols-outlined" style="font-size: 13px;">location_on</span>
             <span class="address-text" id="header-store-address"></span>
           </div>
@@ -261,8 +280,8 @@
     </div>
   </div>
 
-  <!-- ACTION BAR (Below header) -->
-  <div class="action-bar" id="action-bar">
+  <!-- ACTION BAR (Mobile only) -->
+  <div class="action-bar mobile-only" id="action-bar">
     <button class="action-pill" id="action-btn-history" onclick="openHistoryModal()">
       <span class="material-symbols-outlined">history</span> History
     </button>
@@ -277,15 +296,17 @@
   <div class="container">
     
     <!-- LOGIN SECTION -->
-    <div class="card desktop-login-layout" id="login-section">
-      <div class="login-left">
+    <div class="card desktop-login-wrapper" id="login-section">
+      <div class="login-left desktop-only">
         <div class="brand-logo">MedPlus</div>
-        <h2>Franchise Deposit Tracker</h2>
-        <p class="sub" id="login-subtitle">Sign in with your store credentials</p>
+        <h2>Franchise Deposit<br>Tracker</h2>
+        <p>Seamlessly manage daily deposits and track historical shortages with enterprise-grade security.</p>
       </div>
-      
-      <div class="login-right">
-        <!-- Toggle Switch -->
+      <div class="login-right" style="text-align: center; width: 100%;">
+        <div class="brand-logo mobile-only">MedPlus</div>
+        <h2 class="mobile-only">Franchise Deposit Tracker</h2>
+        <p class="sub" id="login-subtitle">Sign in with your store credentials</p>
+        
         <div class="toggle-wrapper">
           <input type="checkbox" id="mode-toggle" class="toggle-checkbox" onchange="handleToggleChange(this)">
           <label class="toggle-label" for="mode-toggle">
@@ -295,16 +316,12 @@
           </label>
         </div>
         
-        <div class="desktop-grid">
-          <div class="form-group">
-            <input type="text" id="login-id" placeholder="Store ID (e.g. INAP001)" value="INAP" autocomplete="off" list="store-suggestions" oninput="this.value = this.value.toUpperCase().replace(/\s/g, '')">
-            <datalist id="store-suggestions"></datalist>
-          </div>
+        <div class="form-group">
+          <input type="text" id="login-id" placeholder="Store ID (e.g. INAP001)" value="INAP" autocomplete="off" list="store-suggestions" oninput="this.value = this.value.toUpperCase().replace(/\s/g, '')">
+          <datalist id="store-suggestions"></datalist>
         </div>
-        <div class="desktop-grid">
-          <div class="form-group">
-            <input type="tel" id="login-mobile" placeholder="Registered Mobile Number" autocomplete="tel" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
-          </div>
+        <div class="form-group">
+          <input type="tel" id="login-mobile" placeholder="Registered Mobile Number" autocomplete="tel" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
         </div>
         
         <div class="error-msg" id="login-error"></div>
@@ -319,12 +336,11 @@
     </div>
 
     <!-- OPS TEAM: STORE SELECTION -->
-    <div class="card desktop-ops-select" id="ops-selection-section" style="text-align: center;">
-      <div class="brand-logo" style="margin-bottom: 10px;">MedPlus</div>
+    <div class="card" id="ops-selection-section" style="text-align: center;">
+      <div class="brand-logo mobile-only" style="font-size: 28px; margin-bottom: 10px;">MedPlus</div>
       <h3 style="margin:0 0 4px 0; font-size: 22px;">Welcome, <span id="ops-name-display" style="color: var(--med-primary);"></span></h3>
       <p class="sub" style="margin-bottom: 24px;" id="ops-role-display"></p>
       
-      <!-- Missing Stores Status Widget -->
       <div class="status-widget" id="ops-status-widget">
         <div class="status-icon"><span class="material-symbols-outlined">analytics</span></div>
         <div class="status-text" id="ops-status-text">
@@ -340,77 +356,109 @@
       
       <div class="error-msg" id="ops-select-error" style="margin-bottom: 16px;"></div>
       
-      <button class="btn btn-primary" onclick="proceedToOpsStore()">View Store Data</button>
+      <div class="desktop-grid-row" style="margin-top:24px;">
+        <button class="btn btn-gray-outline" onclick="logout()">Log Out</button>
+        <button class="btn btn-primary" onclick="proceedToOpsStore()">View Store Data</button>
+      </div>
     </div>
 
-    <!-- FORM SECTION / OPS DASHBOARD -->
+    <!-- MAIN DASHBOARD WRAPPER -->
     <div id="form-section">
-
-      <!-- OPS DASHBOARD -->
-      <div class="card" id="ops-summary-card" style="display:none; padding-top: 16px;">
-        <h3 style="margin-top:0; margin-bottom: 16px; font-size: 18.5px; font-weight: 800;">Monthly Overview</h3>
-        <div id="ops-summary-content">
-          <div style="text-align:center; padding: 20px;"><div class="spinner spinner-dark"></div></div>
+      
+      <!-- DESKTOP SIDEBAR -->
+      <div class="desktop-sidebar desktop-only">
+        <div class="sidebar-card">
+          <div class="sidebar-store-name" id="desk-store-name">Store Name</div>
+          <div class="sidebar-store-id" id="desk-store-id">ID</div>
+          <div class="sidebar-address" style="margin-bottom: 20px;">
+            <span class="material-symbols-outlined" style="font-size: 16px;">location_on</span>
+            <span id="desk-store-address"></span>
+          </div>
+          <div class="shortage-pill" id="desk-shortage-pill" style="margin:0 auto 20px auto; font-size: 12px; padding: 6px 12px; border-radius: 12px;"></div>
+          
+          <div style="display:flex; flex-direction:column; gap:12px; margin-top: 16px;">
+            <button class="sidebar-btn" id="desk-btn-history" onclick="openHistoryModal()">
+              <span class="material-symbols-outlined">history</span> View History
+            </button>
+            <button class="sidebar-btn" id="desk-btn-change" onclick="changeOpsStore()" style="display:none;">
+              <span class="material-symbols-outlined">swap_horiz</span> Change Store
+            </button>
+            <button class="sidebar-btn danger" onclick="logout()">
+              <span class="material-symbols-outlined">logout</span> Sign Out
+            </button>
+          </div>
         </div>
-        
-        <h3 style="margin-top:32px; margin-bottom: 16px; font-size: 18.5px; font-weight: 800; border-top: 1px solid var(--border-color); padding-top: 24px;">Detailed History</h3>
-        <div id="ops-detailed-history"></div>
       </div>
 
-      <!-- DEPOSIT INPUT FORM -->
-      <div class="card" id="input-card">
+      <!-- MAIN CONTENT AREA -->
+      <div class="dashboard-main">
         
-        <div class="holiday-alert-wrapper" id="holiday-alert">
-          <div class="holiday-alert-content">
-            <strong id="alert-title">⚠️ Upcoming Non-Banking Day</strong>
-            <span id="alert-text">Please deposit...</span>
+        <!-- OPS DASHBOARD -->
+        <div class="card" id="ops-summary-card" style="display:none;">
+          <h3 style="margin-top:0; margin-bottom: 16px; font-size: 18.5px; font-weight: 800;">Monthly Overview</h3>
+          <div id="ops-summary-content">
+            <div style="text-align:center; padding: 20px;"><div class="spinner spinner-dark"></div></div>
           </div>
+          
+          <h3 style="margin-top:32px; margin-bottom: 16px; font-size: 18.5px; font-weight: 800; border-top: 1px solid var(--border-color); padding-top: 24px;">Detailed History</h3>
+          <div id="ops-detailed-history"></div>
         </div>
 
-        <div class="form-group">
-          <label id="net-sale-label">Net Sale (as per the POS)</label>
-          <input type="text" inputmode="numeric" id="net-sale" placeholder="₹ 0" oninput="formatCurrencyInput(this); saveDraft();">
-        </div>
+        <!-- DEPOSIT INPUT FORM -->
+        <div class="card" id="input-card">
+          
+          <div class="holiday-alert-wrapper" id="holiday-alert">
+            <div class="holiday-alert-content">
+              <strong id="alert-title">⚠️ Upcoming Non-Banking Day</strong>
+              <span id="alert-text">Please deposit...</span>
+            </div>
+          </div>
 
-        <div class="desktop-grid">
           <div class="form-group">
-            <label>Cash To be deposited</label>
-            <input type="text" inputmode="numeric" id="cash" placeholder="₹ 0" oninput="formatCurrencyInput(this); calculatePending(); saveDraft();">
+            <label id="net-sale-label">Net Sale (as per the POS)</label>
+            <input type="text" inputmode="numeric" id="net-sale" placeholder="₹ 0" oninput="formatCurrencyInput(this); saveDraft();">
           </div>
+
+          <div class="desktop-grid-row">
+            <div class="form-group">
+              <label>Cash To be deposited (as per the POS)</label>
+              <input type="text" inputmode="numeric" id="cash" placeholder="₹ 0" oninput="formatCurrencyInput(this); calculatePending(); saveDraft();">
+            </div>
+            <div class="form-group">
+              <label>Payment done to Ritecure Account</label>
+              <input type="text" inputmode="numeric" id="deposit" placeholder="₹ 0" oninput="formatCurrencyInput(this); calculatePending(); saveDraft();">
+            </div>
+          </div>
+          
           <div class="form-group">
-            <label>Payment done to Ritecure</label>
-            <input type="text" inputmode="numeric" id="deposit" placeholder="₹ 0" oninput="formatCurrencyInput(this); calculatePending(); saveDraft();">
+            <label>Pending Amount</label>
+            <input type="text" id="pending" placeholder="₹ 0" readonly>
           </div>
-        </div>
-        
-        <div class="form-group">
-          <label>Pending Amount</label>
-          <input type="text" id="pending" placeholder="₹ 0" readonly>
-        </div>
-        <div class="form-group" style="margin-bottom: 0;">
-          <label>Reason (If Pending > 0)</label>
-          <textarea id="reason" rows="2" placeholder="Brief explanation..." oninput="saveDraft();"></textarea>
+          <div class="form-group" style="margin-bottom: 0;">
+            <label>Reason (If Pending > 0)</label>
+            <textarea id="reason" rows="3" placeholder="Brief explanation..." oninput="saveDraft();"></textarea>
+          </div>
+
+          <div class="error-msg" id="form-error"></div>
+          
+          <button class="btn btn-primary" id="submit-btn" onclick="submitForm()" style="margin-top: 24px;">
+            <span class="spinner" id="submit-spinner"></span>
+            <span id="submit-text">Submit Daily Deposit</span>
+          </button>
         </div>
 
-        <div class="error-msg" id="form-error"></div>
-        
-        <button class="btn btn-primary" id="submit-btn" onclick="submitForm()" style="margin-top: 24px;">
-          <span class="spinner" id="submit-spinner"></span>
-          <span id="submit-text">Submit Daily Deposit</span>
-        </button>
       </div>
     </div>
 
     <!-- HISTORY MODAL -->
     <div class="modal-overlay" id="history-modal" onclick="closeHistoryModal(event)">
       <div class="modal-content" onclick="event.stopPropagation()">
-        
         <div class="sticky-header">
           <div class="modal-pull"></div>
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 16px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 24px;">
             <div>
-              <h2 style="margin:0; font-size: 20px; font-weight: 800;">Monthly History</h2>
-              <p class="sub" style="margin-bottom:0; font-size: 13px;" id="history-month-label">Current Month Summary</p>
+              <h2 style="margin:0; font-size: 24px; font-weight: 900;">Monthly History</h2>
+              <p class="sub" style="margin-bottom:0; font-size: 14px;" id="history-month-label">Current Month Summary</p>
             </div>
           </div>
           
@@ -446,7 +494,7 @@
         <div class="success-icon">✓</div>
         <div class="receipt-highlight">Your submission has been recorded safely.</div>
         
-        <div class="history-card" style="text-align: left;">
+        <div class="history-card" style="text-align: left; background: var(--input-bg);">
           <div class="hist-header">
             <span class="hist-date" id="receipt-date">--</span>
             <span class="hist-time" id="receipt-time">--</span>
@@ -469,7 +517,7 @@
           </div>
         </div>
         
-        <button class="btn btn-primary" id="btn-receipt-close" style="margin-top: 20px; background: var(--success); box-shadow: 0 4px 12px rgba(52, 199, 89, 0.3);" onclick="closeReceiptAndLogout()">Close & Log Out</button>
+        <button class="btn btn-primary" id="btn-receipt-close" style="margin-top: 24px; background: var(--success); border-color: var(--success); box-shadow: 0 8px 16px rgba(52, 199, 89, 0.2);" onclick="closeReceiptAndLogout()">Close & Log Out</button>
       </div>
     </div>
 
@@ -702,6 +750,8 @@
       document.getElementById('ops-store-input').value = '';
       document.getElementById('ops-select-error').style.display = 'none';
       updateOpsStatusWidget();
+      
+      document.getElementById('form-section').style.display = 'none';
       document.getElementById('ops-selection-section').style.display = 'block';
     }
 
@@ -737,42 +787,61 @@
     function changeOpsStore() {
       currentStore = {}; saveSession();
       updateHeaderState(false);
-      document.getElementById('form-section').style.display = 'none';
       showOpsSelection();
     }
 
     function updateHeaderState(isLoggedIn) {
       if (isLoggedIn) {
         document.getElementById('header-logged-out').style.display = 'none';
+        
+        // Mobile Top Header updates
         document.getElementById('header-store-name').innerText = currentStore.name;
         document.getElementById('header-store-id').innerText = currentStore.id;
         document.getElementById('header-store-address').innerText = currentStore.address;
         
+        // Desktop Sidebar updates
+        if(document.getElementById('desk-store-name')){
+          document.getElementById('desk-store-name').innerText = currentStore.name;
+          document.getElementById('desk-store-id').innerText = currentStore.id;
+          document.getElementById('desk-store-address').innerText = currentStore.address;
+        }
+
         if (loginMode === 'ops') {
           document.getElementById('action-btn-history').style.display = 'none';
           document.getElementById('action-btn-change').style.display = 'flex';
+          if(document.getElementById('desk-btn-history')) document.getElementById('desk-btn-history').style.display = 'none';
+          if(document.getElementById('desk-btn-change')) document.getElementById('desk-btn-change').style.display = 'flex';
         } else {
           document.getElementById('action-btn-history').style.display = 'flex';
           document.getElementById('action-btn-change').style.display = 'none';
+          if(document.getElementById('desk-btn-history')) document.getElementById('desk-btn-history').style.display = 'flex';
+          if(document.getElementById('desk-btn-change')) document.getElementById('desk-btn-change').style.display = 'none';
         }
         
         document.getElementById('header-logged-in').style.display = 'flex';
         document.getElementById('action-bar').style.display = 'flex';
+        document.getElementById('form-section').classList.add('dashboard-grid');
       } else {
         document.getElementById('header-logged-in').style.display = 'none';
         document.getElementById('header-logged-out').style.display = 'flex';
         document.getElementById('header-shortage-pill').style.display = 'none';
+        if(document.getElementById('desk-shortage-pill')) document.getElementById('desk-shortage-pill').style.display = 'none';
         document.getElementById('action-bar').style.display = 'none';
+        document.getElementById('form-section').classList.remove('dashboard-grid');
       }
     }
 
     function updateShortagePill(shortageAmount) {
-      const pill = document.getElementById('header-shortage-pill');
+      const mPill = document.getElementById('header-shortage-pill');
+      const dPill = document.getElementById('desk-shortage-pill');
+      
       if (shortageAmount > 0) {
-        pill.style.display = 'inline-block';
-        pill.innerText = '⚠️ Short: ₹ ' + shortageAmount.toLocaleString('en-IN');
+        const text = '⚠️ Short: ₹ ' + shortageAmount.toLocaleString('en-IN');
+        mPill.style.display = 'inline-flex'; mPill.innerText = text;
+        if(dPill) { dPill.style.display = 'inline-flex'; dPill.innerText = text; }
       } else {
-        pill.style.display = 'none';
+        mPill.style.display = 'none';
+        if(dPill) dPill.style.display = 'none';
       }
     }
 
@@ -783,14 +852,14 @@
       if (loginMode === 'ops') {
         document.getElementById('input-card').style.display = 'none';
         document.getElementById('ops-summary-card').style.display = 'block';
-        document.getElementById('form-section').style.display = 'block';
+        document.getElementById('form-section').style.display = 'grid'; // Grid takes over on desktop
         fetchAndRenderOpsSummary();
       } else {
         document.getElementById('input-card').style.display = 'block';
         document.getElementById('ops-summary-card').style.display = 'none';
         checkHolidayAlert();
         fetchLatestHistory(true); 
-        document.getElementById('form-section').style.display = 'block';
+        document.getElementById('form-section').style.display = 'grid'; // Grid takes over on desktop
         loadDraft();
       }
     }
@@ -974,7 +1043,7 @@
       updateHeaderState(false);
       document.getElementById('form-section').style.display = 'none';
       document.getElementById('ops-selection-section').style.display = 'none';
-      document.getElementById('login-section').style.display = 'block';
+      document.getElementById('login-section').style.display = 'grid'; // Maintain desktop grid
       document.getElementById('mode-toggle').checked = false;
       handleToggleChange(document.getElementById('mode-toggle'));
       document.getElementById('login-mobile').value = '';

@@ -114,9 +114,9 @@
     .sticky-footer { position: -webkit-sticky; position: sticky; bottom: -20px; background: var(--bg-color); padding: 16px 20px 20px 20px; margin: 16px -20px -20px -20px; border-top: 1px solid var(--border-color); z-index: 10; }
 
     .summary-pills-container { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 0; }
-    .summary-pill { background: white; border-radius: 14px; padding: 10px 4px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.03); border: 1px solid var(--border-color); }
-    .summary-pill-title { font-size: 10px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: -0.2px; margin-bottom: 4px; }
-    .summary-pill-value { font-size: 13.5px; font-weight: 700; color: var(--text-main); }
+    .summary-pill { background: white; border-radius: 14px; padding: 12px 4px; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.04); border: 1px solid var(--border-color); }
+    .summary-pill-title { font-size: 10px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: -0.2px; margin-bottom: 6px; }
+    .summary-pill-value { font-size: 14px; font-weight: 700; color: var(--text-main); }
 
     .history-card { background: var(--card-bg); padding: 16px; border-radius: 16px; margin-bottom: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.03); }
     .hist-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 0.5px solid var(--border-color); padding-bottom: 12px; margin-bottom: 12px; }
@@ -202,6 +202,11 @@
       <div class="card" style="background: linear-gradient(135deg, rgba(205, 26, 34, 0.03) 0%, rgba(205, 26, 34, 0.08) 100%); border: 1px solid rgba(205, 26, 34, 0.15); text-align: center; padding: 16px; border-radius: 16px;">
         <h3 id="store-name-display" style="margin: 0; color: var(--med-primary); font-size: 17px; letter-spacing: -0.3px; font-weight: 700;">Store Name</h3>
         <p style="margin: 2px 0 0 0; font-size: 13px; color: var(--med-primary); opacity: 0.85;">Store ID: <span id="store-id-display" style="font-weight: 600;"></span></p>
+        
+        <!-- CONSOLIDATED SHORTAGE PILL -->
+        <div id="consolidated-shortage-pill" style="display:none; margin: 12px auto 0 auto; padding: 6px 14px; border-radius: 20px; font-size: 13px; font-weight: 700; width: fit-content; transition: all 0.2s;">
+          Total Shortage: ₹ 0
+        </div>
         
         <div class="btn-row">
           <button class="btn-compact btn-history" id="btn-form-history" onclick="openHistoryModal()">
@@ -356,6 +361,7 @@
     let opsAllowedStores = []; 
     let opsUserObj = null;
     let preloadedHistory = []; 
+    let historicalShortage = 0; // Tracks all-time shortage
 
     // --- SESSION RESTORE ON LOAD ---
     document.addEventListener('DOMContentLoaded', () => {
@@ -512,7 +518,6 @@
         let upcomingDates = [];
         if (isHoliday(tomorrow)) upcomingDates.push(tomorrow.toLocaleDateString('en-IN', { day: 'numeric', month: 'short' }));
         if (isHoliday(dayAfter)) upcomingDates.push(dayAfter.toLocaleDateString('en-IN', { day: 'numeric', month: 'short' }));
-        
         const dateString = upcomingDates.join(" and ");
         
         titleEl.innerText = "⚠️ Upcoming Non-Banking Day";
@@ -528,7 +533,7 @@
       document.getElementById('live-date').innerText = now.toLocaleDateString('en-IN', { weekday: 'long', day: '2-digit', month: 'short', year: 'numeric' });
       document.getElementById('live-time').innerText = now.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
       
-      // Dynamic Net Sale Label update
+      // Dynamic Net Sale Label
       const yesterday = new Date(now);
       yesterday.setDate(now.getDate() - 1);
       const yestDateString = yesterday.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
@@ -644,6 +649,9 @@
       document.getElementById('store-name-display').innerText = currentStore.name;
       document.getElementById('store-id-display').innerText = currentStore.id;
       
+      historicalShortage = 0; 
+      document.getElementById('consolidated-shortage-pill').style.display = 'none';
+      
       if (loginMode === 'ops') {
         document.getElementById('btn-change-store').style.display = 'flex';
         document.getElementById('btn-form-logout').style.display = 'flex';
@@ -663,8 +671,32 @@
         document.getElementById('ops-summary-card').style.display = 'none';
         
         checkHolidayAlert();
+        
+        // Fetch history silently for the store to calculate the shortage pill
+        fetchLatestHistory(true); 
+        
         document.getElementById('form-section').style.display = 'block';
         loadDraft();
+      }
+    }
+
+    async function fetchLatestHistory(silent = false) {
+      const res = await apiCall({ action: 'history', storeId: currentStore.id });
+      if (res.success) {
+        preloadedHistory = res.history;
+        
+        // Calculate historical shortage for the Pill
+        let tCash = 0, tDep = 0;
+        preloadedHistory.forEach(row => {
+          tCash += parseFloat(row.toDeposit) || 0;
+          tDep += parseFloat(row.deposited) || 0;
+        });
+        historicalShortage = tCash - tDep;
+        
+        if (loginMode === 'store') calculatePending(); // Update the pill
+      }
+      if (!silent && document.getElementById('history-modal').classList.contains('active')) {
+        renderHistoryData();
       }
     }
 
@@ -686,10 +718,36 @@
       const d = getRawNumber(document.getElementById('deposit').value);
       const pending = Math.max(0, c - d);
       
+      // Update form pending field
       if (pending > 0) {
         document.getElementById('pending').value = '₹ ' + pending.toLocaleString('en-IN');
       } else {
         document.getElementById('pending').value = '';
+      }
+      
+      // Update Consolidated Shortage Pill
+      const projectedShortage = historicalShortage + c - d;
+      const pill = document.getElementById('consolidated-shortage-pill');
+      
+      if (projectedShortage > 0) {
+        pill.style.display = 'block';
+        pill.innerText = 'Total Shortage: ₹ ' + projectedShortage.toLocaleString('en-IN');
+        pill.style.background = 'var(--danger)';
+        pill.style.boxShadow = '0 2px 8px rgba(255, 59, 48, 0.2)';
+      } else if (projectedShortage < 0) {
+        pill.style.display = 'block';
+        pill.innerText = 'Excess Deposit: ₹ ' + Math.abs(projectedShortage).toLocaleString('en-IN');
+        pill.style.background = 'var(--success)';
+        pill.style.boxShadow = '0 2px 8px rgba(52, 199, 89, 0.2)';
+      } else {
+        if (historicalShortage > 0) {
+           pill.style.display = 'block';
+           pill.innerText = 'Shortage Cleared ✓';
+           pill.style.background = 'var(--success)';
+           pill.style.boxShadow = '0 2px 8px rgba(52, 199, 89, 0.2)';
+        } else {
+           pill.style.display = 'none';
+        }
       }
     }
     
@@ -751,6 +809,9 @@
         
         const receiptBtn = document.getElementById('btn-receipt-close');
         receiptBtn.innerText = "Close & Log Out";
+        
+        // Update historical shortage locally so we don't have to fetch immediately again
+        historicalShortage += (cash - deposit);
 
         localStorage.removeItem(`draft_${currentStore.id}`);
         document.getElementById('net-sale').value = '';
@@ -782,16 +843,6 @@
           <p style="color: var(--text-muted); font-size: 14px; margin-top: 12px; font-weight: 500;">Fetching monthly records...</p>
         </div>`;
       fetchLatestHistory();
-    }
-
-    async function fetchLatestHistory() {
-      const res = await apiCall({ action: 'history', storeId: currentStore.id });
-      if (res.success) {
-        preloadedHistory = res.history;
-      }
-      if (document.getElementById('history-modal').classList.contains('active')) {
-        renderHistoryData();
-      }
     }
 
     function renderHistoryData() {
@@ -884,7 +935,7 @@
 
     function logout() {
       localStorage.removeItem('franchise_session');
-      currentStore = {}; opsAllowedStores = []; opsUserObj = null; preloadedHistory = []; 
+      currentStore = {}; opsAllowedStores = []; opsUserObj = null; preloadedHistory = []; historicalShortage = 0;
       
       document.getElementById('form-section').style.display = 'none';
       document.getElementById('ops-selection-section').style.display = 'none';

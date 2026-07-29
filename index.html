@@ -55,11 +55,31 @@
     
     .shortage-pill { background: #FFF0F0; border: 1px solid rgba(255, 59, 48, 0.3); color: var(--danger); padding: 2px 6px; border-radius: 6px; font-size: 10px; font-weight: 700; display: none; }
     
-    .header-actions { display: flex; gap: 8px; align-items: center; }
-    .header-icon-btn { display: flex; justify-content: center; align-items: center; width: 32px; height: 32px; border-radius: 50%; background: var(--input-bg); color: var(--text-main); cursor: pointer; transition: 0.2s; }
-    .header-icon-btn:active { background: #E5E5EA; transform: scale(0.92); }
-    .header-icon-btn.danger { color: var(--danger); background: #FFF0F0; }
-    .header-icon-btn.danger:active { background: #FFE0E0; }
+    .header-switch { display: flex; align-items: center; gap: 4px; cursor: pointer; opacity: 0.85; transition: opacity 0.2s ease; padding: 4px 8px; border-radius: 8px; background: rgba(205, 26, 34, 0.08); }
+    .header-switch:active { opacity: 1; background: rgba(205, 26, 34, 0.15); }
+
+    /* ACTION BAR BELOW HEADER */
+    .action-bar {
+      display: none; /* Toggled by JS */
+      gap: 8px;
+      padding: 12px 16px 0 16px;
+      max-width: 480px;
+      margin: 0 auto;
+      width: 100%;
+      box-sizing: border-box;
+      justify-content: flex-end;
+    }
+    .action-pill {
+      display: flex; align-items: center; justify-content: center; gap: 4px;
+      padding: 6px 12px; font-size: 12.5px; font-weight: 600;
+      background: var(--card-bg); border: 1px solid var(--border-color);
+      border-radius: 8px; color: var(--text-main); cursor: pointer;
+      transition: all 0.15s; box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+    }
+    .action-pill:active { background: var(--input-bg); transform: scale(0.96); }
+    .action-pill .material-symbols-outlined { font-size: 16px; }
+    .action-pill.danger { color: var(--danger); border-color: rgba(255,59,48,0.2); background: #FFF4F4; }
+    .action-pill.danger:active { background: #FFE8E8; }
 
     .container { padding: 16px; max-width: 480px; margin: 0 auto; display: flex; flex-direction: column; gap: 16px; }
     .card { background: var(--card-bg); border-radius: 20px; padding: 24px; box-shadow: 0 4px 24px rgba(0,0,0,0.04); }
@@ -146,8 +166,6 @@
 
   <!-- DYNAMIC HEADER -->
   <div class="top-header" id="main-header">
-    
-    <!-- State 1: Logged Out -->
     <div id="header-logged-out" style="display:flex; justify-content:space-between; width:100%; align-items:center;">
       <div class="header-logo-small">MedPlus</div>
       <div class="header-time-block">
@@ -156,7 +174,6 @@
       </div>
     </div>
 
-    <!-- State 2: Logged In -->
     <div id="header-logged-in" style="display:none; justify-content:space-between; width:100%; align-items:center;">
       <div class="header-store-info">
         <span class="header-store-name" id="header-store-name">Store Name</span>
@@ -165,19 +182,20 @@
           <span class="shortage-pill" id="header-shortage-pill"></span>
         </div>
       </div>
-      <div class="header-actions">
-        <div class="header-icon-btn" id="head-btn-history" onclick="openHistoryModal()">
-          <span class="material-symbols-outlined" style="font-size:18px;">history</span>
-        </div>
-        <div class="header-icon-btn" id="head-btn-change" onclick="changeOpsStore()" style="display:none;">
-          <span class="material-symbols-outlined" style="font-size:18px;">swap_horiz</span>
-        </div>
-        <div class="header-icon-btn danger" onclick="logout()">
-          <span class="material-symbols-outlined" style="font-size:18px;">logout</span>
-        </div>
-      </div>
     </div>
-    
+  </div>
+
+  <!-- ACTION BAR (Placed just below header for Store details) -->
+  <div class="action-bar" id="action-bar">
+    <button class="action-pill" id="action-btn-history" onclick="openHistoryModal()">
+      <span class="material-symbols-outlined">history</span> History
+    </button>
+    <button class="action-pill" id="action-btn-change" onclick="changeOpsStore()" style="display:none;">
+      <span class="material-symbols-outlined">swap_horiz</span> Change Store
+    </button>
+    <button class="action-pill danger" onclick="logout()">
+      <span class="material-symbols-outlined">logout</span> Sign Out
+    </button>
   </div>
 
   <div class="container">
@@ -239,7 +257,7 @@
       <div class="error-msg" id="ops-select-error" style="margin-bottom: 16px;"></div>
       
       <button class="btn btn-primary" onclick="proceedToOpsStore()">View Store Data</button>
-      <button class="btn btn-gray-outline" onclick="logout()">Log Out</button>
+      <button class="btn btn-gray-outline" style="margin-top:10px;" onclick="logout()">Log Out</button>
     </div>
 
     <!-- FORM SECTION / OPS DASHBOARD -->
@@ -594,10 +612,7 @@
       document.getElementById('ops-role-display').innerText = opsUserObj.designation;
       document.getElementById('ops-store-input').value = '';
       document.getElementById('ops-select-error').style.display = 'none';
-      
-      // Update missing stores widget dynamically
       updateOpsStatusWidget();
-
       document.getElementById('ops-selection-section').style.display = 'block';
     }
 
@@ -644,23 +659,27 @@
         document.getElementById('header-store-id').innerText = currentStore.id;
         
         if (loginMode === 'ops') {
-          document.getElementById('head-btn-history').style.display = 'none';
-          document.getElementById('head-btn-change').style.display = 'flex';
+          document.getElementById('action-btn-history').style.display = 'none';
+          document.getElementById('action-btn-change').style.display = 'flex';
         } else {
-          document.getElementById('head-btn-history').style.display = 'flex';
-          document.getElementById('head-btn-change').style.display = 'none';
+          document.getElementById('action-btn-history').style.display = 'flex';
+          document.getElementById('action-btn-change').style.display = 'none';
         }
         
         document.getElementById('header-logged-in').style.display = 'flex';
+        document.getElementById('action-bar').style.display = 'flex';
       } else {
         document.getElementById('header-logged-in').style.display = 'none';
         document.getElementById('header-logged-out').style.display = 'flex';
         document.getElementById('header-shortage-pill').style.display = 'none';
+        document.getElementById('action-bar').style.display = 'none';
       }
     }
 
     function updateShortagePill(shortageAmount) {
       const pill = document.getElementById('header-shortage-pill');
+      // Only show if there is an actual positive shortage. 
+      // Do not show for 0 or excess (negative).
       if (shortageAmount > 0) {
         pill.style.display = 'inline-block';
         pill.innerText = '⚠️ Short: ₹ ' + shortageAmount.toLocaleString('en-IN');
@@ -682,7 +701,7 @@
         document.getElementById('input-card').style.display = 'block';
         document.getElementById('ops-summary-card').style.display = 'none';
         checkHolidayAlert();
-        fetchLatestHistory(true); // Silent fetch to calculate shortage
+        fetchLatestHistory(true); 
         document.getElementById('form-section').style.display = 'block';
         loadDraft();
       }
@@ -731,7 +750,6 @@
       if (pending > 0) document.getElementById('pending').value = '₹ ' + pending.toLocaleString('en-IN');
       else document.getElementById('pending').value = '';
       
-      // Update Header Pill Dynamically
       const projectedShortage = historicalShortage + c - d;
       updateShortagePill(projectedShortage);
     }
@@ -751,11 +769,7 @@
         document.getElementById('reason').value = data.reason || '';
         calculatePending();
       } else {
-        document.getElementById('net-sale').value = '';
-        document.getElementById('cash').value = '';
-        document.getElementById('deposit').value = '';
-        document.getElementById('pending').value = '';
-        document.getElementById('reason').value = '';
+        document.getElementById('net-sale').value = ''; document.getElementById('cash').value = ''; document.getElementById('deposit').value = ''; document.getElementById('pending').value = ''; document.getElementById('reason').value = '';
       }
     }
 

@@ -50,7 +50,7 @@
     }
 
     /* --------------------------------------------------------------------
-       CORE MOBILE STYLES (Default base layer)
+       MOBILE-FIRST DESIGN (Default base layer)
        -------------------------------------------------------------------- */
     .top-header { background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; border-bottom: 0.5px solid var(--border-color); box-shadow: 0 4px 16px rgba(0,0,0,0.03); min-height: 44px; }
     .header-logo-small { font-weight: 800; font-size: 18px; color: var(--med-primary); letter-spacing: -0.5px;}
@@ -124,7 +124,7 @@
 
     .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(5px); display: flex; justify-content: center; align-items: flex-end; z-index: 1000; opacity: 0; visibility: hidden; transition: opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1); }
     .modal-overlay.active { opacity: 1; visibility: visible; }
-    .modal-content { background: var(--bg-color); padding: 20px; border-radius: 24px 24px 0 0; width: 100%; max-width: 480px; max-height: 88vh; overflow-y: auto; box-shadow: 0 -10px 25px rgba(0,0,0,0.1); transform: translateY(100%); transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); box-sizing: border-box; }
+    .modal-content { background: var(--bg-color); padding: 20px; border-radius: 24px 24px 0 0; width: 100%; max-width: 480px; max-height: 88vh; overflow-y: auto; box-shadow: 0 -10px 25px rgba(0,0,0,0.1); transform: translateY(100%); transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1); box-sizing: border-box; }
     .modal-overlay.active .modal-content { transform: translateY(0); }
     .modal-pull { width: 40px; height: 5px; background: #C7C7CC; border-radius: 10px; margin: 0 auto 16px auto; }
     
@@ -154,74 +154,81 @@
     .spinner { border: 2.5px solid rgba(255,255,255,0.3); border-top: 2.5px solid white; border-radius: 50%; width: 20px; height: 20px; animation: spin 0.8s linear infinite; display: none; }
     .spinner-dark { border-color: rgba(205, 26, 34, 0.2); border-top-color: var(--med-primary); width: 24px; height: 24px; border-width: 3px; display: inline-block; }
     @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    @keyframes fadeInSlide { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
     /* --------------------------------------------------------------------
        EXTRAORDINARY DESKTOP UPGRADE (min-width: 850px)
        -------------------------------------------------------------------- */
     @media (min-width: 850px) {
       body {
-        background-color: #F0F2F5;
+        background-color: #E8EBF2;
         background-image: 
-          radial-gradient(circle at 10% 20%, rgba(205, 26, 34, 0.04) 0%, transparent 40%),
-          radial-gradient(circle at 90% 80%, rgba(68, 185, 73, 0.04) 0%, transparent 40%);
+          radial-gradient(circle at 15% 10%, rgba(205, 26, 34, 0.05) 0%, transparent 40%),
+          radial-gradient(circle at 85% 90%, rgba(68, 185, 73, 0.05) 0%, transparent 40%);
         background-attachment: fixed;
       }
       
       .mobile-only { display: none !important; }
       .desktop-only { display: flex !important; }
 
-      .top-header { padding: 16px 40px; box-shadow: 0 2px 20px rgba(0,0,0,0.02); }
-      .header-logo-small { font-size: 24px; font-weight: 900; }
-      .header-time-block #live-time { font-size: 16px; }
+      /* Remove mobile top header on desktop */
+      #main-header { display: none !important; }
+      #action-bar { display: none !important; }
 
-      .container { max-width: 1100px; padding: 60px 24px; gap: 40px; }
+      .container { max-width: 1200px; padding: 40px 24px; gap: 40px; align-items: center; justify-content: center; min-height: 100vh;}
       
       .card { 
         border-radius: 32px; 
-        box-shadow: 0 24px 48px -12px rgba(0,0,0,0.08), inset 0 1px 1px rgba(255,255,255,0.8); 
+        box-shadow: 0 32px 64px -16px rgba(0,0,0,0.08), inset 0 1px 2px rgba(255,255,255,0.9); 
         padding: 48px;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(20px);
+        animation: fadeInSlide 0.4s ease-out forwards;
       }
       
-      input, textarea, select { border-radius: 16px; padding: 18px 20px; border: 2px solid transparent; }
-      input:focus, textarea:focus { background: #FFFFFF; border-color: rgba(205, 26, 34, 0.3); box-shadow: 0 0 0 4px rgba(205, 26, 34, 0.08), inset 0 2px 4px rgba(0,0,0,0.01); }
+      input, textarea, select { border-radius: 16px; padding: 18px 20px; border: 2px solid transparent; background: #F4F5F8; transition: all 0.2s;}
+      input:focus, textarea:focus { background: #FFFFFF; border-color: rgba(205, 26, 34, 0.4); box-shadow: 0 0 0 4px rgba(205, 26, 34, 0.1), inset 0 2px 4px rgba(0,0,0,0.02); }
       
       .btn { border-radius: 16px; padding: 20px; font-size: 17px; }
-      .btn-primary { background: linear-gradient(180deg, #E6202A 0%, #CD1A22 100%); box-shadow: 0 8px 16px rgba(205, 26, 34, 0.25), inset 0 1px 1px rgba(255,255,255,0.3); border: 1px solid #A8151B; }
-      .btn-primary:active { box-shadow: 0 2px 4px rgba(205, 26, 34, 0.2), inset 0 2px 4px rgba(0,0,0,0.2); transform: translateY(1px); }
-      .btn-primary:hover { filter: brightness(1.05); transform: translateY(-2px); }
+      .btn-primary { background: linear-gradient(135deg, #DF2029 0%, #B01017 100%); box-shadow: 0 8px 24px rgba(205, 26, 34, 0.3), inset 0 1px 1px rgba(255,255,255,0.3); border: 1px solid #A8151B; transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); }
+      .btn-primary:active { box-shadow: 0 2px 8px rgba(205, 26, 34, 0.2); transform: scale(0.98); }
+      .btn-primary:hover { filter: brightness(1.05); transform: translateY(-2px); box-shadow: 0 12px 28px rgba(205, 26, 34, 0.35); }
 
-      /* Desktop Login Grid */
+      /* Desktop Login Layout */
       .desktop-login-wrapper {
-        display: grid; grid-template-columns: 1fr 1fr; align-items: center; padding: 0 !important; overflow: hidden;
+        display: grid; grid-template-columns: 1fr 1fr; padding: 0 !important; overflow: hidden; width: 1000px; max-width: 100%;
+        box-shadow: 0 40px 80px -20px rgba(0,0,0,0.15);
       }
       .login-left {
-        background: linear-gradient(145deg, #CD1A22, #A8151B); padding: 80px 60px; color: white; height: 100%; display: flex; flex-direction: column; justify-content: center;
+        background: linear-gradient(145deg, #D41A23, #9A0E14); padding: 60px; color: white; height: 100%; display: flex; flex-direction: column; justify-content: center; position: relative; overflow: hidden;
       }
-      .login-left .brand-logo { color: white; justify-content: flex-start; font-size: 56px; margin-bottom: 24px; text-shadow: 0 4px 12px rgba(0,0,0,0.2);}
-      .login-left h2 { color: white; font-size: 36px; margin-bottom: 16px; line-height: 1.2; letter-spacing: -1px;}
-      .login-left p { color: rgba(255,255,255,0.8); font-size: 18px; }
+      .login-left::after { content: ''; position: absolute; width: 400px; height: 400px; background: rgba(255,255,255,0.05); border-radius: 50%; top: -100px; right: -100px; }
+      .login-left .brand-logo { color: white; justify-content: flex-start; font-size: 64px; margin-bottom: 24px; text-shadow: 0 4px 12px rgba(0,0,0,0.2); z-index: 1;}
+      .login-left h2 { color: white; font-size: 38px; margin-bottom: 16px; line-height: 1.2; letter-spacing: -1px; z-index: 1;}
+      .login-left p { color: rgba(255,255,255,0.9); font-size: 18px; line-height: 1.5; font-weight: 500; z-index: 1;}
       
-      .login-right { padding: 60px; }
+      .login-right { padding: 60px; background: #FFFFFF; display: flex; flex-direction: column; justify-content: center;}
       .login-right .toggle-wrapper { width: 100%; margin-bottom: 40px; }
-      .login-right .toggle-label { width: 100%; height: 56px; border-radius: 28px; }
+      .login-right .toggle-label { width: 100%; height: 56px; border-radius: 28px; background: #F0F2F5;}
       .login-right .toggle-slider { border-radius: 24px; height: calc(100% - 8px); }
       .login-right .toggle-option { font-size: 15px; }
 
-      /* Desktop Main App Layout */
-      .dashboard-grid {
-        display: grid; grid-template-columns: 350px 1fr; gap: 40px; align-items: start;
+      /* Desktop App Dashboard */
+      .dashboard-layout {
+        display: grid; grid-template-columns: 320px 1fr; gap: 32px; width: 100%; align-items: start;
       }
 
       /* Desktop Sidebar */
       .desktop-sidebar {
-        display: flex !important; flex-direction: column; gap: 24px; position: sticky; top: 120px;
+        display: flex !important; flex-direction: column; gap: 24px; position: sticky; top: 40px;
       }
       .sidebar-card {
-        background: var(--card-bg); border-radius: 32px; padding: 32px; box-shadow: 0 24px 48px -12px rgba(0,0,0,0.06), inset 0 1px 1px rgba(255,255,255,0.8); text-align: center;
+        background: var(--card-bg); border-radius: 32px; padding: 40px 32px; box-shadow: 0 24px 48px -12px rgba(0,0,0,0.06), inset 0 1px 1px rgba(255,255,255,0.8); text-align: center;
       }
-      .sidebar-store-name { font-size: 24px; font-weight: 800; color: var(--text-main); margin-bottom: 4px; line-height: 1.2;}
-      .sidebar-store-id { font-size: 14px; font-weight: 700; color: var(--med-primary); margin-bottom: 16px;}
-      .sidebar-address { display: inline-flex; align-items: center; gap: 6px; background: var(--input-bg); padding: 8px 16px; border-radius: 12px; font-size: 12.5px; font-weight: 600; color: var(--text-muted); text-align: left; line-height: 1.4; border: 1px solid var(--border-color);}
+      .sidebar-store-name { font-size: 26px; font-weight: 900; color: var(--text-main); margin-bottom: 8px; line-height: 1.1; letter-spacing: -0.5px;}
+      .sidebar-store-id { font-size: 15px; font-weight: 800; color: var(--med-primary); margin-bottom: 24px;}
+      .sidebar-address { display: inline-flex; align-items: center; gap: 8px; background: var(--input-bg); padding: 12px 16px; border-radius: 14px; font-size: 13.5px; font-weight: 600; color: var(--text-muted); text-align: left; line-height: 1.4; border: 1px solid var(--border-color); width: 100%; box-sizing: border-box;}
+      
       .sidebar-btn { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 18px; border-radius: 16px; font-size: 15px; font-weight: 700; cursor: pointer; transition: all 0.2s; border: 1.5px solid var(--border-color); background: var(--card-bg); color: var(--text-main); box-shadow: 0 4px 12px rgba(0,0,0,0.02);}
       .sidebar-btn:hover { background: var(--input-bg); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.06); }
       .sidebar-btn:active { transform: translateY(0); }
@@ -231,32 +238,36 @@
       .desktop-grid-row { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
       
       /* Modals for Desktop */
-      .modal-overlay { align-items: center; padding: 40px; }
-      .modal-content { max-width: 800px; transform: scale(0.95) !important; opacity: 0; padding: 48px; border-radius: 32px; max-height: 85vh; }
-      .modal-overlay.active .modal-content { transform: scale(1) !important; opacity: 1; }
+      .modal-overlay { align-items: center; padding: 40px; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(10px); }
+      .modal-content { max-width: 900px; transform: scale(0.95) !important; opacity: 0; padding: 48px; border-radius: 32px; max-height: 85vh; box-shadow: 0 40px 80px rgba(0,0,0,0.2); }
+      .modal-overlay.active .modal-content { transform: scale(1) !important; opacity: 1; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
       .modal-pull { display: none; }
-      .sticky-header { padding: 48px 48px 24px 48px; margin: -48px -48px 24px -48px; top: -48px; border-radius: 32px 32px 0 0; }
-      .sticky-footer { padding: 24px 48px 48px 48px; margin: 24px -48px -48px -48px; bottom: -48px; border-radius: 0 0 32px 32px; }
+      .sticky-header { padding: 48px 48px 24px 48px; margin: -48px -48px 24px -48px; top: -48px; border-radius: 32px 32px 0 0; background: rgba(255,255,255,0.95); backdrop-filter: blur(10px); }
+      .sticky-footer { padding: 24px 48px 48px 48px; margin: 24px -48px -48px -48px; bottom: -48px; border-radius: 0 0 32px 32px; background: rgba(255,255,255,0.95); backdrop-filter: blur(10px); }
 
-      /* Desktop History View */
-      .history-card { display: flex; align-items: center; justify-content: space-between; padding: 24px 32px; transition: transform 0.2s; border-radius: 20px;}
-      .history-card:hover { transform: scale(1.02); box-shadow: 0 12px 32px rgba(0,0,0,0.06); }
-      .hist-header { border-bottom: none; padding-bottom: 0; margin-bottom: 0; flex-direction: column; align-items: flex-start; gap: 6px; width: 160px; }
-      .hist-row { margin-bottom: 0; flex-direction: column; align-items: flex-end; gap: 6px; flex: 1; text-align: right; }
-      .hist-label { font-size: 11px; letter-spacing: 0.5px; }
-      .hist-val { font-size: 17px; }
+      /* Desktop History Data Table Look */
+      .history-card { 
+        display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; align-items: center; 
+        padding: 20px 32px; transition: transform 0.2s; border-radius: 16px; border: 1px solid var(--border-color); background: #FFFFFF;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.02); margin-bottom: 16px;
+      }
+      .history-card:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(0,0,0,0.06); }
+      .hist-header { border-bottom: none; padding-bottom: 0; margin-bottom: 0; flex-direction: column; align-items: flex-start; gap: 4px; width: auto; }
+      .hist-row { margin-bottom: 0; flex-direction: column; align-items: flex-end; gap: 4px; flex: 1; text-align: right; }
+      .hist-label { font-size: 11.5px; letter-spacing: 0.5px; font-weight: 700; text-transform: uppercase;}
+      .hist-val { font-size: 18px; }
 
       .summary-pills-container { gap: 24px; }
-      .summary-pill { padding: 24px; border-radius: 20px; box-shadow: 0 8px 24px rgba(0,0,0,0.03); }
+      .summary-pill { padding: 24px; border-radius: 20px; box-shadow: 0 8px 24px rgba(0,0,0,0.03); border: none; background: #F8F9FA;}
       .summary-pill-title { font-size: 12px; margin-bottom: 8px; }
-      .summary-pill-value { font-size: 24px; }
+      .summary-pill-value { font-size: 28px; }
     }
   </style>
 </head>
 <body>
 
-  <!-- DYNAMIC HEADER -->
-  <div class="top-header" id="main-header">
+  <!-- MOBILE DYNAMIC HEADER -->
+  <div class="top-header mobile-only" id="main-header">
     <div id="header-logged-out" style="display:flex; justify-content:space-between; width:100%; align-items:center;">
       <div class="header-logo-small">MedPlus</div>
       <div class="header-time-block">
@@ -265,7 +276,7 @@
       </div>
     </div>
 
-    <div id="header-logged-in" class="mobile-only" style="display:none; justify-content:space-between; width:100%; align-items:center;">
+    <div id="header-logged-in" style="display:none; justify-content:space-between; width:100%; align-items:center;">
       <div class="header-store-info">
         <span class="header-store-name" id="header-store-name">Store Name</span>
         <div class="header-store-meta">
@@ -280,7 +291,7 @@
     </div>
   </div>
 
-  <!-- ACTION BAR (Mobile only) -->
+  <!-- MOBILE ACTION BAR -->
   <div class="action-bar mobile-only" id="action-bar">
     <button class="action-pill" id="action-btn-history" onclick="openHistoryModal()">
       <span class="material-symbols-outlined">history</span> History
@@ -295,17 +306,26 @@
 
   <div class="container">
     
+    <!-- DESKTOP CLOCK (Visible only on Desktop Login) -->
+    <div class="desktop-only" id="desktop-clock" style="position: absolute; top: 40px; right: 40px; text-align: right; color: var(--text-muted);">
+      <div id="desk-live-date" style="font-size:14px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;"></div>
+      <div id="desk-live-time" style="font-size:24px; font-weight:900; letter-spacing: -1px; color: var(--text-main);"></div>
+    </div>
+
     <!-- LOGIN SECTION -->
     <div class="card desktop-login-wrapper" id="login-section">
+      <!-- Desktop Left Branding -->
       <div class="login-left desktop-only">
         <div class="brand-logo">MedPlus</div>
         <h2>Franchise Deposit<br>Tracker</h2>
         <p>Seamlessly manage daily deposits and track historical shortages with enterprise-grade security.</p>
       </div>
-      <div class="login-right" style="text-align: center; width: 100%;">
+      
+      <!-- Login Form Area -->
+      <div class="login-right">
         <div class="brand-logo mobile-only">MedPlus</div>
         <h2 class="mobile-only">Franchise Deposit Tracker</h2>
-        <p class="sub" id="login-subtitle">Sign in with your store credentials</p>
+        <p class="sub mobile-only" id="login-subtitle">Sign in with your store credentials</p>
         
         <div class="toggle-wrapper">
           <input type="checkbox" id="mode-toggle" class="toggle-checkbox" onchange="handleToggleChange(this)">
@@ -316,30 +336,34 @@
           </label>
         </div>
         
-        <div class="form-group">
-          <input type="text" id="login-id" placeholder="Store ID (e.g. INAP001)" value="INAP" autocomplete="off" list="store-suggestions" oninput="this.value = this.value.toUpperCase().replace(/\s/g, '')">
-          <datalist id="store-suggestions"></datalist>
+        <div class="desktop-grid-row">
+          <div class="form-group" style="width: 100%;">
+            <input type="text" id="login-id" placeholder="Store ID (e.g. INAP001)" value="INAP" autocomplete="off" list="store-suggestions" oninput="this.value = this.value.toUpperCase().replace(/\s/g, '')">
+            <datalist id="store-suggestions"></datalist>
+          </div>
         </div>
-        <div class="form-group">
-          <input type="tel" id="login-mobile" placeholder="Registered Mobile Number" autocomplete="tel" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+        <div class="desktop-grid-row">
+          <div class="form-group" style="width: 100%;">
+            <input type="tel" id="login-mobile" placeholder="Registered Mobile Number" autocomplete="tel" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+          </div>
         </div>
         
         <div class="error-msg" id="login-error"></div>
         
-        <button class="btn btn-primary" id="login-btn" onclick="login()">
+        <button class="btn btn-primary" id="login-btn" onclick="login()" style="margin-top: 16px;">
           <span class="spinner" id="login-spinner"></span>
-          <span id="login-btn-content" style="display:flex; align-items:center; gap:6px;">
-            <span class="material-symbols-outlined">lock</span> <span id="login-btn-text">Sign In</span>
+          <span id="login-btn-content" style="display:flex; align-items:center; justify-content:center; gap:8px;">
+            <span class="material-symbols-outlined">lock</span> <span id="login-btn-text">Secure Sign In</span>
           </span>
         </button>
       </div>
     </div>
 
     <!-- OPS TEAM: STORE SELECTION -->
-    <div class="card" id="ops-selection-section" style="text-align: center;">
+    <div class="card" id="ops-selection-section" style="text-align: center; max-width: 600px; margin: 0 auto; width: 100%;">
       <div class="brand-logo mobile-only" style="font-size: 28px; margin-bottom: 10px;">MedPlus</div>
-      <h3 style="margin:0 0 4px 0; font-size: 22px;">Welcome, <span id="ops-name-display" style="color: var(--med-primary);"></span></h3>
-      <p class="sub" style="margin-bottom: 24px;" id="ops-role-display"></p>
+      <h3 style="margin:0 0 8px 0; font-size: 28px; font-weight: 900;">Welcome, <span id="ops-name-display" style="color: var(--med-primary);"></span></h3>
+      <p class="sub" style="margin-bottom: 32px; font-size: 16px;" id="ops-role-display"></p>
       
       <div class="status-widget" id="ops-status-widget">
         <div class="status-icon"><span class="material-symbols-outlined">analytics</span></div>
@@ -356,7 +380,7 @@
       
       <div class="error-msg" id="ops-select-error" style="margin-bottom: 16px;"></div>
       
-      <div class="desktop-grid-row" style="margin-top:24px;">
+      <div class="desktop-grid-row" style="margin-top:32px; gap: 16px;">
         <button class="btn btn-gray-outline" onclick="logout()">Log Out</button>
         <button class="btn btn-primary" onclick="proceedToOpsStore()">View Store Data</button>
       </div>
@@ -370,13 +394,13 @@
         <div class="sidebar-card">
           <div class="sidebar-store-name" id="desk-store-name">Store Name</div>
           <div class="sidebar-store-id" id="desk-store-id">ID</div>
-          <div class="sidebar-address" style="margin-bottom: 20px;">
-            <span class="material-symbols-outlined" style="font-size: 16px;">location_on</span>
+          <div class="sidebar-address" style="margin-bottom: 24px;">
+            <span class="material-symbols-outlined" style="font-size: 18px; color: var(--med-primary);">location_on</span>
             <span id="desk-store-address"></span>
           </div>
-          <div class="shortage-pill" id="desk-shortage-pill" style="margin:0 auto 20px auto; font-size: 12px; padding: 6px 12px; border-radius: 12px;"></div>
+          <div class="shortage-pill" id="desk-shortage-pill" style="margin:0 auto 24px auto; font-size: 13.5px; padding: 8px 16px; border-radius: 12px;"></div>
           
-          <div style="display:flex; flex-direction:column; gap:12px; margin-top: 16px;">
+          <div style="display:flex; flex-direction:column; gap:16px; margin-top: 16px;">
             <button class="sidebar-btn" id="desk-btn-history" onclick="openHistoryModal()">
               <span class="material-symbols-outlined">history</span> View History
             </button>
@@ -384,23 +408,23 @@
               <span class="material-symbols-outlined">swap_horiz</span> Change Store
             </button>
             <button class="sidebar-btn danger" onclick="logout()">
-              <span class="material-symbols-outlined">logout</span> Sign Out
+              <span class="material-symbols-outlined">logout</span> Secure Sign Out
             </button>
           </div>
         </div>
       </div>
 
       <!-- MAIN CONTENT AREA -->
-      <div class="dashboard-main">
+      <div class="dashboard-main" style="width: 100%;">
         
         <!-- OPS DASHBOARD -->
         <div class="card" id="ops-summary-card" style="display:none;">
-          <h3 style="margin-top:0; margin-bottom: 16px; font-size: 18.5px; font-weight: 800;">Monthly Overview</h3>
+          <h3 style="margin-top:0; margin-bottom: 24px; font-size: 22px; font-weight: 900;">Monthly Overview</h3>
           <div id="ops-summary-content">
-            <div style="text-align:center; padding: 20px;"><div class="spinner spinner-dark"></div></div>
+            <div style="text-align:center; padding: 40px;"><div class="spinner spinner-dark" style="width: 32px; height: 32px;"></div></div>
           </div>
           
-          <h3 style="margin-top:32px; margin-bottom: 16px; font-size: 18.5px; font-weight: 800; border-top: 1px solid var(--border-color); padding-top: 24px;">Detailed History</h3>
+          <h3 style="margin-top:40px; margin-bottom: 24px; font-size: 22px; font-weight: 900; border-top: 1px solid var(--border-color); padding-top: 32px;">Detailed History</h3>
           <div id="ops-detailed-history"></div>
         </div>
 
@@ -421,11 +445,11 @@
 
           <div class="desktop-grid-row">
             <div class="form-group">
-              <label>Cash To be deposited (as per the POS)</label>
+              <label>Cash To be deposited</label>
               <input type="text" inputmode="numeric" id="cash" placeholder="₹ 0" oninput="formatCurrencyInput(this); calculatePending(); saveDraft();">
             </div>
             <div class="form-group">
-              <label>Payment done to Ritecure Account</label>
+              <label>Payment done to Ritecure</label>
               <input type="text" inputmode="numeric" id="deposit" placeholder="₹ 0" oninput="formatCurrencyInput(this); calculatePending(); saveDraft();">
             </div>
           </div>
@@ -441,7 +465,7 @@
 
           <div class="error-msg" id="form-error"></div>
           
-          <button class="btn btn-primary" id="submit-btn" onclick="submitForm()" style="margin-top: 24px;">
+          <button class="btn btn-primary" id="submit-btn" onclick="submitForm()" style="margin-top: 32px;">
             <span class="spinner" id="submit-spinner"></span>
             <span id="submit-text">Submit Daily Deposit</span>
           </button>
@@ -457,8 +481,8 @@
           <div class="modal-pull"></div>
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 24px;">
             <div>
-              <h2 style="margin:0; font-size: 24px; font-weight: 900;">Monthly History</h2>
-              <p class="sub" style="margin-bottom:0; font-size: 14px;" id="history-month-label">Current Month Summary</p>
+              <h2 style="margin:0; font-size: 28px; font-weight: 900; letter-spacing: -1px;">Monthly History</h2>
+              <p class="sub" style="margin-bottom:0; font-size: 15px;" id="history-month-label">Current Month Summary</p>
             </div>
           </div>
           
@@ -478,46 +502,37 @@
           </div>
         </div>
 
-        <div id="history-content"></div>
+        <div id="history-content" style="margin-top: 16px;"></div>
         
         <div class="sticky-footer">
-          <button class="btn btn-primary" style="background: #E5E5EA; color: var(--text-main); margin: 0; box-shadow: none;" onclick="closeHistoryModal(event, true)">Close</button>
+          <button class="btn btn-primary" style="background: var(--input-bg); color: var(--text-main); margin: 0; box-shadow: none; border: 1px solid var(--border-color);" onclick="closeHistoryModal(event, true)">Close Window</button>
         </div>
       </div>
     </div>
     
     <!-- SUBMISSION RECEIPT MODAL -->
     <div class="modal-overlay" id="receipt-modal" onclick="closeReceiptAndLogout()">
-      <div class="modal-content" onclick="event.stopPropagation()" style="text-align: center;">
+      <div class="modal-content" onclick="event.stopPropagation()" style="text-align: center; max-width: 500px;">
         <div class="modal-pull"></div>
         
-        <div class="success-icon">✓</div>
-        <div class="receipt-highlight">Your submission has been recorded safely.</div>
+        <div class="success-icon" style="width: 80px; height: 80px; font-size: 40px; margin-bottom: 24px;">✓</div>
+        <div class="receipt-highlight" style="font-size: 24px;">Submission Recorded</div>
+        <p style="color: var(--text-muted); margin-bottom: 32px; font-weight: 500;">Your daily deposit has been securely synced to the master database.</p>
         
-        <div class="history-card" style="text-align: left; background: var(--input-bg);">
-          <div class="hist-header">
+        <div class="history-card" style="text-align: left; background: var(--input-bg); display: block; border-radius: 20px;">
+          <div class="hist-header" style="flex-direction: row; border-bottom: 1px solid var(--border-color); padding-bottom: 16px; margin-bottom: 16px; width: 100%;">
             <span class="hist-date" id="receipt-date">--</span>
             <span class="hist-time" id="receipt-time">--</span>
           </div>
-          <div class="hist-row">
-            <span class="hist-label">Store ID</span>
-            <span class="hist-val" id="receipt-store">--</span>
-          </div>
-          <div class="hist-row">
-            <span class="hist-label">Net Sale</span>
-            <span class="hist-val" id="receipt-netsale">--</span>
-          </div>
-          <div class="hist-row">
-            <span class="hist-label">Payment Done</span>
-            <span class="hist-val" id="receipt-deposit">--</span>
-          </div>
-          <div class="hist-row" style="margin-bottom: 0;">
-            <span class="hist-label">Pending</span>
-            <span class="hist-val" id="receipt-pending">--</span>
+          <div style="display:flex; flex-direction: column; gap: 12px;">
+            <div class="hist-row" style="flex-direction: row;"><span class="hist-label">Store ID</span><span class="hist-val" id="receipt-store">--</span></div>
+            <div class="hist-row" style="flex-direction: row;"><span class="hist-label">Net Sale</span><span class="hist-val" id="receipt-netsale">--</span></div>
+            <div class="hist-row" style="flex-direction: row;"><span class="hist-label">Payment Done</span><span class="hist-val" id="receipt-deposit">--</span></div>
+            <div class="hist-row" style="flex-direction: row; margin-bottom: 0;"><span class="hist-label">Pending</span><span class="hist-val" id="receipt-pending">--</span></div>
           </div>
         </div>
         
-        <button class="btn btn-primary" id="btn-receipt-close" style="margin-top: 24px; background: var(--success); border-color: var(--success); box-shadow: 0 8px 16px rgba(52, 199, 89, 0.2);" onclick="closeReceiptAndLogout()">Close & Log Out</button>
+        <button class="btn btn-primary" id="btn-receipt-close" style="margin-top: 32px; background: var(--success); border: none; box-shadow: 0 8px 24px rgba(52, 199, 89, 0.25);" onclick="closeReceiptAndLogout()">Close & Secure Sign Out</button>
       </div>
     </div>
 
@@ -552,6 +567,7 @@
         }
         
         document.getElementById('login-section').style.display = 'none';
+        document.getElementById('desktop-clock').style.display = 'none'; // Hide big clock when logged in
         
         if (loginMode === 'store') {
           setupFormScreen();
@@ -619,7 +635,7 @@
         filtered.forEach(s => {
           const div = document.createElement('div');
           div.className = 'dropdown-item';
-          div.innerHTML = `<strong>${s.id}</strong> - ${s.name}<br><span style="font-size: 12px; color: var(--text-muted);"><span class="material-symbols-outlined" style="font-size: 11px; vertical-align: middle;">location_on</span> ${s.address}</span>`;
+          div.innerHTML = `<strong>${s.id}</strong> - ${s.name}<br><span style="font-size: 12.5px; color: var(--text-muted); display:inline-flex; align-items:center; gap:4px; margin-top:4px;"><span class="material-symbols-outlined" style="font-size: 13px;">location_on</span> ${s.address}</span>`;
           div.onclick = () => { document.getElementById('ops-store-input').value = s.id; listEl.style.display = 'none'; };
           listEl.appendChild(div);
         });
@@ -669,8 +685,17 @@
 
     setInterval(() => {
       const now = new Date();
-      document.getElementById('live-date').innerText = now.toLocaleDateString('en-IN', { weekday: 'long', day: '2-digit', month: 'short', year: 'numeric' });
-      document.getElementById('live-time').innerText = now.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+      const dateStr = now.toLocaleDateString('en-IN', { weekday: 'long', day: '2-digit', month: 'short', year: 'numeric' });
+      const timeStr = now.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+      
+      document.getElementById('live-date').innerText = dateStr;
+      document.getElementById('live-time').innerText = timeStr;
+      
+      // Desktop specific clock
+      const deskDate = document.getElementById('desk-live-date');
+      const deskTime = document.getElementById('desk-live-time');
+      if(deskDate) deskDate.innerText = dateStr;
+      if(deskTime) deskTime.innerText = timeStr;
       
       const yesterday = new Date(now); yesterday.setDate(now.getDate() - 1);
       const yestDateString = yesterday.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
@@ -728,6 +753,7 @@
       
       if (res.success) {
         document.getElementById('login-section').style.display = 'none';
+        document.getElementById('desktop-clock').style.display = 'none';
         
         if (loginMode === 'store') {
           currentStore = { id: id, name: res.storeName, address: res.address, mapping: res.mapping };
@@ -787,6 +813,7 @@
     function changeOpsStore() {
       currentStore = {}; saveSession();
       updateHeaderState(false);
+      document.getElementById('form-section').style.display = 'none';
       showOpsSelection();
     }
 
@@ -794,12 +821,10 @@
       if (isLoggedIn) {
         document.getElementById('header-logged-out').style.display = 'none';
         
-        // Mobile Top Header updates
         document.getElementById('header-store-name').innerText = currentStore.name;
         document.getElementById('header-store-id').innerText = currentStore.id;
         document.getElementById('header-store-address').innerText = currentStore.address;
         
-        // Desktop Sidebar updates
         if(document.getElementById('desk-store-name')){
           document.getElementById('desk-store-name').innerText = currentStore.name;
           document.getElementById('desk-store-id').innerText = currentStore.id;
@@ -820,14 +845,14 @@
         
         document.getElementById('header-logged-in').style.display = 'flex';
         document.getElementById('action-bar').style.display = 'flex';
-        document.getElementById('form-section').classList.add('dashboard-grid');
+        document.getElementById('form-section').classList.add('dashboard-layout');
       } else {
         document.getElementById('header-logged-in').style.display = 'none';
         document.getElementById('header-logged-out').style.display = 'flex';
         document.getElementById('header-shortage-pill').style.display = 'none';
         if(document.getElementById('desk-shortage-pill')) document.getElementById('desk-shortage-pill').style.display = 'none';
         document.getElementById('action-bar').style.display = 'none';
-        document.getElementById('form-section').classList.remove('dashboard-grid');
+        document.getElementById('form-section').classList.remove('dashboard-layout');
       }
     }
 
@@ -852,14 +877,14 @@
       if (loginMode === 'ops') {
         document.getElementById('input-card').style.display = 'none';
         document.getElementById('ops-summary-card').style.display = 'block';
-        document.getElementById('form-section').style.display = 'grid'; // Grid takes over on desktop
+        document.getElementById('form-section').style.display = 'grid'; 
         fetchAndRenderOpsSummary();
       } else {
         document.getElementById('input-card').style.display = 'block';
         document.getElementById('ops-summary-card').style.display = 'none';
         checkHolidayAlert();
         fetchLatestHistory(true); 
-        document.getElementById('form-section').style.display = 'grid'; // Grid takes over on desktop
+        document.getElementById('form-section').style.display = 'grid'; 
         loadDraft();
       }
     }
@@ -881,7 +906,7 @@
     }
 
     async function fetchAndRenderOpsSummary() {
-      document.getElementById('ops-summary-content').innerHTML = `<div style="text-align:center; padding: 20px;"><div class="spinner spinner-dark"></div></div>`;
+      document.getElementById('ops-summary-content').innerHTML = `<div style="text-align:center; padding: 40px;"><div class="spinner spinner-dark" style="width: 32px; height: 32px;"></div></div>`;
       document.getElementById('ops-detailed-history').innerHTML = '';
       
       const res = await apiCall({ action: 'history', storeId: currentStore.id });
@@ -980,7 +1005,7 @@
       const modal = document.getElementById('history-modal');
       modal.classList.add('active'); 
       document.getElementById('summary-pills').style.display = 'none';
-      document.getElementById('history-content').innerHTML = `<div style="text-align:center; padding: 40px 0;"><div class="spinner spinner-dark"></div><p style="color: var(--text-muted); font-size: 14px; margin-top: 12px; font-weight: 500;">Fetching monthly records...</p></div>`;
+      document.getElementById('history-content').innerHTML = `<div style="text-align:center; padding: 40px 0;"><div class="spinner spinner-dark" style="width:32px; height:32px; border-width:4px;"></div><p style="color: var(--text-muted); font-size: 15px; margin-top: 16px; font-weight: 600;">Fetching secure records...</p></div>`;
       fetchLatestHistory();
     }
 
@@ -1009,7 +1034,7 @@
           listHtml += `<div class="history-card"><div class="hist-header"><span class="hist-date">${fDate}</span><span class="hist-time">${fTime}</span></div><div class="hist-row"><span class="hist-label">To be Deposited</span><span class="hist-val">₹${toDepVal.toLocaleString('en-IN')}</span></div><div class="hist-row"><span class="hist-label">Payment Done</span><span class="hist-val">₹${depVal.toLocaleString('en-IN')}</span></div><div class="hist-row"><span class="hist-label">Pending</span><span class="hist-val" style="color:${pendingColorClass}">₹${pendVal.toLocaleString('en-IN')}</span></div></div>`;
         });
       } else {
-        listHtml = `<div style="text-align:center; padding: 30px; color: var(--text-muted); font-weight: 500;">No submissions found for ${monthName}.</div>`;
+        listHtml = `<div style="text-align:center; padding: 40px; color: var(--text-muted); font-weight: 600; font-size: 16px;">No submissions found for ${monthName}.</div>`;
       }
 
       if (loginMode === 'ops') {
@@ -1043,7 +1068,10 @@
       updateHeaderState(false);
       document.getElementById('form-section').style.display = 'none';
       document.getElementById('ops-selection-section').style.display = 'none';
-      document.getElementById('login-section').style.display = 'grid'; // Maintain desktop grid
+      
+      document.getElementById('login-section').style.display = window.innerWidth >= 850 ? 'grid' : 'block';
+      document.getElementById('desktop-clock').style.display = window.innerWidth >= 850 ? 'block' : 'none';
+      
       document.getElementById('mode-toggle').checked = false;
       handleToggleChange(document.getElementById('mode-toggle'));
       document.getElementById('login-mobile').value = '';

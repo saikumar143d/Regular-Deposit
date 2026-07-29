@@ -7,8 +7,10 @@
   
   <link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiByeD0iMTYiIGZpbGw9IiNDRDFBMjIiLz48cmVjdCB4PSIxMiIgeT0iMTIiIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgcng9IjgiIGZpbGw9IiNGRkYiLz48cGF0aCBkPSJNMjggMjBoOHY4aDh2OGgtOHY4aC04di04aC04di04aDh6IiBmaWxsPSIjNDRCOTQ5Ii8+PC9zdmc+" type="image/svg+xml">
   
+  <!-- Fonts & Material Symbols -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
+  
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
   
   <style>
@@ -21,16 +23,18 @@
       --text-main: #1A1D20;
       --text-muted: #687076;
       --input-bg: #F0F3F5;
-      --border-color: rgba(0, 0, 0, 0.06);
+      --border-color: rgba(0, 0, 0, 0.08);
       --danger: #FF3B30;
       --success: #34C759;
-      --shadow-sm: 0 4px 12px rgba(0,0,0,0.03);
-      --shadow-md: 0 12px 24px rgba(0,0,0,0.05);
-      --shadow-lg: 0 24px 48px rgba(0,0,0,0.08);
     }
     
+    /* --------------------------------------------------------------------
+       GLOBAL NATIVE APP CONSTRAINTS
+       -------------------------------------------------------------------- */
+    * { box-sizing: border-box; }
+    
     html, body { 
-      font-family: "Inter", sans-serif; 
+      font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif; 
       background-color: var(--bg-color); 
       margin: 0; padding: 0; color: var(--text-main); 
       -webkit-font-smoothing: antialiased; 
@@ -38,86 +42,97 @@
     }
     input, textarea, select { user-select: auto; }
 
-    /* ------------------------------------------------------------------
-       MOBILE-FIRST BASE STYLES
-       ------------------------------------------------------------------ */
-    .top-header { background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(16px); padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; border-bottom: 1px solid var(--border-color); box-shadow: var(--shadow-sm); min-height: 48px; }
+    /* --------------------------------------------------------------------
+       MOBILE-FIRST STYLES (Applies to all screens initially)
+       -------------------------------------------------------------------- */
+    
+    /* HEADER */
+    .top-header { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; border-bottom: 1px solid var(--border-color); box-shadow: 0 4px 12px rgba(0,0,0,0.03); min-height: 52px; }
     .header-logo { font-weight: 900; font-size: 20px; color: var(--med-primary); letter-spacing: -0.5px;}
     .header-time-block { text-align: right; }
     
     .header-store-info { display: flex; flex-direction: column; gap: 4px; }
-    .header-store-name { font-size: 16px; font-weight: 800; color: var(--text-main); line-height: 1.1;}
-    .header-store-meta { display: flex; align-items: center; gap: 6px; font-size: 11.5px; color: var(--text-main); font-weight: 700;}
+    .header-store-name { font-size: 16px; font-weight: 800; color: var(--text-main); line-height: 1.1; letter-spacing: -0.2px;}
+    .header-store-meta { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; font-size: 11.5px; font-weight: 700;}
     
-    .shortage-pill { background: #FFF0F0; border: 1px solid rgba(255, 59, 48, 0.3); color: var(--danger); padding: 2px 8px; border-radius: 8px; font-size: 10.5px; font-weight: 800; display: none; align-items: center;}
+    .shortage-pill { background: #FFF0F0; border: 1px solid rgba(255, 59, 48, 0.2); color: var(--danger); padding: 2px 6px; border-radius: 6px; font-size: 10px; font-weight: 800; display: none; align-items: center;}
     .address-pill { display: inline-flex; align-items: center; gap: 3px; background: var(--input-bg); border: 1px solid var(--border-color); color: var(--text-muted); padding: 2px 8px; border-radius: 8px; font-size: 10.5px; font-weight: 600; max-width: 140px; }
     .address-text { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-    .action-bar-mobile { display: flex; gap: 8px; padding: 12px 16px 0 16px; justify-content: flex-end; }
-    .action-pill { display: flex; align-items: center; justify-content: center; gap: 6px; padding: 8px 14px; font-size: 13px; font-weight: 700; background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 12px; color: var(--text-main); cursor: pointer; transition: all 0.2s; box-shadow: var(--shadow-sm); }
-    .action-pill:active { background: var(--input-bg); transform: scale(0.96); }
-    .action-pill .material-symbols-outlined { font-size: 16px; }
-    .action-pill.danger { color: var(--danger); background: #FFF4F4; border-color: rgba(255,59,48,0.2); }
+    /* HEADER BUTTONS */
+    .header-actions { display: flex; gap: 8px; align-items: center; }
+    .header-icon-btn { display: flex; justify-content: center; align-items: center; width: 34px; height: 34px; border-radius: 10px; background: var(--input-bg); border: 1px solid var(--border-color); color: var(--text-main); cursor: pointer; transition: 0.2s; }
+    .header-icon-btn:active { background: #E5E5EA; transform: scale(0.92); }
+    .header-icon-btn.danger { color: var(--danger); background: #FFF4F4; border-color: rgba(255,59,48,0.2); }
+    
+    .header-btn-text { display: none; } /* Hidden on mobile */
 
-    .container { padding: 16px; max-width: 480px; margin: 0 auto; display: flex; flex-direction: column; gap: 16px; }
-    .card { background: var(--card-bg); border-radius: 24px; padding: 24px; box-shadow: var(--shadow-md); }
+    /* CONTAINERS & CARDS */
+    .container { padding: 16px; max-width: 480px; margin: 0 auto; display: flex; flex-direction: column; gap: 16px; align-items: center;}
+    .card { background: var(--card-bg); border-radius: 24px; padding: 24px; box-shadow: 0 8px 24px rgba(0,0,0,0.04); width: 100%; border: 1px solid #FFFFFF;}
     
-    .brand-logo-large { font-size: 38px; font-weight: 900; letter-spacing: -1.5px; color: var(--med-primary); margin-bottom: 8px; display: flex; justify-content: center; }
-    h2 { margin: 0 0 8px 0; font-size: 22px; font-weight: 800; letter-spacing: -0.5px;}
-    p.sub { color: var(--text-muted); margin: 0 0 24px 0; font-size: 14px; font-weight: 500;}
+    .brand-logo-large { font-size: 36px; font-weight: 900; letter-spacing: -1.5px; color: var(--med-primary); margin-bottom: 8px; display: flex; justify-content: center; text-shadow: 0 2px 8px rgba(205,26,34,0.15);}
+    h2 { margin: 0 0 8px 0; font-size: 22px; font-weight: 800; letter-spacing: -0.5px; text-align: center;}
+    p.sub { color: var(--text-muted); margin: 0 0 24px 0; font-size: 14.5px; font-weight: 500; text-align: center; line-height: 1.4;}
     
-    .toggle-wrapper { display: flex; justify-content: center; margin-bottom: 24px; }
+    /* TOGGLE SWITCH */
+    .toggle-wrapper { display: flex; justify-content: center; margin-bottom: 24px; width: 100%;}
     .toggle-checkbox { display: none; }
-    .toggle-label { position: relative; display: flex; align-items: center; width: 100%; max-width: 280px; height: 48px; background-color: var(--input-bg); border-radius: 24px; cursor: pointer; padding: 4px; box-sizing: border-box; border: 1px solid var(--border-color); }
+    .toggle-label { position: relative; display: flex; align-items: center; width: 100%; max-width: 280px; height: 48px; background-color: var(--input-bg); border-radius: 24px; cursor: pointer; padding: 4px; border: 1px solid var(--border-color); }
     .toggle-slider { position: absolute; top: 4px; left: 4px; width: calc(50% - 4px); height: calc(100% - 8px); background-color: #FFFFFF; border-radius: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); z-index: 0; }
     .toggle-checkbox:checked + .toggle-label .toggle-slider { transform: translateX(100%); }
-    .toggle-option { flex: 1; text-align: center; font-size: 14px; font-weight: 700; color: var(--text-muted); z-index: 1; transition: color 0.3s; }
+    .toggle-option { flex: 1; text-align: center; font-size: 13.5px; font-weight: 700; color: var(--text-muted); z-index: 1; transition: color 0.3s; }
     .toggle-checkbox:not(:checked) + .toggle-label .opt-store { color: var(--med-primary); }
     .toggle-checkbox:checked + .toggle-label .opt-ops { color: var(--med-primary); }
 
-    .form-group { margin-bottom: 16px; text-align: left;}
-    label { display: block; margin-bottom: 8px; font-size: 13.5px; font-weight: 700; color: var(--text-main); margin-left: 4px;}
-    input, textarea { width: 100%; padding: 16px 18px; border: 2px solid transparent; border-radius: 16px; font-size: 15px; box-sizing: border-box; transition: all 0.2s; background: var(--input-bg); color: var(--text-main); font-family: inherit; font-weight: 600;}
+    /* FORMS */
+    .form-group { margin-bottom: 16px; width: 100%; text-align: left;}
+    label { display: block; margin-bottom: 8px; font-size: 13px; font-weight: 700; color: var(--text-main); margin-left: 4px;}
+    input, textarea { width: 100%; padding: 14px 16px; border: 2px solid transparent; border-radius: 14px; font-size: 15px; transition: all 0.2s; background: var(--input-bg); color: var(--text-main); font-family: inherit; font-weight: 600; box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);}
     input::placeholder, textarea::placeholder { color: #A1A1A6; font-weight: 500;}
-    input:focus, textarea:focus { background: #FFFFFF; border-color: rgba(205, 26, 34, 0.3); box-shadow: 0 0 0 4px rgba(205, 26, 34, 0.08); outline: none;}
+    input:focus, textarea:focus { background: #FFFFFF; border-color: rgba(205, 26, 34, 0.4); box-shadow: 0 0 0 4px rgba(205, 26, 34, 0.08); outline: none;}
     input[readonly] { background: #E5E5EA; color: var(--text-muted); opacity: 0.8;}
 
-    .status-widget { background: #FFF8E1; border: 1px solid #FFC107; padding: 16px; border-radius: 16px; margin-bottom: 24px; display: flex; align-items: center; gap: 12px; text-align: left;}
-    .status-icon { background: #FFC107; color: #8F6000; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;}
-    .status-text { color: #8F6000; font-size: 13.5px; font-weight: 600; line-height: 1.4;}
-
-    .custom-dropdown { position: relative; }
-    .dropdown-list { position: absolute; top: 100%; left: 0; right: 0; background: white; border: 1px solid var(--border-color); border-radius: 16px; max-height: 240px; overflow-y: auto; box-shadow: var(--shadow-md); z-index: 50; display: none; text-align: left; margin-top: 8px;}
-    .dropdown-item { padding: 14px 18px; border-bottom: 1px solid var(--border-color); font-size: 14.5px; font-weight: 600; color: var(--text-main); cursor: pointer;}
-    .dropdown-item:active { background: var(--input-bg); }
-
-    .btn { width: 100%; padding: 16px; border-radius: 16px; border: none; font-size: 16px; font-weight: 800; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 8px; transition: all 0.2s; }
-    .btn-primary { background: linear-gradient(135deg, #DF2029 0%, #B01017 100%); color: white; margin-top: 10px; box-shadow: 0 6px 16px rgba(205, 26, 34, 0.25); }
+    /* BUTTONS */
+    .btn { width: 100%; padding: 16px; border-radius: 14px; border: none; font-size: 15.5px; font-weight: 800; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 8px; transition: all 0.2s; }
+    .btn-primary { background: linear-gradient(135deg, #DF2029 0%, #B01017 100%); color: white; margin-top: 8px; box-shadow: 0 8px 20px rgba(205, 26, 34, 0.25); border: 1px solid #A8151B;}
     .btn-primary:active { transform: scale(0.97); box-shadow: 0 2px 8px rgba(205, 26, 34, 0.2); }
     .btn-gray-outline { border: 2px solid var(--border-color); color: var(--text-main); background: transparent; padding: 14px;}
     .btn-gray-outline:active { background: var(--input-bg); }
 
-    .error-msg { color: var(--danger); font-size: 13.5px; margin-top: 8px; display: none; text-align: center; font-weight: 600; background: #FFF4F4; padding: 10px; border-radius: 12px;}
+    /* WIDGETS & DROPDOWNS */
+    .status-widget { background: #FFF8E1; border: 1px solid #FFC107; padding: 16px; border-radius: 16px; margin-bottom: 24px; display: flex; align-items: center; gap: 12px; text-align: left; width: 100%;}
+    .status-icon { background: #FFC107; color: #8F6000; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;}
+    .status-text { color: #8F6000; font-size: 13.5px; font-weight: 600; line-height: 1.4;}
+
+    .custom-dropdown { position: relative; width: 100%; }
+    .dropdown-list { position: absolute; top: 100%; left: 0; right: 0; background: white; border: 1px solid var(--border-color); border-radius: 16px; max-height: 240px; overflow-y: auto; box-shadow: var(--shadow-lg); z-index: 50; display: none; text-align: left; margin-top: 8px;}
+    .dropdown-item { padding: 14px 18px; border-bottom: 1px solid var(--border-color); font-size: 14.5px; font-weight: 600; color: var(--text-main); cursor: pointer;}
+    .dropdown-item:active { background: var(--input-bg); }
+
+    .error-msg { color: var(--danger); font-size: 13px; margin-top: 8px; display: none; text-align: center; font-weight: 700; background: #FFF4F4; padding: 10px; border-radius: 12px; border: 1px solid rgba(255,59,48,0.2);}
     
-    .holiday-alert-wrapper { position: relative; border-radius: 16px; padding: 3px; background: linear-gradient(124deg, #ff2400, #e81d1d, #e8b71d, #e3e81d, #1de840, #1ddde8, #2b1de8, #dd00f3); background-size: 400% 400%; animation: rainbow-border 4s ease infinite; margin-bottom: 24px; display: none; }
-    .holiday-alert-content { background: #FFFFFF; color: var(--text-main); padding: 14px 16px; border-radius: 13px; font-size: 13.5px; font-weight: 600; line-height: 1.45;}
+    /* ALERTS & MODALS */
+    .holiday-alert-wrapper { position: relative; border-radius: 16px; padding: 3px; background: linear-gradient(124deg, #ff2400, #e81d1d, #e8b71d, #e3e81d, #1de840, #1ddde8, #2b1de8, #dd00f3); background-size: 400% 400%; animation: rainbow-border 4s ease infinite; margin-bottom: 24px; display: none; width: 100%;}
+    .holiday-alert-content { background: #FFFFFF; color: var(--text-main); padding: 14px 16px; border-radius: 13px; font-size: 13.5px; font-weight: 600; line-height: 1.45; text-align: left;}
     @keyframes rainbow-border { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
     
     .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(8px); display: flex; justify-content: center; align-items: flex-end; z-index: 1000; opacity: 0; visibility: hidden; transition: opacity 0.3s; }
     .modal-overlay.active { opacity: 1; visibility: visible; }
-    .modal-content { background: var(--bg-color); padding: 24px; border-radius: 32px 32px 0 0; width: 100%; max-width: 480px; max-height: 88vh; overflow-y: auto; transform: translateY(100%); transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); box-sizing: border-box; }
+    .modal-content { background: var(--bg-color); padding: 24px; border-radius: 32px 32px 0 0; width: 100%; max-width: 480px; max-height: 88vh; overflow-y: auto; transform: translateY(100%); transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
     .modal-overlay.active .modal-content { transform: translateY(0); }
     .modal-pull { width: 48px; height: 6px; background: #D1D1D6; border-radius: 10px; margin: 0 auto 20px auto; }
     
-    .sticky-header { position: sticky; top: -24px; background: var(--bg-color); padding: 24px 24px 16px 24px; margin: -24px -24px 16px -24px; z-index: 10; border-bottom: 1px solid var(--border-color); border-radius: 32px 32px 0 0; }
-    .sticky-footer { position: sticky; bottom: -24px; background: var(--bg-color); padding: 16px 24px 24px 24px; margin: 16px -24px -24px -24px; border-top: 1px solid var(--border-color); z-index: 10; }
+    .sticky-header { position: sticky; top: -24px; background: rgba(244, 247, 249, 0.95); backdrop-filter: blur(10px); padding: 24px 24px 16px 24px; margin: -24px -24px 16px -24px; z-index: 10; border-bottom: 1px solid var(--border-color); border-radius: 32px 32px 0 0; }
+    .sticky-footer { position: sticky; bottom: -24px; background: rgba(244, 247, 249, 0.95); backdrop-filter: blur(10px); padding: 16px 24px 24px 24px; margin: 16px -24px -24px -24px; border-top: 1px solid var(--border-color); z-index: 10; }
 
+    /* HISTORY UI */
     .summary-pills-container { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 0; }
     .summary-pill { background: white; border-radius: 16px; padding: 14px 6px; text-align: center; box-shadow: var(--shadow-sm); border: 1px solid var(--border-color); }
     .summary-pill-title { font-size: 10px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: -0.2px; margin-bottom: 6px; }
     .summary-pill-value { font-size: 15px; font-weight: 900; color: var(--text-main); }
 
-    .history-card { background: var(--card-bg); padding: 16px; border-radius: 20px; margin-bottom: 12px; box-shadow: var(--shadow-sm); }
+    .history-card { background: var(--card-bg); padding: 16px; border-radius: 20px; margin-bottom: 12px; box-shadow: var(--shadow-sm); border: 1px solid var(--border-color);}
     .hist-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 12px; margin-bottom: 12px; }
     .hist-date { font-weight: 800; font-size: 14.5px; }
     .hist-time { font-size: 12px; color: var(--text-muted); background: var(--input-bg); padding: 4px 10px; border-radius: 12px; font-weight: 700;}
@@ -126,8 +141,8 @@
     .hist-val { font-weight: 800; text-align: right; }
     
     .desktop-only { display: none !important; }
-    .grid-row { display: block; }
-    #ops-selection-section, #form-section { display: none; }
+    .grid-row { display: block; width: 100%;}
+    
     .spinner { border: 3px solid rgba(255,255,255,0.3); border-top: 3px solid white; border-radius: 50%; width: 20px; height: 20px; animation: spin 0.8s linear infinite; display: none; }
     .spinner-dark { border-color: rgba(205, 26, 34, 0.2); border-top-color: var(--med-primary); }
     @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
@@ -137,10 +152,10 @@
        -------------------------------------------------------------------- */
     @media (min-width: 850px) {
       body {
-        background-color: #F4F7F9;
+        background-color: #E8EBF2;
         background-image: 
-          radial-gradient(circle at 10% 20%, rgba(205, 26, 34, 0.05) 0%, transparent 40%),
-          radial-gradient(circle at 90% 80%, rgba(68, 185, 73, 0.05) 0%, transparent 40%);
+          radial-gradient(circle at 10% 20%, rgba(205, 26, 34, 0.04) 0%, transparent 40%),
+          radial-gradient(circle at 90% 80%, rgba(68, 185, 73, 0.04) 0%, transparent 40%);
         background-attachment: fixed;
       }
       
@@ -148,54 +163,56 @@
       .desktop-only { display: flex !important; }
 
       /* Desktop Unified Header */
-      .top-header { 
-        padding: 16px 40px; box-shadow: var(--shadow-sm); background: rgba(255, 255, 255, 0.85); 
-      }
-      .header-logo { font-size: 24px; }
-      .header-actions-desktop { display: flex; gap: 12px; align-items: center; }
-      
-      .address-pill { max-width: 250px; font-size: 11.5px; padding: 4px 10px; }
+      .top-header { padding: 16px 40px; box-shadow: var(--shadow-sm); }
+      .header-logo { font-size: 22px; }
       .header-store-name { font-size: 18px; }
+      .address-pill { max-width: 250px; font-size: 11.5px; padding: 4px 10px; }
+      
+      /* Desktop Header Buttons */
+      .header-btn-text { display: inline-block; }
+      .header-icon-btn { width: auto; padding: 8px 16px; gap: 6px; font-size: 13.5px; font-weight: 700; border-radius: 12px; }
+      .header-icon-btn:hover { background: #FFFFFF; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
 
-      /* Desktop Layout Wrappers */
-      .container { max-width: 1000px; padding: 40px 24px; gap: 32px; min-height: 80vh; align-items: center; justify-content: center;}
+      /* Global Layout Control */
+      .container { max-width: 100%; padding: 40px 24px; min-height: 80vh; justify-content: center; }
       
       .card { 
         border-radius: 32px; 
-        box-shadow: var(--shadow-lg); 
-        padding: 48px;
+        box-shadow: 0 32px 64px -16px rgba(0,0,0,0.1), inset 0 1px 2px rgba(255,255,255,1); 
         background: rgba(255, 255, 255, 0.95);
-        border: 1px solid rgba(255, 255, 255, 0.8);
+        backdrop-filter: blur(24px);
       }
 
-      .btn-primary:hover { filter: brightness(1.05); transform: translateY(-2px); box-shadow: 0 10px 20px rgba(205, 26, 34, 0.3); }
+      .btn-primary:hover { filter: brightness(1.05); transform: translateY(-2px); box-shadow: 0 12px 24px rgba(205, 26, 34, 0.3); }
 
-      /* Stunning Login Split Card */
+      /* Stunning Split Login Card */
       .desktop-login-wrapper {
-        display: grid; grid-template-columns: 1fr 1fr; padding: 0 !important; width: 850px; max-width: 100%;
-        box-shadow: 0 32px 64px -12px rgba(0,0,0,0.15); overflow: hidden;
+        display: flex; flex-direction: row; padding: 0 !important; width: 900px; max-width: 100%;
+        overflow: hidden; margin: 0 auto; border: 1px solid rgba(255,255,255,0.6);
       }
       .login-left {
-        background: linear-gradient(145deg, #CD1A22, #9A0E14); padding: 60px 48px; color: white; display: flex; flex-direction: column; justify-content: center; position: relative;
+        flex: 1.1; background: linear-gradient(145deg, #CD1A22, #9A0E14); padding: 60px 48px; color: white; display: flex; flex-direction: column; justify-content: center; position: relative;
       }
       .login-left::after { content: ''; position: absolute; width: 400px; height: 400px; background: rgba(255,255,255,0.04); border-radius: 50%; top: -100px; right: -100px; }
       .login-left .brand-logo-large { color: white; justify-content: flex-start; font-size: 48px; margin-bottom: 24px; text-shadow: 0 4px 12px rgba(0,0,0,0.2); z-index: 1;}
-      .login-left h2 { color: white; font-size: 32px; margin-bottom: 16px; line-height: 1.2; z-index: 1;}
-      .login-left p { color: rgba(255,255,255,0.9); font-size: 15.5px; line-height: 1.6; z-index: 1;}
+      .login-left h2 { color: white; font-size: 32px; margin-bottom: 16px; line-height: 1.2; text-align: left; z-index: 1;}
+      .login-left p { color: rgba(255,255,255,0.9); font-size: 15.5px; line-height: 1.6; text-align: left; z-index: 1;}
       
-      .login-right { padding: 60px 48px; display: flex; flex-direction: column; justify-content: center;}
-      .login-right .toggle-wrapper { width: 100%; max-width: 100%; margin-bottom: 32px; }
+      .login-right { flex: 0.9; padding: 60px 48px; display: flex; flex-direction: column; justify-content: center; background: #FFFFFF;}
+      .login-right .toggle-wrapper { margin-bottom: 32px; }
       
-      /* Compact Ops Card */
-      #ops-selection-section { width: 500px; padding: 48px; text-align: center; }
-      #ops-selection-section .brand-logo-large { font-size: 32px; justify-content: center; margin-bottom: 16px;}
+      /* Compact Centered App Workspace */
+      .dashboard-workspace { width: 100%; max-width: 750px; margin: 0 auto; }
+      
+      /* Compact Ops Selection */
+      #ops-selection-section { width: 500px; padding: 48px; margin: 0 auto; }
       
       /* Compact Grid Forms */
-      #form-section { width: 100%; max-width: 850px; display: flex; flex-direction: column; gap: 24px;}
-      .grid-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-      #input-card { padding: 48px 56px; }
-
-      /* Modals Centered on Desktop */
+      #input-card { padding: 48px; }
+      .grid-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; width: 100%;}
+      .grid-row .form-group { margin-bottom: 0; }
+      
+      /* Centered Modals */
       .modal-overlay { align-items: center; padding: 40px; background: rgba(0, 0, 0, 0.4); }
       .modal-content { max-width: 800px; transform: scale(0.95) !important; opacity: 0; padding: 40px; border-radius: 32px; max-height: 85vh; box-shadow: var(--shadow-lg); }
       .modal-overlay.active .modal-content { transform: scale(1) !important; opacity: 1; }
@@ -206,9 +223,9 @@
       /* Desktop Table-like History */
       .history-card { 
         display: grid; grid-template-columns: 1.2fr 1fr 1fr 1fr; align-items: center; 
-        padding: 20px 24px; border-radius: 16px; border: 1px solid var(--border-color);
+        padding: 16px 24px; border-radius: 16px; margin-bottom: 12px; transition: transform 0.2s;
       }
-      .history-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+      .history-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); border-color: transparent;}
       .hist-header { border-bottom: none; padding-bottom: 0; margin-bottom: 0; flex-direction: column; align-items: flex-start; gap: 4px; }
       .hist-row { margin-bottom: 0; flex-direction: column; align-items: flex-end; gap: 4px; }
       .hist-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px;}
@@ -238,50 +255,40 @@
     <!-- Logged In Header -->
     <div id="header-logged-in" style="display:none; justify-content:space-between; width:100%; align-items:center;">
       <!-- Store Info Left -->
-      <div class="header-store-info">
-        <span class="header-store-name" id="header-store-name">Store Name</span>
-        <div class="header-store-meta">
-          <span id="header-store-id">ID</span>
-          <div class="address-pill">
-            <span class="material-symbols-outlined" style="font-size: 13px;">location_on</span>
-            <span class="address-text" id="header-store-address"></span>
+      <div style="display:flex; align-items:center; gap: 24px;">
+        <div class="header-logo desktop-only">MedPlus</div>
+        <div class="header-store-info">
+          <span class="header-store-name" id="header-store-name">Store Name</span>
+          <div class="header-store-meta">
+            <span id="header-store-id">ID</span>
+            <div class="address-pill">
+              <span class="material-symbols-outlined" style="font-size: 13px;">location_on</span>
+              <span class="address-text" id="header-store-address"></span>
+            </div>
+            <span class="shortage-pill" id="header-shortage-pill"></span>
           </div>
-          <span class="shortage-pill" id="header-shortage-pill"></span>
         </div>
       </div>
       
-      <!-- Desktop Actions Right (Hidden on mobile) -->
-      <div class="header-actions-desktop desktop-only">
-        <button class="action-pill" id="desk-btn-history" onclick="openHistoryModal()">
-          <span class="material-symbols-outlined">history</span> View History
+      <!-- Unified Actions Right (Icons on Mobile, Full Buttons on Desktop) -->
+      <div class="header-actions">
+        <button class="header-icon-btn" id="head-btn-history" onclick="openHistoryModal()">
+          <span class="material-symbols-outlined">history</span> <span class="header-btn-text">View History</span>
         </button>
-        <button class="action-pill" id="desk-btn-change" onclick="changeOpsStore()" style="display:none;">
-          <span class="material-symbols-outlined">swap_horiz</span> Change Store
+        <button class="header-icon-btn" id="head-btn-change" onclick="changeOpsStore()" style="display:none;">
+          <span class="material-symbols-outlined">swap_horiz</span> <span class="header-btn-text">Change Store</span>
         </button>
-        <button class="action-pill danger" onclick="logout()">
-          <span class="material-symbols-outlined">logout</span> Sign Out
+        <button class="header-icon-btn danger" onclick="logout()">
+          <span class="material-symbols-outlined">logout</span> <span class="header-btn-text">Sign Out</span>
         </button>
       </div>
     </div>
   </div>
 
-  <!-- MOBILE ONLY ACTION BAR -->
-  <div class="action-bar-mobile mobile-only" id="action-bar-mobile" style="display:none;">
-    <button class="action-pill" id="mob-btn-history" onclick="openHistoryModal()">
-      <span class="material-symbols-outlined">history</span> History
-    </button>
-    <button class="action-pill" id="mob-btn-change" onclick="changeOpsStore()" style="display:none;">
-      <span class="material-symbols-outlined">swap_horiz</span> Change
-    </button>
-    <button class="action-pill danger" onclick="logout()">
-      <span class="material-symbols-outlined">logout</span>
-    </button>
-  </div>
-
   <div class="container">
 
     <!-- DESKTOP SPLIT LOGIN -->
-    <div class="card desktop-login-wrapper" id="login-section">
+    <div class="card desktop-login-wrapper" id="login-section" style="display: none;">
       <!-- Left Graphic Panel -->
       <div class="login-left desktop-only">
         <div class="brand-logo-large">MedPlus</div>
@@ -292,8 +299,8 @@
       <!-- Right Form Panel -->
       <div class="login-right">
         <div class="brand-logo-large mobile-only">MedPlus</div>
-        <h2 class="mobile-only" style="text-align:center;">Deposit Tracker</h2>
-        <p class="sub mobile-only" style="text-align:center;" id="login-subtitle">Sign in with store credentials</p>
+        <h2 class="mobile-only">Deposit Tracker</h2>
+        <p class="sub mobile-only" id="login-subtitle">Sign in with store credentials</p>
         
         <div class="toggle-wrapper">
           <input type="checkbox" id="mode-toggle" class="toggle-checkbox" onchange="handleToggleChange(this)">
@@ -314,7 +321,7 @@
         
         <div class="error-msg" id="login-error"></div>
         
-        <button class="btn btn-primary" id="login-btn" onclick="login()" style="margin-top: 8px;">
+        <button class="btn btn-primary" id="login-btn" onclick="login()">
           <span class="spinner" id="login-spinner"></span>
           <span id="login-btn-content" style="display:flex; align-items:center; justify-content:center; gap:6px;">
             <span class="material-symbols-outlined" style="font-size: 18px;">lock</span> <span id="login-btn-text">Secure Sign In</span>
@@ -324,10 +331,10 @@
     </div>
 
     <!-- OPS TEAM: COMPACT STORE SELECTION -->
-    <div class="card" id="ops-selection-section">
-      <div class="brand-logo-large desktop-only" style="font-size: 32px; margin-bottom: 16px;">MedPlus</div>
-      <h3 style="margin:0 0 6px 0; font-size: 24px; font-weight: 900;">Welcome, <span id="ops-name-display" style="color: var(--med-primary);"></span></h3>
-      <p class="sub" style="margin-bottom: 24px; font-size: 15px;" id="ops-role-display"></p>
+    <div class="card" id="ops-selection-section" style="display:none;">
+      <div class="brand-logo-large mobile-only" style="font-size: 28px; margin-bottom: 10px;">MedPlus</div>
+      <h3 style="margin:0 0 8px 0; font-size: 24px; font-weight: 900; text-align: center;">Welcome, <span id="ops-name-display" style="color: var(--med-primary);"></span></h3>
+      <p class="sub" style="margin-bottom: 24px;" id="ops-role-display"></p>
       
       <div class="status-widget" id="ops-status-widget">
         <div class="status-icon"><span class="material-symbols-outlined">analytics</span></div>
@@ -349,8 +356,8 @@
       </div>
     </div>
 
-    <!-- MAIN DASHBOARD WRAPPER -->
-    <div id="form-section">
+    <!-- MAIN DASHBOARD WORKSPACE -->
+    <div id="form-section" class="dashboard-workspace" style="display:none;">
       
       <!-- OPS DASHBOARD -->
       <div class="card" id="ops-summary-card" style="display:none; padding-top: 32px;">
@@ -364,7 +371,7 @@
       </div>
 
       <!-- DEPOSIT INPUT FORM -->
-      <div class="card" id="input-card">
+      <div class="card" id="input-card" style="display:none;">
         <h3 class="desktop-only" style="margin-top:0; margin-bottom:24px; font-size:22px; font-weight:900;">Daily Deposit Entry</h3>
         <div class="holiday-alert-wrapper" id="holiday-alert">
           <div class="holiday-alert-content">
@@ -396,7 +403,7 @@
           </div>
           <div class="form-group" style="margin-bottom: 0;">
             <label>Reason (If Pending > 0)</label>
-            <textarea id="reason" rows="1" placeholder="Brief explanation..." oninput="saveDraft();" style="height: 52px; resize:none;"></textarea>
+            <textarea id="reason" rows="1" placeholder="Brief explanation..." oninput="saveDraft();" style="height: 54px; resize:none;"></textarea>
           </div>
         </div>
 
@@ -440,7 +447,7 @@
         <div id="history-content" style="margin-top: 16px;"></div>
         
         <div class="sticky-footer">
-          <button class="btn btn-primary" style="background: var(--input-bg); color: var(--text-main); margin: 0; box-shadow: none; border: 1px solid var(--border-color);" onclick="closeHistoryModal(event, true)">Close Window</button>
+          <button class="btn btn-gray-outline" style="background: var(--input-bg); color: var(--text-main); margin: 0; box-shadow: none;" onclick="closeHistoryModal(event, true)">Close Window</button>
         </div>
       </div>
     </div>
@@ -501,8 +508,6 @@
           handleToggleChange(document.getElementById('mode-toggle'), true);
         }
         
-        document.getElementById('login-section').style.display = 'none';
-        
         if (loginMode === 'store') {
           setupFormScreen();
         } else if (loginMode === 'ops') {
@@ -512,6 +517,9 @@
             showOpsSelection();
           }
         }
+      } else {
+        // Show login securely initially
+        document.getElementById('login-section').style.display = window.innerWidth >= 850 ? 'flex' : 'block';
       }
     });
 
@@ -549,7 +557,6 @@
         idInput.placeholder = "Employee ID (e.g. EMP123)";
         if(!skipClear) idInput.value = "";
         
-        // Update both mobile and desktop labels
         document.getElementById('login-subtitle').innerText = "Sign in as Operations Team";
         document.getElementById('login-btn-text').innerText = "Sign In to Ops";
       } else {
@@ -557,7 +564,7 @@
         idInput.placeholder = "Store ID (e.g. INAP001)";
         if(!skipClear) idInput.value = "INAP";
         
-        document.getElementById('login-subtitle').innerText = "Sign in with your store credentials";
+        document.getElementById('login-subtitle').innerText = "Sign in with store credentials";
         document.getElementById('login-btn-text').innerText = "Secure Sign In";
       }
     }
@@ -751,7 +758,6 @@
       if (isLoggedIn) {
         document.getElementById('header-logged-out').style.display = 'none';
         
-        // Update unified header text
         document.getElementById('header-store-name').innerText = currentStore.name;
         document.getElementById('header-store-id').innerText = currentStore.id;
         document.getElementById('header-store-address').innerText = currentStore.address;
@@ -759,24 +765,20 @@
         if (loginMode === 'ops') {
           document.getElementById('desk-btn-history').style.display = 'none';
           document.getElementById('desk-btn-change').style.display = 'flex';
-          
           document.getElementById('mob-btn-history').style.display = 'none';
           document.getElementById('mob-btn-change').style.display = 'flex';
         } else {
           document.getElementById('desk-btn-history').style.display = 'flex';
           document.getElementById('desk-btn-change').style.display = 'none';
-          
           document.getElementById('mob-btn-history').style.display = 'flex';
           document.getElementById('mob-btn-change').style.display = 'none';
         }
         
         document.getElementById('header-logged-in').style.display = 'flex';
-        document.getElementById('action-bar-mobile').style.display = 'flex';
       } else {
         document.getElementById('header-logged-in').style.display = 'none';
         document.getElementById('header-logged-out').style.display = 'flex';
         document.getElementById('header-shortage-pill').style.display = 'none';
-        document.getElementById('action-bar-mobile').style.display = 'none';
       }
     }
 
@@ -797,14 +799,14 @@
       if (loginMode === 'ops') {
         document.getElementById('input-card').style.display = 'none';
         document.getElementById('ops-summary-card').style.display = 'block';
-        document.getElementById('form-section').style.display = 'flex'; 
+        document.getElementById('form-section').style.display = 'block'; 
         fetchAndRenderOpsSummary();
       } else {
         document.getElementById('input-card').style.display = 'block';
         document.getElementById('ops-summary-card').style.display = 'none';
         checkHolidayAlert();
         fetchLatestHistory(true); 
-        document.getElementById('form-section').style.display = 'flex'; 
+        document.getElementById('form-section').style.display = 'block'; 
         loadDraft();
       }
     }
@@ -954,7 +956,7 @@
           listHtml += `<div class="history-card"><div class="hist-header"><span class="hist-date">${fDate}</span><span class="hist-time">${fTime}</span></div><div class="hist-row"><span class="hist-label">To be Deposited</span><span class="hist-val">₹${toDepVal.toLocaleString('en-IN')}</span></div><div class="hist-row"><span class="hist-label">Payment Done</span><span class="hist-val">₹${depVal.toLocaleString('en-IN')}</span></div><div class="hist-row"><span class="hist-label">Pending</span><span class="hist-val" style="color:${pendingColorClass}">₹${pendVal.toLocaleString('en-IN')}</span></div></div>`;
         });
       } else {
-        listHtml = `<div style="text-align:center; padding: 40px; color: var(--text-muted); font-weight: 600; font-size: 16px;">No submissions found for ${monthName}.</div>`;
+        listHtml = `<div style="text-align:center; padding: 40px; color: var(--text-muted); font-weight: 600; font-size: 15px;">No submissions found for ${monthName}.</div>`;
       }
 
       if (loginMode === 'ops') {
@@ -989,7 +991,7 @@
       document.getElementById('form-section').style.display = 'none';
       document.getElementById('ops-selection-section').style.display = 'none';
       
-      document.getElementById('login-section').style.display = window.innerWidth >= 850 ? 'grid' : 'block';
+      document.getElementById('login-section').style.display = window.innerWidth >= 850 ? 'flex' : 'block';
       
       document.getElementById('mode-toggle').checked = false;
       handleToggleChange(document.getElementById('mode-toggle'));

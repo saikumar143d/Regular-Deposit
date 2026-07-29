@@ -28,60 +28,48 @@
       --success: #34C759;
     }
     
+    /* -----------------------------------------------------
+       GLOBAL NATIVE-APP FEEL (Anti-Selection)
+       ----------------------------------------------------- */
     html, body { 
       font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif; 
       background-color: var(--bg-color); 
       margin: 0; padding: 0; color: var(--text-main); 
       -webkit-font-smoothing: antialiased; 
-      -webkit-touch-callout: none; user-select: none;
+      
+      /* Disable Text Selection and Long Press Highlights */
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+      -khtml-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
     }
     
-    input, textarea, select { user-select: auto; }
-
-    /* DYNAMIC TOP HEADER */
-    .top-header { 
-      background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); 
-      padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; 
-      position: sticky; top: 0; z-index: 100; border-bottom: 0.5px solid var(--border-color); box-shadow: 0 4px 16px rgba(0,0,0,0.03);
-      min-height: 44px;
+    /* Re-enable selection ONLY in input fields */
+    input, textarea, select { 
+      -webkit-user-select: auto; 
+      user-select: auto; 
     }
+
+    /* -----------------------------------------------------
+       MOBILE-FIRST DESIGN (Default base layout)
+       ----------------------------------------------------- */
+    .top-header { background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; border-bottom: 0.5px solid var(--border-color); box-shadow: 0 4px 16px rgba(0,0,0,0.03); min-height: 44px; }
     .header-logo-small { font-weight: 800; font-size: 18px; color: var(--med-primary); letter-spacing: -0.5px;}
     .header-time-block { text-align: right; }
     
-    /* Logged In Header Mode */
     .header-store-info { display: flex; flex-direction: column; gap: 4px; }
     .header-store-name { font-size: 16.5px; font-weight: 800; color: var(--text-main); letter-spacing: -0.3px; line-height: 1.1;}
     .header-store-meta { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--text-main); font-weight: 700;}
     
     .shortage-pill { background: #FFF0F0; border: 1px solid rgba(255, 59, 48, 0.3); color: var(--danger); padding: 2px 6px; border-radius: 6px; font-size: 10.5px; font-weight: 800; display: none; }
     
-    /* Address Pill Design */
-    .address-pill {
-      display: inline-flex; align-items: center; gap: 3px;
-      background: var(--input-bg); border: 1px solid var(--border-color);
-      color: var(--text-muted); padding: 2px 8px; border-radius: 8px;
-      font-size: 10.5px; font-weight: 600; max-width: 140px;
-    }
+    .address-pill { display: inline-flex; align-items: center; gap: 3px; background: var(--input-bg); border: 1px solid var(--border-color); color: var(--text-muted); padding: 2px 8px; border-radius: 8px; font-size: 10.5px; font-weight: 600; max-width: 140px; }
     .address-text { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-    /* ACTION BAR BELOW HEADER */
-    .action-bar {
-      display: none; /* Toggled by JS */
-      gap: 8px;
-      padding: 12px 16px 0 16px;
-      max-width: 480px;
-      margin: 0 auto;
-      width: 100%;
-      box-sizing: border-box;
-      justify-content: flex-end;
-    }
-    .action-pill {
-      display: flex; align-items: center; justify-content: center; gap: 4px;
-      padding: 6px 12px; font-size: 12.5px; font-weight: 600;
-      background: var(--card-bg); border: 1px solid var(--border-color);
-      border-radius: 8px; color: var(--text-main); cursor: pointer;
-      transition: all 0.15s; box-shadow: 0 2px 6px rgba(0,0,0,0.03);
-    }
+    .action-bar { display: none; gap: 8px; padding: 12px 16px 0 16px; max-width: 480px; margin: 0 auto; width: 100%; box-sizing: border-box; justify-content: flex-end; }
+    .action-pill { display: flex; align-items: center; justify-content: center; gap: 4px; padding: 6px 12px; font-size: 12.5px; font-weight: 600; background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 8px; color: var(--text-main); cursor: pointer; transition: all 0.15s; box-shadow: 0 2px 6px rgba(0,0,0,0.03); }
     .action-pill:active { background: var(--input-bg); transform: scale(0.96); }
     .action-pill .material-symbols-outlined { font-size: 16px; }
     .action-pill.danger { color: var(--danger); border-color: rgba(255,59,48,0.2); background: #FFF4F4; }
@@ -95,7 +83,6 @@
     h2 { margin: 0 0 6px 0; font-size: 22px; font-weight: 800; letter-spacing: -0.5px;}
     p.sub { color: var(--text-muted); margin: 0 0 24px 0; font-size: 14.5px; font-weight: 500;}
     
-    /* TOGGLE */
     .toggle-wrapper { display: flex; justify-content: center; margin-bottom: 24px; }
     .toggle-checkbox { display: none; }
     .toggle-label { position: relative; display: flex; align-items: center; width: 240px; height: 44px; background-color: var(--input-bg); border-radius: 22px; cursor: pointer; padding: 4px; box-sizing: border-box; border: 1px solid var(--border-color); box-shadow: inset 0 2px 4px rgba(0,0,0,0.02); }
@@ -105,6 +92,8 @@
     .toggle-checkbox:not(:checked) + .toggle-label .opt-store { color: var(--med-primary); }
     .toggle-checkbox:checked + .toggle-label .opt-ops { color: var(--med-primary); }
 
+    .desktop-grid { display: flex; flex-direction: column; }
+    
     .form-group { margin-bottom: 16px; text-align: left;}
     label { display: block; margin-bottom: 8px; font-size: 13.5px; font-weight: 700; color: var(--text-main); margin-left: 4px; letter-spacing: -0.2px;}
     
@@ -113,7 +102,6 @@
     input:focus, textarea:focus { outline: none; background: #FFFFFF; border-color: var(--med-primary); box-shadow: 0 4px 12px rgba(205, 26, 34, 0.08); }
     input[readonly] { background: #E5E5EA; color: var(--text-muted); opacity: 0.8; font-weight: 700;}
 
-    /* STATUS WIDGET */
     .status-widget { background: #FFF8E1; border: 1px solid #FFC107; padding: 16px; border-radius: 16px; margin-bottom: 24px; display: flex; align-items: center; gap: 12px; text-align: left;}
     .status-icon { background: #FFC107; color: #8F6000; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;}
     .status-text { color: #8F6000; font-size: 13.5px; font-weight: 600; line-height: 1.4;}
@@ -127,7 +115,7 @@
     .btn { width: 100%; padding: 16px; border-radius: 14px; border: none; font-size: 16px; font-weight: 700; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 8px; transition: all 0.15s; letter-spacing: -0.3px; }
     .btn-primary { background: var(--med-primary); color: white; margin-top: 10px; box-shadow: 0 4px 12px rgba(205, 26, 34, 0.2); }
     .btn-primary:active { background: var(--med-primary-active); transform: scale(0.97); box-shadow: 0 2px 6px rgba(205, 26, 34, 0.2); }
-    .btn-gray-outline { border: 1.5px solid #C7C7CC; color: var(--text-main); background: transparent; font-size: 14.5px; padding: 14px;}
+    .btn-gray-outline { border: 1.5px solid #C7C7CC; color: var(--text-main); background: transparent; font-size: 14.5px; padding: 14px; width: 100%;}
     .btn-gray-outline:active { background: #E5E5EA; }
     
     .material-symbols-outlined { font-size: 18px; }
@@ -168,6 +156,82 @@
     .spinner { border: 2.5px solid rgba(255,255,255,0.3); border-top: 2.5px solid white; border-radius: 50%; width: 20px; height: 20px; animation: spin 0.8s linear infinite; display: none; }
     .spinner-dark { border-color: rgba(205, 26, 34, 0.2); border-top-color: var(--med-primary); width: 24px; height: 24px; border-width: 3px; display: inline-block; }
     @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+    /* -----------------------------------------------------
+       EXTRAORDINARY DESKTOP UI REVAMP
+       ----------------------------------------------------- */
+    @media (min-width: 800px) {
+      body {
+        background-color: #F2F2F7;
+        background-image: 
+          radial-gradient(circle at 15% 50%, rgba(205, 26, 34, 0.04), transparent 25%),
+          radial-gradient(circle at 85% 30%, rgba(68, 185, 73, 0.04), transparent 25%);
+        background-attachment: fixed;
+      }
+      
+      .top-header { padding: 16px 40px; }
+      .header-logo-small { font-size: 22px; }
+      .header-store-name { font-size: 22px; }
+      .header-store-meta { font-size: 14px; }
+      .address-pill { font-size: 12.5px; max-width: 350px; padding: 4px 12px; }
+      
+      .action-bar { max-width: 800px; padding: 24px 0 0 0; }
+      .action-pill { padding: 10px 24px; font-size: 14.5px; border-radius: 12px; transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); }
+      .action-pill:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.06); }
+
+      .container { max-width: 800px; padding: 40px 24px; gap: 24px; }
+      .card { padding: 40px; border-radius: 24px; box-shadow: 0 12px 48px rgba(0,0,0,0.06); }
+      
+      .form-group label { font-size: 14.5px; margin-bottom: 10px; }
+      input, textarea, select { padding: 16px 20px; font-size: 16px; border-radius: 14px; }
+      .btn { padding: 18px; font-size: 17px; border-radius: 16px; }
+      .btn-primary:hover { box-shadow: 0 6px 16px rgba(205, 26, 34, 0.3); transform: translateY(-1px); }
+
+      /* Desktop Login Layout */
+      .desktop-login-layout {
+        display: flex; align-items: center; padding: 60px !important; gap: 60px;
+        text-align: left !important;
+      }
+      .login-left { flex: 1; }
+      .login-left .brand-logo { justify-content: flex-start; font-size: 56px; margin-bottom: 16px; background: linear-gradient(135deg, #CD1A22 0%, #A8151B 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+      .login-left h2 { font-size: 32px; margin-bottom: 12px; letter-spacing: -1px; }
+      .login-left .sub { font-size: 16px; margin-bottom: 0; }
+      
+      .login-right { flex: 1; background: var(--input-bg); padding: 32px; border-radius: 24px; border: 1px solid var(--border-color); box-shadow: 0 8px 32px rgba(0,0,0,0.04); text-align: center; }
+      .login-right .toggle-wrapper { margin-bottom: 32px; width: 100%; }
+      .login-right .toggle-label { width: 100%; height: 48px; }
+      .login-right input { background: #FFFFFF; }
+
+      /* Desktop Grid for Forms */
+      .desktop-grid { flex-direction: row; gap: 24px; }
+      .desktop-grid > .form-group { flex: 1; margin-bottom: 16px; }
+
+      /* Desktop Modals */
+      .modal-overlay { align-items: center; padding: 40px; }
+      .modal-content { max-width: 700px; transform: scale(0.95) !important; opacity: 0; padding: 32px; border-radius: 24px; max-height: 85vh; }
+      .modal-overlay.active .modal-content { transform: scale(1) !important; opacity: 1; }
+      .modal-pull { display: none; }
+      .sticky-header { padding: 32px 32px 20px 32px; margin: -32px -32px 24px -32px; top: -32px; border-radius: 24px 24px 0 0; }
+      .sticky-footer { padding: 20px 32px 32px 32px; margin: 24px -32px -32px -32px; bottom: -32px; border-radius: 0 0 24px 24px; }
+
+      /* Desktop History Cards */
+      .history-card { display: flex; align-items: center; justify-content: space-between; padding: 24px 32px; transition: transform 0.2s; }
+      .history-card:hover { transform: scale(1.01); box-shadow: 0 6px 20px rgba(0,0,0,0.05); }
+      .hist-header { border-bottom: none; padding-bottom: 0; margin-bottom: 0; flex-direction: column; align-items: flex-start; gap: 6px; width: auto; min-width: 160px; }
+      .hist-row { margin-bottom: 0; flex-direction: column; align-items: flex-end; gap: 6px; flex: 1; text-align: right; }
+      .hist-label { font-size: 11px; letter-spacing: 0.5px; }
+      .hist-val { font-size: 16px; }
+
+      /* Ops Dash */
+      .desktop-ops-select { padding: 60px !important; }
+      .desktop-ops-select .brand-logo { font-size: 48px; background: linear-gradient(135deg, #CD1A22 0%, #A8151B 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;}
+      .desktop-ops-select h3 { font-size: 32px; }
+      
+      .summary-pills-container { gap: 24px; }
+      .summary-pill { padding: 24px; border-radius: 20px; }
+      .summary-pill-title { font-size: 12px; margin-bottom: 8px; }
+      .summary-pill-value { font-size: 24px; }
+    }
   </style>
 </head>
 <body>
@@ -187,7 +251,6 @@
         <span class="header-store-name" id="header-store-name">Store Name</span>
         <div class="header-store-meta">
           <span id="header-store-id">ID</span>
-          <!-- NEW ADDRESS PILL -->
           <div class="address-pill" id="header-store-address-pill">
             <span class="material-symbols-outlined" style="font-size: 13px;">location_on</span>
             <span class="address-text" id="header-store-address"></span>
@@ -198,7 +261,7 @@
     </div>
   </div>
 
-  <!-- ACTION BAR (Placed below header) -->
+  <!-- ACTION BAR (Below header) -->
   <div class="action-bar" id="action-bar">
     <button class="action-pill" id="action-btn-history" onclick="openHistoryModal()">
       <span class="material-symbols-outlined">history</span> History
@@ -214,43 +277,51 @@
   <div class="container">
     
     <!-- LOGIN SECTION -->
-    <div class="card" id="login-section" style="text-align: center; padding: 40px 24px;">
-      <div class="brand-logo">MedPlus</div>
-      <h2>Franchise Deposit Tracker</h2>
-      <p class="sub" id="login-subtitle">Sign in with your store credentials</p>
-      
-      <!-- Toggle Switch -->
-      <div class="toggle-wrapper">
-        <input type="checkbox" id="mode-toggle" class="toggle-checkbox" onchange="handleToggleChange(this)">
-        <label class="toggle-label" for="mode-toggle">
-          <span class="toggle-option opt-store">Store User</span>
-          <span class="toggle-option opt-ops">Ops Team</span>
-          <div class="toggle-slider"></div>
-        </label>
+    <div class="card desktop-login-layout" id="login-section">
+      <div class="login-left">
+        <div class="brand-logo">MedPlus</div>
+        <h2>Franchise Deposit Tracker</h2>
+        <p class="sub" id="login-subtitle">Sign in with your store credentials</p>
       </div>
       
-      <div class="form-group">
-        <input type="text" id="login-id" placeholder="Store ID (e.g. INAP001)" value="INAP" autocomplete="off" list="store-suggestions" oninput="this.value = this.value.toUpperCase().replace(/\s/g, '')">
-        <datalist id="store-suggestions"></datalist>
+      <div class="login-right">
+        <!-- Toggle Switch -->
+        <div class="toggle-wrapper">
+          <input type="checkbox" id="mode-toggle" class="toggle-checkbox" onchange="handleToggleChange(this)">
+          <label class="toggle-label" for="mode-toggle">
+            <span class="toggle-option opt-store">Store User</span>
+            <span class="toggle-option opt-ops">Ops Team</span>
+            <div class="toggle-slider"></div>
+          </label>
+        </div>
+        
+        <div class="desktop-grid">
+          <div class="form-group">
+            <input type="text" id="login-id" placeholder="Store ID (e.g. INAP001)" value="INAP" autocomplete="off" list="store-suggestions" oninput="this.value = this.value.toUpperCase().replace(/\s/g, '')">
+            <datalist id="store-suggestions"></datalist>
+          </div>
+        </div>
+        <div class="desktop-grid">
+          <div class="form-group">
+            <input type="tel" id="login-mobile" placeholder="Registered Mobile Number" autocomplete="tel" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+          </div>
+        </div>
+        
+        <div class="error-msg" id="login-error"></div>
+        
+        <button class="btn btn-primary" id="login-btn" onclick="login()">
+          <span class="spinner" id="login-spinner"></span>
+          <span id="login-btn-content" style="display:flex; align-items:center; gap:6px;">
+            <span class="material-symbols-outlined">lock</span> <span id="login-btn-text">Sign In</span>
+          </span>
+        </button>
       </div>
-      <div class="form-group">
-        <input type="tel" id="login-mobile" placeholder="Registered Mobile Number" autocomplete="tel" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
-      </div>
-      
-      <div class="error-msg" id="login-error"></div>
-      
-      <button class="btn btn-primary" id="login-btn" onclick="login()">
-        <span class="spinner" id="login-spinner"></span>
-        <span id="login-btn-content" style="display:flex; align-items:center; gap:6px;">
-          <span class="material-symbols-outlined">lock</span> <span id="login-btn-text">Sign In</span>
-        </span>
-      </button>
     </div>
 
     <!-- OPS TEAM: STORE SELECTION -->
-    <div class="card" id="ops-selection-section" style="text-align: center;">
-      <div class="brand-logo" style="font-size: 28px; margin-bottom: 10px;">MedPlus</div>
-      <h3 style="margin:0 0 4px 0; font-size: 20px;">Welcome, <span id="ops-name-display" style="color: var(--med-primary);"></span></h3>
+    <div class="card desktop-ops-select" id="ops-selection-section" style="text-align: center;">
+      <div class="brand-logo" style="margin-bottom: 10px;">MedPlus</div>
+      <h3 style="margin:0 0 4px 0; font-size: 22px;">Welcome, <span id="ops-name-display" style="color: var(--med-primary);"></span></h3>
       <p class="sub" style="margin-bottom: 24px;" id="ops-role-display"></p>
       
       <!-- Missing Stores Status Widget -->
@@ -270,7 +341,6 @@
       <div class="error-msg" id="ops-select-error" style="margin-bottom: 16px;"></div>
       
       <button class="btn btn-primary" onclick="proceedToOpsStore()">View Store Data</button>
-      <button class="btn btn-gray-outline" style="margin-top:10px;" onclick="logout()">Log Out</button>
     </div>
 
     <!-- FORM SECTION / OPS DASHBOARD -->
@@ -283,7 +353,7 @@
           <div style="text-align:center; padding: 20px;"><div class="spinner spinner-dark"></div></div>
         </div>
         
-        <h3 style="margin-top:24px; margin-bottom: 16px; font-size: 18.5px; font-weight: 800; border-top: 1px solid var(--border-color); padding-top: 20px;">Detailed History</h3>
+        <h3 style="margin-top:32px; margin-bottom: 16px; font-size: 18.5px; font-weight: 800; border-top: 1px solid var(--border-color); padding-top: 24px;">Detailed History</h3>
         <div id="ops-detailed-history"></div>
       </div>
 
@@ -302,14 +372,17 @@
           <input type="text" inputmode="numeric" id="net-sale" placeholder="₹ 0" oninput="formatCurrencyInput(this); saveDraft();">
         </div>
 
-        <div class="form-group">
-          <label>Cash To be deposited (as per the POS)</label>
-          <input type="text" inputmode="numeric" id="cash" placeholder="₹ 0" oninput="formatCurrencyInput(this); calculatePending(); saveDraft();">
+        <div class="desktop-grid">
+          <div class="form-group">
+            <label>Cash To be deposited</label>
+            <input type="text" inputmode="numeric" id="cash" placeholder="₹ 0" oninput="formatCurrencyInput(this); calculatePending(); saveDraft();">
+          </div>
+          <div class="form-group">
+            <label>Payment done to Ritecure</label>
+            <input type="text" inputmode="numeric" id="deposit" placeholder="₹ 0" oninput="formatCurrencyInput(this); calculatePending(); saveDraft();">
+          </div>
         </div>
-        <div class="form-group">
-          <label>Payment done to Ritecure Account</label>
-          <input type="text" inputmode="numeric" id="deposit" placeholder="₹ 0" oninput="formatCurrencyInput(this); calculatePending(); saveDraft();">
-        </div>
+        
         <div class="form-group">
           <label>Pending Amount</label>
           <input type="text" id="pending" placeholder="₹ 0" readonly>
@@ -321,7 +394,7 @@
 
         <div class="error-msg" id="form-error"></div>
         
-        <button class="btn btn-primary" id="submit-btn" onclick="submitForm()">
+        <button class="btn btn-primary" id="submit-btn" onclick="submitForm()" style="margin-top: 24px;">
           <span class="spinner" id="submit-spinner"></span>
           <span id="submit-text">Submit Daily Deposit</span>
         </button>
@@ -415,6 +488,7 @@
     let preloadedHistory = []; 
     let historicalShortage = 0;
 
+    // --- SESSION RESTORE ON LOAD ---
     document.addEventListener('DOMContentLoaded', () => {
       const session = localStorage.getItem('franchise_session');
       if (session) {
@@ -443,6 +517,7 @@
       }
     });
 
+    // --- Logout Protection ---
     window.addEventListener('beforeunload', function (e) {
       if (currentStore && currentStore.id) {
         e.preventDefault();

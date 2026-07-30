@@ -18,127 +18,160 @@
       --med-primary: #CD1A22; 
       --med-primary-active: #A8151B;
       --med-green: #44B949; 
-      --bg-color: #F4F7F9;
+      --bg-color: #F2F4F8; /* One UI soft tint */
       --card-bg: #FFFFFF;
-      --text-main: #1A1D20;
-      --text-muted: #687076;
-      --input-bg: #F0F3F5;
-      --border-color: rgba(0, 0, 0, 0.08);
+      --text-main: #191C21;
+      --text-muted: #707780;
+      --input-bg: #F0F2F6;
+      --border-color: rgba(0, 0, 0, 0.05);
       --danger: #FF3B30;
       --success: #34C759;
-      --shadow-sm: 0 4px 12px rgba(0,0,0,0.03);
-      --shadow-md: 0 12px 24px rgba(0,0,0,0.05);
-      --shadow-lg: 0 24px 48px rgba(0,0,0,0.08);
+      --shadow-oneui: 0 10px 28px rgba(28, 38, 56, 0.05);
     }
     
     * { box-sizing: border-box; }
     
+    /* PREVENT TEXT SELECTION & LONG PRESS */
     html, body { 
       font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif; 
       background-color: var(--bg-color); 
       margin: 0; padding: 0; color: var(--text-main); 
       -webkit-font-smoothing: antialiased; 
-      -webkit-touch-callout: none; user-select: none;
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+      user-select: none;
     }
     input, textarea, select { user-select: auto; }
 
-    /* --------------------------------------------------------------------
-       COMPACT & CUTE MOBILE-FIRST STYLES
-       -------------------------------------------------------------------- */
-    
-    /* UNIVERSAL HEADER (Clean & Compact) */
-    .top-header { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); padding: 10px 16px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; border-bottom: 1px solid var(--border-color); box-shadow: var(--shadow-sm); min-height: 52px; }
-    .header-logo { font-weight: 900; font-size: 20px; color: var(--med-primary); letter-spacing: -0.5px;}
+    /* ONE UI HEADER */
+    .top-header { 
+      background: rgba(255, 255, 255, 0.92); 
+      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); 
+      padding: 14px 20px; display: flex; justify-content: space-between; align-items: center; 
+      position: sticky; top: 0; z-index: 100; border-bottom: 1px solid var(--border-color); 
+      box-shadow: 0 2px 12px rgba(0,0,0,0.02); min-height: 56px; 
+    }
+    .header-logo { font-weight: 900; font-size: 21px; color: var(--med-primary); letter-spacing: -0.6px;}
     .header-time-block { text-align: right; }
-    
-    /* DESKTOP HEADER ACTIONS (Hidden on mobile) */
-    .header-store-info { display: flex; flex-direction: column; gap: 4px; }
-    .header-store-name { font-size: 16px; font-weight: 800; color: var(--text-main); line-height: 1.1; letter-spacing: -0.2px;}
-    .header-store-meta { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; font-size: 11.5px; font-weight: 700;}
-    .header-actions-desktop { display: flex; gap: 10px; align-items: center; }
+    #live-date { font-size: 11px; color: var(--text-muted); font-weight: 700; text-transform: uppercase; letter-spacing: 0.3px;}
+    #live-time { font-size: 14px; font-weight: 900; color: var(--text-main); letter-spacing: -0.5px;}
 
-    /* PILLS */
-    .shortage-pill { background: #FFF0F0; border: 1px solid rgba(255, 59, 48, 0.2); color: var(--danger); padding: 4px 10px; border-radius: 10px; font-size: 11.5px; font-weight: 800; display: none; align-items: center; width: fit-content; margin: 0 auto; box-shadow: 0 2px 8px rgba(255,59,48,0.15);}
-    .address-pill { display: inline-flex; align-items: center; gap: 4px; background: var(--input-bg); border: 1px solid var(--border-color); color: var(--text-muted); padding: 4px 10px; border-radius: 10px; font-size: 11px; font-weight: 700; max-width: 100%; margin: 0 auto;}
-    .address-text { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-
-    /* CONTAINERS & CARDS */
-    .container { padding: 12px; max-width: 480px; margin: 0 auto; display: flex; flex-direction: column; gap: 16px; align-items: center;}
-    .card { background: var(--card-bg); border-radius: 24px; padding: 20px; box-shadow: var(--shadow-md); width: 100%; border: 1px solid #FFFFFF;}
+    /* MAIN CONTAINER (MOBILE VERTICAL STACK) */
+    .container { 
+      padding: 16px; max-width: 500px; margin: 0 auto; 
+      display: flex; flex-direction: column; gap: 16px; align-items: center; width: 100%;
+    }
     
-    .brand-logo-large { font-size: 34px; font-weight: 900; letter-spacing: -1.5px; color: var(--med-primary); margin-bottom: 8px; display: flex; justify-content: center; text-shadow: 0 2px 8px rgba(205,26,34,0.15);}
-    h2 { margin: 0 0 6px 0; font-size: 20px; font-weight: 800; letter-spacing: -0.5px; text-align: center;}
-    p.sub { color: var(--text-muted); margin: 0 0 20px 0; font-size: 13.5px; font-weight: 500; text-align: center; line-height: 1.4;}
+    /* ONE UI SQUIRCLE CARD */
+    .card { 
+      background: var(--card-bg); border-radius: 28px; padding: 24px; 
+      box-shadow: var(--shadow-oneui); width: 100%; border: 1px solid rgba(255, 255, 255, 0.8);
+    }
     
-    /* TOGGLE SWITCH */
+    .brand-logo-large { font-size: 36px; font-weight: 900; letter-spacing: -1.5px; color: var(--med-primary); margin-bottom: 6px; display: flex; justify-content: center; }
+    h2 { margin: 0 0 6px 0; font-size: 22px; font-weight: 800; letter-spacing: -0.5px; text-align: center;}
+    p.sub { color: var(--text-muted); margin: 0 0 20px 0; font-size: 14px; font-weight: 500; text-align: center; line-height: 1.4;}
+    
+    /* ONE UI TOGGLE SWITCH */
     .toggle-wrapper { display: flex; justify-content: center; margin-bottom: 20px; width: 100%;}
     .toggle-checkbox { display: none; }
-    .toggle-label { position: relative; display: flex; align-items: center; width: 100%; max-width: 260px; height: 44px; background-color: var(--input-bg); border-radius: 22px; cursor: pointer; padding: 4px; border: 1px solid var(--border-color); }
-    .toggle-slider { position: absolute; top: 4px; left: 4px; width: calc(50% - 4px); height: calc(100% - 8px); background-color: #FFFFFF; border-radius: 18px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); z-index: 0; }
+    .toggle-label { position: relative; display: flex; align-items: center; width: 100%; max-width: 270px; height: 46px; background-color: var(--input-bg); border-radius: 23px; cursor: pointer; padding: 4px; border: 1px solid var(--border-color); }
+    .toggle-slider { position: absolute; top: 4px; left: 4px; width: calc(50% - 4px); height: calc(100% - 8px); background-color: #FFFFFF; border-radius: 19px; box-shadow: 0 3px 10px rgba(0,0,0,0.08); transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); z-index: 0; }
     .toggle-checkbox:checked + .toggle-label .toggle-slider { transform: translateX(100%); }
-    .toggle-option { flex: 1; text-align: center; font-size: 13px; font-weight: 700; color: var(--text-muted); z-index: 1; transition: color 0.3s; }
+    .toggle-option { flex: 1; text-align: center; font-size: 13.5px; font-weight: 800; color: var(--text-muted); z-index: 1; transition: color 0.3s; }
     .toggle-checkbox:not(:checked) + .toggle-label .opt-store { color: var(--med-primary); }
     .toggle-checkbox:checked + .toggle-label .opt-ops { color: var(--med-primary); }
 
-    /* FORMS */
-    .form-group { margin-bottom: 14px; width: 100%; text-align: left;}
-    label { display: block; margin-bottom: 6px; font-size: 12.5px; font-weight: 700; color: #4A5056; margin-left: 4px;}
-    input, textarea { width: 100%; padding: 14px 16px; border: 1.5px solid transparent; border-radius: 16px; font-size: 15px; transition: all 0.2s; background: #F4F6F8; color: var(--text-main); font-family: inherit; font-weight: 600;}
-    input::placeholder, textarea::placeholder { color: #A1A1A6; font-weight: 500;}
-    input:focus, textarea:focus { background: #FFFFFF; border-color: rgba(205, 26, 34, 0.4); box-shadow: 0 0 0 4px rgba(205, 26, 34, 0.08); outline: none;}
-    input[readonly] { background: #E5E5EA; color: var(--text-muted); opacity: 0.8;}
+    /* FORMS & INPUTS */
+    .form-group { margin-bottom: 16px; width: 100%; text-align: left;}
+    label { display: block; margin-bottom: 8px; font-size: 13px; font-weight: 700; color: #3A3F47; margin-left: 4px;}
+    input, textarea { 
+      width: 100%; padding: 16px 18px; border: 2px solid transparent; 
+      border-radius: 18px; font-size: 15px; transition: all 0.2s; 
+      background: var(--input-bg); color: var(--text-main); font-family: inherit; font-weight: 600;
+    }
+    input::placeholder, textarea::placeholder { color: #9A9EA6; font-weight: 500;}
+    input:focus, textarea:focus { background: #FFFFFF; border-color: rgba(205, 26, 34, 0.35); box-shadow: 0 0 0 4px rgba(205, 26, 34, 0.08); outline: none;}
+    input[readonly] { background: #E6E8EE; color: var(--text-muted); opacity: 0.8;}
 
-    /* BUTTONS */
-    .btn { width: 100%; padding: 16px; border-radius: 16px; border: none; font-size: 15px; font-weight: 800; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 8px; transition: all 0.2s; }
-    .btn-primary { background: linear-gradient(135deg, #DF2029 0%, #B01017 100%); color: white; margin-top: 8px; box-shadow: 0 6px 16px rgba(205, 26, 34, 0.25); border: 1px solid #A8151B;}
-    .btn-primary:active { transform: scale(0.97); box-shadow: 0 2px 8px rgba(205, 26, 34, 0.2); }
+    /* ONE UI BUTTONS */
+    .btn { width: 100%; padding: 16px; border-radius: 20px; border: none; font-size: 15.5px; font-weight: 800; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 8px; transition: all 0.2s; }
+    .btn-primary { background: linear-gradient(135deg, #DF2029 0%, #B01017 100%); color: white; margin-top: 8px; box-shadow: 0 8px 20px rgba(205, 26, 34, 0.22); }
+    .btn-primary:active { transform: scale(0.97); }
     .btn-gray-outline { border: 2px solid var(--border-color); color: var(--text-main); background: transparent; padding: 14px;}
     .btn-gray-outline:active { background: var(--input-bg); }
 
-    /* MOBILE SPECIFIC STORE INFO CARD & ACTIONS */
-    .mob-store-card { background: linear-gradient(180deg, #FFFFFF 0%, #F9FAFB 100%); border: 1px solid var(--border-color); padding: 20px; text-align: center; border-radius: 24px; box-shadow: var(--shadow-sm); width: 100%; }
-    .mob-action-row { display: flex; gap: 12px; margin-top: 16px; width: 100%; justify-content: center;}
-    .mob-action-btn { flex: 1; display: flex; align-items: center; justify-content: center; gap: 6px; padding: 12px 10px; border-radius: 14px; font-size: 13px; font-weight: 800; border: 1.5px solid var(--border-color); background: #FFFFFF; color: var(--text-main); box-shadow: 0 2px 6px rgba(0,0,0,0.02); cursor: pointer; transition: all 0.2s;}
+    /* ONE UI STORE SUMMARY CARD (MOBILE TOP CARD) */
+    .mob-store-card { 
+      background: #FFFFFF; border: 1px solid var(--border-color); 
+      padding: 22px; text-align: center; border-radius: 28px; 
+      box-shadow: var(--shadow-oneui); width: 100%; 
+    }
+    .mob-store-title { margin: 0 0 4px 0; color: var(--text-main); font-size: 19px; font-weight: 900; letter-spacing: -0.3px; line-height: 1.25;}
+    .mob-store-id { margin: 0 0 14px 0; font-size: 13px; font-weight: 800; color: var(--med-primary); letter-spacing: 0.2px;}
+
+    /* PILLS & BADGES */
+    .address-pill { 
+      display: inline-flex; align-items: center; gap: 4px; 
+      background: var(--input-bg); border: 1px solid var(--border-color); 
+      color: var(--text-muted); padding: 6px 12px; border-radius: 12px; 
+      font-size: 11.5px; font-weight: 700; max-width: 100%; text-align: center; justify-content: center;
+    }
+    .address-text { white-space: normal; word-break: break-word; }
+    
+    .shortage-pill { 
+      background: #FFF0F0; border: 1px solid rgba(255, 59, 48, 0.25); color: var(--danger); 
+      padding: 6px 14px; border-radius: 12px; font-size: 12px; font-weight: 800; 
+      display: none; align-items: center; justify-content: center; width: fit-content; 
+      margin: 10px auto 0 auto; box-shadow: 0 2px 8px rgba(255,59,48,0.12);
+    }
+
+    /* ACTION BUTTON ROW (ONE UI PILLS) */
+    .mob-action-row { display: flex; gap: 10px; margin-top: 18px; width: 100%; justify-content: center;}
+    .mob-action-btn { 
+      flex: 1; display: flex; align-items: center; justify-content: center; gap: 6px; 
+      padding: 12px 14px; border-radius: 16px; font-size: 13.5px; font-weight: 800; 
+      border: 1.5px solid var(--border-color); background: #FFFFFF; color: var(--text-main); 
+      box-shadow: 0 2px 8px rgba(0,0,0,0.02); cursor: pointer; transition: all 0.2s;
+    }
     .mob-action-btn:active { transform: scale(0.96); background: var(--input-bg); }
     .mob-action-btn.danger { color: var(--danger); background: #FFF4F4; border-color: rgba(255,59,48,0.2); }
-    .mob-action-btn.danger:active { background: #FFE8E8; }
 
     /* WIDGETS & DROPDOWNS */
-    .status-widget { background: #FFF8E1; border: 1px solid #FFC107; padding: 14px; border-radius: 16px; margin-bottom: 20px; display: flex; align-items: center; gap: 12px; text-align: left; width: 100%;}
-    .status-icon { background: #FFC107; color: #8F6000; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;}
-    .status-text { color: #8F6000; font-size: 13px; font-weight: 600; line-height: 1.4;}
+    .status-widget { background: #FFF9E6; border: 1px solid #FFE082; padding: 16px; border-radius: 20px; margin-bottom: 20px; display: flex; align-items: center; gap: 12px; text-align: left; width: 100%;}
+    .status-icon { background: #FFC107; color: #6D4C00; width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;}
+    .status-text { color: #6D4C00; font-size: 13px; font-weight: 700; line-height: 1.4;}
 
     .custom-dropdown { position: relative; width: 100%; }
-    .dropdown-list { position: absolute; top: 100%; left: 0; right: 0; background: white; border: 1px solid var(--border-color); border-radius: 16px; max-height: 220px; overflow-y: auto; box-shadow: var(--shadow-md); z-index: 50; display: none; text-align: left; margin-top: 8px;}
+    .dropdown-list { position: absolute; top: 100%; left: 0; right: 0; background: white; border: 1px solid var(--border-color); border-radius: 20px; max-height: 240px; overflow-y: auto; box-shadow: var(--shadow-oneui); z-index: 50; display: none; text-align: left; margin-top: 8px;}
     .dropdown-item { padding: 14px 18px; border-bottom: 1px solid var(--border-color); font-size: 14px; font-weight: 600; color: var(--text-main); cursor: pointer;}
     .dropdown-item:active { background: var(--input-bg); }
 
-    .error-msg { color: var(--danger); font-size: 13px; margin-top: 8px; display: none; text-align: center; font-weight: 700; background: #FFF4F4; padding: 10px; border-radius: 12px; border: 1px solid rgba(255,59,48,0.2);}
+    .error-msg { color: var(--danger); font-size: 13px; margin-top: 8px; display: none; text-align: center; font-weight: 700; background: #FFF4F4; padding: 10px; border-radius: 14px; border: 1px solid rgba(255,59,48,0.2);}
     
     /* ALERTS & MODALS */
-    .holiday-alert-wrapper { position: relative; border-radius: 16px; padding: 3px; background: linear-gradient(124deg, #ff2400, #e81d1d, #e8b71d, #e3e81d, #1de840, #1ddde8, #2b1de8, #dd00f3); background-size: 400% 400%; animation: rainbow-border 4s ease infinite; margin-bottom: 20px; display: none; width: 100%;}
-    .holiday-alert-content { background: #FFFFFF; color: var(--text-main); padding: 12px 16px; border-radius: 13px; font-size: 13px; font-weight: 600; line-height: 1.45;}
-    @keyframes rainbow-border { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+    .holiday-alert-wrapper { position: relative; border-radius: 20px; padding: 3px; background: linear-gradient(124deg, #ff2400, #e81d1d, #e8b71d, #e3e81d, #1de840, #1ddde8, #2b1de8, #dd00f3); background-size: 400% 400%; animation: rainbow-border 4s ease infinite; margin-bottom: 20px; display: none; width: 100%;}
+    .holiday-alert-content { background: #FFFFFF; color: var(--text-main); padding: 14px 16px; border-radius: 17px; font-size: 13px; font-weight: 600; line-height: 1.45;}
     
-    .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(8px); display: flex; justify-content: center; align-items: flex-end; z-index: 1000; opacity: 0; visibility: hidden; transition: opacity 0.3s; }
+    .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.45); backdrop-filter: blur(8px); display: flex; justify-content: center; align-items: flex-end; z-index: 1000; opacity: 0; visibility: hidden; transition: opacity 0.3s; }
     .modal-overlay.active { opacity: 1; visibility: visible; }
-    .modal-content { background: var(--bg-color); padding: 20px; border-radius: 28px 28px 0 0; width: 100%; max-width: 480px; max-height: 88vh; overflow-y: auto; transform: translateY(100%); transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); box-sizing: border-box; }
+    .modal-content { background: var(--bg-color); padding: 22px; border-radius: 32px 32px 0 0; width: 100%; max-width: 500px; max-height: 88vh; overflow-y: auto; transform: translateY(100%); transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); box-sizing: border-box; }
     .modal-overlay.active .modal-content { transform: translateY(0); }
-    .modal-pull { width: 48px; height: 6px; background: #D1D1D6; border-radius: 10px; margin: 0 auto 16px auto; }
+    .modal-pull { width: 44px; height: 5px; background: #C8CCD0; border-radius: 10px; margin: 0 auto 18px auto; }
     
-    .sticky-header { position: sticky; top: -20px; background: rgba(244, 247, 249, 0.95); backdrop-filter: blur(10px); padding: 20px 20px 16px 20px; margin: -20px -20px 16px -20px; z-index: 10; border-bottom: 1px solid var(--border-color); border-radius: 28px 28px 0 0; }
-    .sticky-footer { position: sticky; bottom: -20px; background: rgba(244, 247, 249, 0.95); backdrop-filter: blur(10px); padding: 16px 20px 20px 20px; margin: 16px -20px -20px -20px; border-top: 1px solid var(--border-color); z-index: 10; }
+    .sticky-header { position: sticky; top: -22px; background: rgba(242, 244, 248, 0.95); backdrop-filter: blur(10px); padding: 20px 20px 14px 20px; margin: -22px -22px 14px -22px; z-index: 10; border-bottom: 1px solid var(--border-color); border-radius: 32px 32px 0 0; }
+    .sticky-footer { position: sticky; bottom: -22px; background: rgba(242, 244, 248, 0.95); backdrop-filter: blur(10px); padding: 14px 20px 20px 20px; margin: 14px -22px -22px -22px; border-top: 1px solid var(--border-color); z-index: 10; }
 
     /* HISTORY UI */
     .summary-pills-container { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 0; }
-    .summary-pill { background: white; border-radius: 14px; padding: 12px 6px; text-align: center; box-shadow: var(--shadow-sm); border: 1px solid var(--border-color); }
+    .summary-pill { background: white; border-radius: 18px; padding: 12px 6px; text-align: center; box-shadow: var(--shadow-oneui); border: 1px solid var(--border-color); }
     .summary-pill-title { font-size: 10px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: -0.2px; margin-bottom: 4px; }
-    .summary-pill-value { font-size: 14px; font-weight: 900; color: var(--text-main); }
+    .summary-pill-value { font-size: 14.5px; font-weight: 900; color: var(--text-main); }
 
-    .history-card { background: var(--card-bg); padding: 16px; border-radius: 16px; margin-bottom: 12px; box-shadow: var(--shadow-sm); border: 1px solid var(--border-color);}
+    .history-card { background: var(--card-bg); padding: 16px; border-radius: 20px; margin-bottom: 12px; box-shadow: var(--shadow-oneui); border: 1px solid var(--border-color);}
     .hist-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; margin-bottom: 10px; }
-    .hist-date { font-weight: 800; font-size: 13.5px; }
-    .hist-time { font-size: 11px; color: var(--text-muted); background: var(--input-bg); padding: 4px 8px; border-radius: 10px; font-weight: 700;}
+    .hist-date { font-weight: 800; font-size: 14px; }
+    .hist-time { font-size: 11.5px; color: var(--text-muted); background: var(--input-bg); padding: 4px 10px; border-radius: 10px; font-weight: 700;}
     .hist-row { display: flex; justify-content: space-between; margin-bottom: 6px; font-size: 13px; }
     .hist-label { color: var(--text-muted); font-weight: 600;}
     .hist-val { font-weight: 800; text-align: right; }
@@ -155,92 +188,51 @@
        EXTRAORDINARY DESKTOP UI (min-width: 850px)
        -------------------------------------------------------------------- */
     @media (min-width: 850px) {
-      body {
-        background-color: #E8EBF2;
-        background-image: 
-          radial-gradient(circle at 10% 20%, rgba(205, 26, 34, 0.04) 0%, transparent 40%),
-          radial-gradient(circle at 90% 80%, rgba(68, 185, 73, 0.04) 0%, transparent 40%);
-        background-attachment: fixed;
-      }
-      
       .mobile-only { display: none !important; }
       .desktop-only { display: flex !important; }
 
-      /* Desktop Unified Header */
-      .top-header { padding: 16px 40px; box-shadow: var(--shadow-sm); background: rgba(255, 255, 255, 0.85); border-bottom: none;}
+      .top-header { padding: 16px 40px; }
       .header-logo { font-size: 24px; }
-      .header-store-name { font-size: 18px; letter-spacing: -0.5px;}
-      .address-pill { max-width: 300px; font-size: 11.5px; padding: 4px 10px; margin: 0; }
-      .shortage-pill { margin: 0; font-size: 11.5px; padding: 4px 10px;}
 
-      /* Desktop Header Buttons */
-      .header-actions-desktop .action-pill { padding: 10px 16px; border-radius: 12px; font-size: 13.5px; background: var(--card-bg); border: 1px solid var(--border-color); color: var(--text-main); box-shadow: var(--shadow-sm); cursor: pointer; transition: all 0.2s;}
-      .header-actions-desktop .action-pill:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(0,0,0,0.06); }
-      .header-actions-desktop .action-pill.danger { color: var(--danger); background: #FFF4F4; border-color: rgba(255,59,48,0.2); }
-      .header-actions-desktop .action-pill.danger:hover { background: #FFE8E8; }
-
-      /* Global Layout Control */
-      .container { max-width: 100%; padding: 40px 24px; min-height: 80vh; justify-content: center; flex-direction: row; align-items: flex-start; gap: 32px;}
+      /* Desktop Dashboard 2-Column Grid */
+      .container { max-width: 1000px; padding: 40px 24px; min-height: 80vh; justify-content: center; }
       
-      .card { 
-        border-radius: 32px; 
-        box-shadow: 0 32px 64px -16px rgba(0,0,0,0.1), inset 0 1px 2px rgba(255,255,255,1); 
-        background: rgba(255, 255, 255, 0.95);
-        backdrop-filter: blur(24px);
-        border: 1px solid rgba(255, 255, 255, 0.8);
-      }
-
-      .btn-primary:hover { filter: brightness(1.05); transform: translateY(-2px); box-shadow: 0 10px 24px rgba(205, 26, 34, 0.3); }
-
-      /* Stunning Split Login Card */
+      /* Split Login */
       .desktop-login-wrapper {
-        display: grid !important; grid-template-columns: 1fr 1fr; padding: 0 !important; width: 900px; max-width: 100%;
-        box-shadow: 0 40px 80px -20px rgba(0,0,0,0.15); overflow: hidden; margin: auto; border: 1px solid rgba(255,255,255,0.6);
+        display: grid !important; grid-template-columns: 1.1fr 0.9fr; padding: 0 !important; width: 880px; max-width: 100%;
+        box-shadow: 0 32px 64px -12px rgba(0,0,0,0.12); overflow: hidden; margin: 0 auto; border-radius: 32px;
       }
       .login-left {
         background: linear-gradient(145deg, #CD1A22, #9A0E14); padding: 60px 48px; color: white; display: flex; flex-direction: column; justify-content: center; position: relative;
       }
-      .login-left::after { content: ''; position: absolute; width: 400px; height: 400px; background: rgba(255,255,255,0.04); border-radius: 50%; top: -100px; right: -100px; }
-      .login-left .brand-logo-large { color: white; justify-content: flex-start; font-size: 48px; margin-bottom: 24px; text-shadow: 0 4px 12px rgba(0,0,0,0.2); z-index: 1;}
-      .login-left h2 { color: white; font-size: 32px; margin-bottom: 16px; line-height: 1.2; text-align: left; z-index: 1;}
-      .login-left p { color: rgba(255,255,255,0.9); font-size: 15.5px; line-height: 1.6; text-align: left; z-index: 1;}
-      
+      .login-left .brand-logo-large { color: white; justify-content: flex-start; font-size: 48px; margin-bottom: 24px; text-shadow: 0 4px 12px rgba(0,0,0,0.2);}
+      .login-left h2 { color: white; font-size: 32px; margin-bottom: 16px; line-height: 1.2; text-align: left;}
+      .login-left p { color: rgba(255,255,255,0.9); font-size: 15.5px; line-height: 1.6; text-align: left;}
       .login-right { padding: 60px 48px; display: flex; flex-direction: column; justify-content: center; background: #FFFFFF;}
-      .login-right .toggle-wrapper { width: 100%; max-width: 100%; margin-bottom: 32px; }
-      
-      /* Compact Ops Selection */
-      #ops-selection-section { width: 500px; padding: 48px; margin: auto; }
-      
-      /* Compact Grid Forms */
+
+      /* Main Dashboard Flex/Grid Workspaces */
       #form-section { display: flex; flex-direction: column; width: 100%; max-width: 750px; margin: auto; gap: 24px;}
       #input-card { padding: 48px; }
       .grid-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; width: 100%;}
       .grid-row .form-group { margin-bottom: 0; }
-      
-      /* Centered Modals */
-      .modal-overlay { align-items: center; padding: 40px; background: rgba(0, 0, 0, 0.4); }
-      .modal-content { max-width: 800px; transform: scale(0.95) !important; opacity: 0; padding: 40px; border-radius: 32px; max-height: 85vh; box-shadow: var(--shadow-lg); }
-      .modal-overlay.active .modal-content { transform: scale(1) !important; opacity: 1; }
-      .modal-pull { display: none; }
-      .sticky-header { padding: 40px 40px 24px 40px; margin: -40px -40px 24px -40px; top: -40px; border-radius: 32px 32px 0 0; }
-      .sticky-footer { padding: 24px 40px 40px 40px; margin: 24px -40px -40px -40px; bottom: -40px; border-radius: 0 0 32px 32px; }
 
-      /* Desktop Table-like History */
+      /* Desktop Actions Header Controls */
+      .header-actions-desktop { display: flex; gap: 12px; align-items: center; }
+      .header-actions-desktop .action-pill {
+        display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px; 
+        border-radius: 14px; font-size: 13px; font-weight: 800; background: #FFFFFF; 
+        border: 1px solid var(--border-color); color: var(--text-main); cursor: pointer; transition: all 0.2s;
+      }
+      .header-actions-desktop .action-pill:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(0,0,0,0.06); }
+      .header-actions-desktop .action-pill.danger { color: var(--danger); background: #FFF4F4; border-color: rgba(255,59,48,0.2); }
+
+      /* Desktop History View */
       .history-card { 
         display: grid; grid-template-columns: 1.2fr 1fr 1fr 1fr; align-items: center; 
-        padding: 16px 24px; border-radius: 16px; border: 1px solid var(--border-color);
-        transition: transform 0.2s;
+        padding: 18px 24px; border-radius: 18px;
       }
-      .history-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); border-color: transparent;}
       .hist-header { border-bottom: none; padding-bottom: 0; margin-bottom: 0; flex-direction: column; align-items: flex-start; gap: 4px; }
       .hist-row { margin-bottom: 0; flex-direction: column; align-items: flex-end; gap: 4px; }
-      .hist-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px;}
-      .hist-val { font-size: 16px; }
-
-      .summary-pills-container { gap: 20px; }
-      .summary-pill { padding: 24px; border-radius: 20px; background: var(--input-bg); border: none; }
-      .summary-pill-title { font-size: 11.5px; }
-      .summary-pill-value { font-size: 26px; }
     }
   </style>
 </head>
@@ -249,18 +241,18 @@
   <!-- UNIVERSAL TOP HEADER -->
   <div class="top-header" id="main-header">
     
-    <!-- Header: Logged Out View -->
+    <!-- Logged Out Header -->
     <div id="header-logged-out" style="display:flex; justify-content:space-between; width:100%; align-items:center;">
       <div class="header-logo">MedPlus</div>
       <div class="header-time-block">
-        <div id="live-date" style="font-size:11px; color:var(--text-muted); font-weight: 700;"></div>
-        <div id="live-time" style="font-size:14px; font-weight:900; letter-spacing: -0.5px;"></div>
+        <div id="live-date"></div>
+        <div id="live-time"></div>
       </div>
     </div>
 
-    <!-- Header: Logged In View (Desktop Layout) -->
+    <!-- Logged In Desktop Header Actions (Hides on Mobile) -->
     <div id="header-logged-in" class="desktop-only" style="display:none; justify-content:space-between; width:100%; align-items:center;">
-      <div style="display:flex; align-items:center; gap: 24px;">
+      <div style="display:flex; align-items:center; gap: 20px;">
         <div class="header-logo">MedPlus</div>
         <div class="header-store-info">
           <span class="header-store-name" id="desk-header-store-name">Store Name</span>
@@ -275,7 +267,6 @@
         </div>
       </div>
       
-      <!-- Desktop Actions in Header -->
       <div class="header-actions-desktop">
         <button class="action-pill" id="desk-btn-history" onclick="openHistoryModal()">
           <span class="material-symbols-outlined">history</span> View History
@@ -292,14 +283,16 @@
 
   <div class="container">
 
-    <!-- DESKTOP SPLIT LOGIN -->
-    <div class="card desktop-login-wrapper" id="login-section" style="display: none;">
+    <!-- DESKTOP / MOBILE LOGIN CARD -->
+    <div class="card desktop-login-wrapper" id="login-section">
+      <!-- Desktop Left Branding -->
       <div class="login-left desktop-only">
         <div class="brand-logo-large">MedPlus</div>
         <h2>Franchise Deposit<br>Tracker</h2>
         <p>Seamlessly manage daily deposits and accurately track historical shortages with enterprise-grade security.</p>
       </div>
       
+      <!-- Form Panel -->
       <div class="login-right">
         <div class="brand-logo-large mobile-only">MedPlus</div>
         <h2 class="mobile-only">Deposit Tracker</h2>
@@ -335,9 +328,9 @@
 
     <!-- OPS TEAM: COMPACT STORE SELECTION -->
     <div class="card" id="ops-selection-section" style="display:none;">
-      <div class="brand-logo-large mobile-only" style="font-size: 28px; margin-bottom: 10px;">MedPlus</div>
-      <h3 style="margin:0 0 8px 0; font-size: 22px; font-weight: 900; text-align: center;">Welcome, <span id="ops-name-display" style="color: var(--med-primary);"></span></h3>
-      <p class="sub" style="margin-bottom: 24px; font-size: 14.5px;" id="ops-role-display"></p>
+      <div class="brand-logo-large mobile-only" style="font-size: 28px; margin-bottom: 8px;">MedPlus</div>
+      <h3 style="margin:0 0 6px 0; font-size: 22px; font-weight: 900; text-align: center;">Welcome, <span id="ops-name-display" style="color: var(--med-primary);"></span></h3>
+      <p class="sub" style="margin-bottom: 20px;" id="ops-role-display"></p>
       
       <div class="status-widget" id="ops-status-widget">
         <div class="status-icon"><span class="material-symbols-outlined">analytics</span></div>
@@ -354,24 +347,24 @@
       
       <div class="error-msg" id="ops-select-error" style="margin-bottom: 16px;"></div>
       
-      <div class="grid-row" style="margin-top:24px;">
+      <div class="grid-row" style="margin-top:20px;">
         <button class="btn btn-primary" onclick="proceedToOpsStore()">Access Store Dashboard</button>
       </div>
-      <button class="btn btn-gray-outline mobile-only" onclick="logout()" style="margin-top:12px;">Log Out</button>
+      <button class="btn btn-gray-outline" onclick="logout()" style="margin-top:12px;">Log Out</button>
     </div>
 
-    <!-- MAIN DASHBOARD WORKSPACE -->
+    <!-- MAIN DASHBOARD WORKSPACE (VERTICAL STACK ON MOBILE) -->
     <div id="form-section" style="display:none;">
       
-      <!-- MOBILE STORE INFO CARD & ACTIONS -->
+      <!-- MOBILE STORE SUMMARY CARD & ACTIONS -->
       <div class="mob-store-card mobile-only" id="mob-store-card">
-        <h3 id="mob-store-name" style="margin: 0 0 4px 0; color: var(--text-main); font-size: 18px; font-weight: 900; letter-spacing: -0.2px;">Store Name</h3>
-        <p style="margin: 0 0 16px 0; font-size: 13px; font-weight: 700; color: var(--med-primary);">ID: <span id="mob-store-id"></span></p>
+        <h3 id="mob-store-name" class="mob-store-title">Store Name</h3>
+        <p id="mob-store-id-wrapper" class="mob-store-id">ID: <span id="mob-store-id">--</span></p>
         
-        <div style="display:flex; flex-direction:column; gap:12px; align-items:center;">
+        <div style="display:flex; flex-direction:column; gap:8px; align-items:center;">
           <div class="address-pill">
             <span class="material-symbols-outlined" style="font-size: 14px;">location_on</span>
-            <span id="mob-store-address" class="address-text" style="white-space: normal;"></span>
+            <span id="mob-store-address" class="address-text"></span>
           </div>
           <div class="shortage-pill" id="mob-shortage-pill"></div>
         </div>
@@ -390,19 +383,19 @@
       </div>
 
       <!-- OPS DASHBOARD -->
-      <div class="card" id="ops-summary-card" style="display:none; padding-top: 32px;">
+      <div class="card" id="ops-summary-card" style="display:none; padding-top: 28px;">
         <h3 style="margin-top:0; margin-bottom: 20px; font-size: 20px; font-weight: 900;">Monthly Overview</h3>
         <div id="ops-summary-content">
           <div style="text-align:center; padding: 32px;"><div class="spinner spinner-dark" style="width: 28px; height: 28px;"></div></div>
         </div>
         
-        <h3 style="margin-top:32px; margin-bottom: 20px; font-size: 20px; font-weight: 900; border-top: 1px solid var(--border-color); padding-top: 24px;">Detailed History</h3>
+        <h3 style="margin-top:28px; margin-bottom: 20px; font-size: 20px; font-weight: 900; border-top: 1px solid var(--border-color); padding-top: 24px;">Detailed History</h3>
         <div id="ops-detailed-history"></div>
       </div>
 
-      <!-- DEPOSIT INPUT FORM -->
+      <!-- DEPOSIT INPUT FORM CARD -->
       <div class="card" id="input-card" style="display:none;">
-        <h3 class="desktop-only" style="margin-top:0; margin-bottom:24px; font-size:22px; font-weight:900;">Daily Deposit Entry</h3>
+        <h3 class="desktop-only" style="margin-top:0; margin-bottom:20px; font-size:20px; font-weight:900;">Daily Deposit Entry</h3>
         <div class="holiday-alert-wrapper" id="holiday-alert">
           <div class="holiday-alert-content">
             <strong id="alert-title">⚠️ Upcoming Non-Banking Day</strong>
@@ -453,7 +446,7 @@
           <div class="modal-pull"></div>
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 20px;">
             <div>
-              <h2 style="margin:0; font-size: 24px; font-weight: 900; letter-spacing: -0.5px;">Monthly History</h2>
+              <h2 style="margin:0; font-size: 22px; font-weight: 900; letter-spacing: -0.5px;">Monthly History</h2>
               <p class="sub" style="margin-bottom:0; font-size: 13px;" id="history-month-label">Current Month Summary</p>
             </div>
           </div>
@@ -477,7 +470,7 @@
         <div id="history-content" style="margin-top: 16px;"></div>
         
         <div class="sticky-footer">
-          <button class="btn btn-gray-outline" style="background: var(--input-bg); color: var(--text-main); margin: 0; box-shadow: none; width: 100%; border-radius: 16px; font-weight: 700;" onclick="closeHistoryModal(event, true)">Close Window</button>
+          <button class="btn btn-gray-outline" style="background: var(--input-bg); color: var(--text-main); margin: 0; box-shadow: none; border-radius: 16px; font-weight: 800;" onclick="closeHistoryModal(event, true)">Close Window</button>
         </div>
       </div>
     </div>
@@ -487,11 +480,11 @@
       <div class="modal-content" onclick="event.stopPropagation()" style="text-align: center; max-width: 450px;">
         <div class="modal-pull"></div>
         
-        <div class="success-icon" style="width: 64px; height: 64px; font-size: 32px; margin-bottom: 20px;">✓</div>
+        <div class="success-icon" style="width: 68px; height: 68px; font-size: 32px; margin-bottom: 20px; background: var(--success);">✓</div>
         <div class="receipt-highlight" style="font-size: 20px;">Submission Recorded</div>
         <p style="color: var(--text-muted); margin-bottom: 24px; font-size: 13.5px; font-weight: 500;">Your daily deposit has been securely synced to the master database.</p>
         
-        <div class="history-card" style="text-align: left; background: var(--input-bg); display: block; border-radius: 16px; padding: 20px; border:none;">
+        <div class="history-card" style="text-align: left; background: var(--input-bg); display: block; border-radius: 20px; padding: 18px; border:none;">
           <div class="hist-header" style="flex-direction: row; border-bottom: 1px solid var(--border-color); padding-bottom: 12px; margin-bottom: 12px; width: 100%;">
             <span class="hist-date" id="receipt-date">--</span>
             <span class="hist-time" id="receipt-time">--</span>
@@ -550,7 +543,6 @@
           }
         }
       } else {
-        // Show login securely
         document.getElementById('login-section').style.display = window.innerWidth >= 850 ? 'grid' : 'block';
       }
     });
@@ -611,7 +603,7 @@
         filtered.forEach(s => {
           const div = document.createElement('div');
           div.className = 'dropdown-item';
-          div.innerHTML = `<strong>${s.id}</strong> - ${s.name}<br><span style="font-size: 12.5px; color: var(--text-muted); display:inline-flex; align-items:center; gap:4px; margin-top:4px;"><span class="material-symbols-outlined" style="font-size: 13px;">location_on</span> ${s.address}</span>`;
+          div.innerHTML = `<strong>${s.id}</strong> - ${s.name}<br><span style="font-size: 12px; color: var(--text-muted); display:inline-flex; align-items:center; gap:4px; margin-top:4px;"><span class="material-symbols-outlined" style="font-size: 13px;">location_on</span> ${s.address}</span>`;
           div.onclick = () => { document.getElementById('ops-store-input').value = s.id; listEl.style.display = 'none'; };
           listEl.appendChild(div);
         });
@@ -804,27 +796,23 @@
           document.getElementById('desk-header-store-address').innerText = currentStore.address;
         }
 
-        // Action Buttons Display Logic
+        // Action Buttons Toggle Logic
         if (loginMode === 'ops') {
           if(document.getElementById('mob-btn-history')) document.getElementById('mob-btn-history').style.display = 'none';
           if(document.getElementById('mob-btn-change')) document.getElementById('mob-btn-change').style.display = 'flex';
-          
           if(document.getElementById('desk-btn-history')) document.getElementById('desk-btn-history').style.display = 'none';
           if(document.getElementById('desk-btn-change')) document.getElementById('desk-btn-change').style.display = 'flex';
         } else {
           if(document.getElementById('mob-btn-history')) document.getElementById('mob-btn-history').style.display = 'flex';
           if(document.getElementById('mob-btn-change')) document.getElementById('mob-btn-change').style.display = 'none';
-          
           if(document.getElementById('desk-btn-history')) document.getElementById('desk-btn-history').style.display = 'flex';
           if(document.getElementById('desk-btn-change')) document.getElementById('desk-btn-change').style.display = 'none';
         }
         
         document.getElementById('header-logged-in').style.display = 'flex';
-        
       } else {
         document.getElementById('header-logged-in').style.display = 'none';
         document.getElementById('header-logged-out').style.display = 'flex';
-        
         if(document.getElementById('mob-shortage-pill')) document.getElementById('mob-shortage-pill').style.display = 'none';
         if(document.getElementById('desk-header-shortage-pill')) document.getElementById('desk-header-shortage-pill').style.display = 'none';
       }

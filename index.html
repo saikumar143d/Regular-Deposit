@@ -43,7 +43,9 @@
     }
     input, textarea, select { user-select: auto; }
 
-    /* STICKY HEADER */
+    /* --------------------------------------------------------------------
+       SMART STICKY HEADER & ACTION BAR (MOBILE FIRST)
+       -------------------------------------------------------------------- */
     .header-and-actions-wrapper {
       position: sticky; top: 0; z-index: 100;
       background: rgba(255, 255, 255, 0.94);
@@ -69,14 +71,16 @@
     .address-text { white-space: normal; word-break: break-word; }
     .shortage-pill { background: #FFF0F0; border: 1px solid rgba(255, 59, 48, 0.25); color: var(--danger); padding: 4px 12px; border-radius: 10px; font-size: 11.5px; font-weight: 800; display: none; align-items: center;}
 
-    /* ACTION BAR MOBILE */
+    /* ACTION BAR (MOBILE) ATTACHED TO HEADER */
     .action-bar-mobile { display: flex; gap: 10px; padding: 0 16px 14px 16px; justify-content: space-between; width: 100%; }
     .action-pill-mob { flex: 1; display: flex; align-items: center; justify-content: center; gap: 4px; padding: 12px 10px; border-radius: 14px; font-size: 13.5px; font-weight: 800; background: #FFFFFF; border: 1.5px solid var(--border-color); color: var(--text-main); box-shadow: 0 2px 6px rgba(0,0,0,0.02); cursor: pointer; transition: all 0.2s;}
     .action-pill-mob:active { transform: scale(0.96); background: var(--input-bg); }
     .action-pill-mob.danger { color: var(--danger); background: #FFF4F4; border-color: rgba(255,59,48,0.2); }
     .action-pill-mob.danger:active { background: #FFE8E8; }
 
-    /* CONTAINERS & CARDS */
+    /* --------------------------------------------------------------------
+       CONTAINERS & CARDS
+       -------------------------------------------------------------------- */
     @keyframes fadeInScale {
       from { opacity: 0; transform: translateY(10px) scale(0.98); }
       to { opacity: 1; transform: translateY(0) scale(1); }
@@ -114,25 +118,31 @@
     .btn-gray-outline { border: 2px solid var(--border-color); color: var(--text-main); background: transparent; padding: 14px;}
     .btn-gray-outline:active { background: var(--input-bg); }
 
-    /* STATUS WIDGET & MISSING STORES LIST */
-    .status-widget { background: #FFF9E6; border: 1px solid #FFE082; padding: 16px; border-radius: 20px; margin-bottom: 16px; display: flex; align-items: center; gap: 12px; text-align: left; width: 100%;}
-    .status-icon { background: #FFC107; color: #6D4C00; width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;}
-    .status-text { color: #6D4C00; font-size: 13px; font-weight: 700; line-height: 1.4;}
-
-    .missing-stores-container {
-      width: 100%; margin-bottom: 20px; text-align: left; background: #FFF5F5;
-      border: 1px solid rgba(255, 59, 48, 0.2); border-radius: 20px; padding: 16px; display: none;
+    /* --------------------------------------------------------------------
+       UNIFIED OPS STATUS WIDGET (Replaces separate missing list)
+       -------------------------------------------------------------------- */
+    .status-widget { 
+      background: #FFF9E6; border: 1px solid #FFE082; padding: 20px; 
+      border-radius: 24px; margin-bottom: 20px; display: flex; flex-direction: column; 
+      text-align: left; width: 100%; transition: all 0.3s ease; box-shadow: var(--shadow-sm);
     }
-    .missing-title { font-size: 12.5px; font-weight: 800; color: var(--danger); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px; display: flex; align-items: center; gap: 6px; }
-    .missing-list { max-height: 180px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; padding-right: 4px; }
-    .missing-item {
-      background: #FFFFFF; padding: 10px 14px; border-radius: 14px; border: 1px solid rgba(255,59,48,0.15);
-      display: flex; align-items: center; justify-content: space-between; cursor: pointer; transition: all 0.2s;
+    .status-header { display: flex; align-items: center; gap: 14px; width: 100%; }
+    .status-icon { background: #FFC107; color: #6D4C00; width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all 0.3s ease;}
+    .status-text { color: #6D4C00; font-size: 14px; font-weight: 500; line-height: 1.4;}
+    
+    .missing-list { 
+      max-height: 240px; overflow-y: auto; display: flex; flex-direction: column; 
+      gap: 10px; padding-top: 16px; margin-top: 16px; border-top: 1px dashed rgba(0,0,0,0.1); width: 100%; 
     }
-    .missing-item:active { background: #FFF0F0; transform: scale(0.98); }
+    .missing-item { 
+      background: #FFFFFF; padding: 14px 16px; border-radius: 16px; border: 1px solid rgba(0,0,0,0.04); 
+      box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; align-items: center; justify-content: space-between; 
+      cursor: pointer; transition: all 0.2s;
+    }
+    .missing-item:active { transform: scale(0.98); background: #F8F9FA;}
     .missing-item-left { display: flex; align-items: center; gap: 10px; }
-    .missing-item-info strong { font-size: 13px; color: var(--text-main); display: block; }
-    .missing-item-info span { font-size: 11px; color: var(--text-muted); }
+    .missing-item-info strong { font-size: 14px; font-weight: 800; color: var(--text-main); display: block; margin-bottom: 2px;}
+    .missing-item-info span { font-size: 12px; font-weight: 600; color: var(--text-muted); }
 
     /* STATUS DOTS */
     .status-dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; flex-shrink: 0; }
@@ -150,7 +160,6 @@
     /* ALERTS & MODALS */
     .holiday-alert-wrapper { position: relative; border-radius: 20px; padding: 3px; background: linear-gradient(124deg, #ff2400, #e81d1d, #e8b71d, #e3e81d, #1de840, #1ddde8, #2b1de8, #dd00f3); background-size: 400% 400%; animation: rainbow-border 4s ease infinite; margin-bottom: 20px; display: none; width: 100%;}
     .holiday-alert-content { background: #FFFFFF; color: var(--text-main); padding: 14px 16px; border-radius: 17px; font-size: 13px; font-weight: 600; line-height: 1.45;}
-    @keyframes rainbow-border { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
     
     .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.45); backdrop-filter: blur(8px); display: flex; justify-content: center; align-items: flex-end; z-index: 1000; opacity: 0; visibility: hidden; transition: opacity 0.3s; }
     .modal-overlay.active { opacity: 1; visibility: visible; }
@@ -187,6 +196,14 @@
        DESKTOP RESPONSIVE LAYOUT (min-width: 850px)
        -------------------------------------------------------------------- */
     @media (min-width: 850px) {
+      body {
+        background-color: #E8EBF2;
+        background-image: 
+          radial-gradient(circle at 10% 20%, rgba(205, 26, 34, 0.04) 0%, transparent 40%),
+          radial-gradient(circle at 90% 80%, rgba(68, 185, 73, 0.04) 0%, transparent 40%);
+        background-attachment: fixed;
+      }
+      
       .mobile-only { display: none !important; }
       .desktop-only { display: flex !important; }
 
@@ -238,6 +255,16 @@
       .grid-row .form-group { margin-bottom: 0; }
       #ops-selection-section { width: 500px; padding: 48px; margin: auto; }
 
+      .btn-primary:hover { filter: brightness(1.05); transform: translateY(-2px); box-shadow: 0 10px 24px rgba(205, 26, 34, 0.3); }
+
+      /* Desktop Modals */
+      .modal-overlay { align-items: center; padding: 40px; background: rgba(0, 0, 0, 0.4); }
+      .modal-content { max-width: 800px; transform: scale(0.95) !important; opacity: 0; padding: 40px; border-radius: 32px; max-height: 85vh; box-shadow: var(--shadow-lg); }
+      .modal-overlay.active .modal-content { transform: scale(1) !important; opacity: 1; }
+      .modal-pull { display: none; }
+      .sticky-header { padding: 40px 40px 24px 40px; margin: -40px -40px 24px -40px; top: -40px; border-radius: 32px 32px 0 0; }
+      .sticky-footer { padding: 24px 40px 40px 40px; margin: 24px -40px -40px -40px; bottom: -40px; border-radius: 0 0 32px 32px; }
+
       .history-card { 
         display: grid; grid-template-columns: 1.2fr 1fr 1fr 1fr; align-items: center; 
         padding: 18px 24px; border-radius: 18px;
@@ -250,10 +277,10 @@
 </head>
 <body>
 
-  <!-- UNIVERSAL STICKY HEADER WRAPPER -->
+  <!-- UNIVERSAL STICKY HEADER -->
   <div class="header-and-actions-wrapper" id="sticky-top-wrapper">
-    
     <div class="top-header" id="main-header">
+      
       <!-- Logged Out Header -->
       <div id="header-logged-out" style="display:flex; justify-content:space-between; width:100%; align-items:center;">
         <div class="header-logo">MedPlus</div>
@@ -295,7 +322,7 @@
       </div>
     </div>
 
-    <!-- Mobile Action Bar -->
+    <!-- Mobile Action Bar (Attached to Sticky Header) -->
     <div class="action-bar-mobile mobile-only" id="action-bar-mobile" style="display:none;">
       <button class="action-pill-mob" id="mob-btn-history" onclick="openHistoryModal()">
         <span class="material-symbols-outlined" style="font-size: 18px;">history</span> History
@@ -307,10 +334,15 @@
         <span class="material-symbols-outlined" style="font-size: 18px;">logout</span> Sign Out
       </button>
     </div>
-
   </div>
 
   <div class="container">
+
+    <!-- DESKTOP CLOCK (Visible only on Desktop Login) -->
+    <div class="desktop-only" id="desktop-clock" style="position: absolute; top: 40px; right: 40px; text-align: right; color: var(--text-muted);">
+      <div id="desk-live-date" style="font-size:13px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;"></div>
+      <div id="desk-live-time" style="font-size:22px; font-weight:900; letter-spacing: -0.5px; color: var(--text-main);"></div>
+    </div>
 
     <!-- LOGIN CARD -->
     <div class="card desktop-login-wrapper" id="login-section" style="display: none;">
@@ -359,18 +391,15 @@
       <h3 style="margin:0 0 8px 0; font-size: 24px; font-weight: 900; text-align: center;">Welcome, <span id="ops-name-display" style="color: var(--med-primary);"></span></h3>
       <p class="sub" style="margin-bottom: 24px; font-size: 14.5px;" id="ops-role-display"></p>
       
+      <!-- Unified Status & Missing Widget -->
       <div class="status-widget" id="ops-status-widget">
-        <div class="status-icon"><span class="material-symbols-outlined">analytics</span></div>
-        <div class="status-text" id="ops-status-text">
-          <span class="spinner spinner-dark" style="width:14px;height:14px;border-width:2px;display:inline-block;"></span> Fetching live status...
+        <div class="status-header">
+          <div class="status-icon" id="ops-status-icon"><span class="material-symbols-outlined">analytics</span></div>
+          <div class="status-text" id="ops-status-text">
+            <span class="spinner spinner-dark" style="width:14px;height:14px;border-width:2px;display:inline-block;"></span> Fetching live status...
+          </div>
         </div>
-      </div>
-
-      <div class="missing-stores-container" id="ops-missing-container">
-        <div class="missing-title">
-          <span class="status-dot red"></span> Stores Pending Submission Today:
-        </div>
-        <div class="missing-list" id="ops-missing-list"></div>
+        <div class="missing-list" id="ops-missing-list" style="display: none;"></div>
       </div>
 
       <div class="form-group custom-dropdown">
@@ -556,6 +585,7 @@
         }
         
         document.getElementById('login-section').style.display = 'none';
+        if(document.getElementById('desktop-clock')) document.getElementById('desktop-clock').style.display = 'none';
         
         if (loginMode === 'store') {
           setupFormScreen();
@@ -632,9 +662,7 @@
           div.innerHTML = `
             <div>
               <strong>${s.id}</strong> - ${s.name}<br>
-              <span style="font-size: 12.5px; color: var(--text-muted); display:inline-flex; align-items:center; gap:4px; margin-top:4px;">
-                <span class="material-symbols-outlined" style="font-size: 13px;">location_on</span> ${s.address}
-              </span>
+              <span style="font-size: 12.5px; color: var(--text-muted); display:inline-flex; align-items:center; gap:4px; margin-top:4px;"><span class="material-symbols-outlined" style="font-size: 13px;">location_on</span> ${s.address}</span>
             </div>
             <span class="status-dot ${dotClass}" title="${isSubmitted ? 'Submitted Today' : 'Pending Today'}"></span>
           `;
@@ -693,6 +721,11 @@
       document.getElementById('live-date').innerText = dateStr;
       document.getElementById('live-time').innerText = timeStr;
       
+      const deskDate = document.getElementById('desk-live-date');
+      const deskTime = document.getElementById('desk-live-time');
+      if(deskDate) deskDate.innerText = dateStr;
+      if(deskTime) deskTime.innerText = timeStr;
+      
       const yesterday = new Date(now); yesterday.setDate(now.getDate() - 1);
       const yestDateString = yesterday.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
       const netSaleLabel = document.getElementById('net-sale-label');
@@ -749,6 +782,7 @@
       
       if (res.success) {
         document.getElementById('login-section').style.display = 'none';
+        if(document.getElementById('desktop-clock')) document.getElementById('desktop-clock').style.display = 'none';
         
         if (loginMode === 'store') {
           currentStore = { id: id, name: res.storeName, address: res.address, mapping: res.mapping };
@@ -777,23 +811,36 @@
     }
 
     async function updateOpsStatusWidget() {
+      const widgetEl = document.getElementById('ops-status-widget');
       const textEl = document.getElementById('ops-status-text');
-      const missingContainer = document.getElementById('ops-missing-container');
+      const iconEl = document.getElementById('ops-status-icon');
       const missingList = document.getElementById('ops-missing-list');
       
       textEl.innerHTML = `<span class="spinner spinner-dark" style="width:14px;height:14px;border-width:2px;display:inline-block;"></span> Fetching live status...`;
-      missingContainer.style.display = 'none';
+      missingList.style.display = 'none';
       
       const res = await apiCall({ action: 'getPendingStores', mapping: opsUserObj.mapping });
       if (res.success) {
         opsSubmittedStoreIds = new Set((res.submittedStoreIds || []).map(id => id.toLowerCase()));
         
         if (res.missing === 0) {
-          textEl.innerHTML = `<strong>All caught up!</strong> ${res.total}/${res.total} stores submitted today.`;
-          textEl.style.color = 'var(--success)';
-          missingContainer.style.display = 'none';
+          widgetEl.style.background = '#F0FFF4';
+          widgetEl.style.borderColor = '#A3E6B5';
+          iconEl.style.background = '#34C759';
+          iconEl.style.color = '#FFFFFF';
+          iconEl.innerHTML = '<span class="material-symbols-outlined">check_circle</span>';
+          
+          textEl.innerHTML = `<strong style="display:block; margin-bottom: 2px;">All caught up!</strong> ${res.total}/${res.total} stores submitted today.`;
+          textEl.style.color = '#105C26';
+          missingList.style.display = 'none';
         } else {
-          textEl.innerHTML = `<strong>Action Required:</strong> ${res.missing} out of ${res.total} stores haven't submitted today.`;
+          widgetEl.style.background = '#FFF9E6';
+          widgetEl.style.borderColor = '#FFE082';
+          iconEl.style.background = '#FFC107';
+          iconEl.style.color = '#6D4C00';
+          iconEl.innerHTML = '<span class="material-symbols-outlined">analytics</span>';
+          
+          textEl.innerHTML = `<strong style="display:flex; align-items:center; gap:6px; margin-bottom: 2px;"><span class="status-dot red"></span>Action Required</strong> ${res.missing} out of ${res.total} stores haven't submitted today.`;
           textEl.style.color = '#8F6000';
           
           if (res.missingStores && res.missingStores.length > 0) {
@@ -803,13 +850,12 @@
               div.className = 'missing-item';
               div.innerHTML = `
                 <div class="missing-item-left">
-                  <span class="status-dot red"></span>
                   <div class="missing-item-info">
                     <strong>${s.id} - ${s.name}</strong>
                     <span>${s.address}</span>
                   </div>
                 </div>
-                <span class="material-symbols-outlined" style="font-size:18px; color:var(--text-muted);">arrow_forward_ios</span>
+                <span class="material-symbols-outlined" style="font-size:18px; color:var(--med-primary);">arrow_forward_ios</span>
               `;
               div.onclick = () => {
                 document.getElementById('ops-store-input').value = s.id;
@@ -817,7 +863,7 @@
               };
               missingList.appendChild(div);
             });
-            missingContainer.style.display = 'block';
+            missingList.style.display = 'flex';
           }
         }
       } else {
@@ -847,9 +893,11 @@
       if (isLoggedIn) {
         document.getElementById('header-logged-out').style.display = 'none';
         
-        document.getElementById('header-store-name').innerText = currentStore.name;
-        document.getElementById('header-store-id').innerText = currentStore.id;
-        document.getElementById('header-store-address').innerText = currentStore.address;
+        if(document.getElementById('header-store-name')) {
+          document.getElementById('header-store-name').innerText = currentStore.name;
+          document.getElementById('header-store-id').innerText = currentStore.id;
+          document.getElementById('header-store-address').innerText = currentStore.address;
+        }
 
         if (loginMode === 'ops') {
           if(document.getElementById('mob-btn-history')) document.getElementById('mob-btn-history').style.display = 'none';
@@ -868,7 +916,7 @@
       } else {
         document.getElementById('header-logged-in').style.display = 'none';
         document.getElementById('header-logged-out').style.display = 'flex';
-        document.getElementById('header-shortage-pill').style.display = 'none';
+        if(document.getElementById('header-shortage-pill')) document.getElementById('header-shortage-pill').style.display = 'none';
         document.getElementById('action-bar-mobile').style.display = 'none';
       }
     }

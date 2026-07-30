@@ -118,9 +118,7 @@
     .btn-gray-outline { border: 2px solid var(--border-color); color: var(--text-main); background: transparent; padding: 14px;}
     .btn-gray-outline:active { background: var(--input-bg); }
 
-    /* --------------------------------------------------------------------
-       UNIFIED OPS STATUS WIDGET (Replaces separate missing list)
-       -------------------------------------------------------------------- */
+    /* UNIFIED OPS STATUS WIDGET */
     .status-widget { 
       background: #FFF9E6; border: 1px solid #FFE082; padding: 20px; 
       border-radius: 24px; margin-bottom: 20px; display: flex; flex-direction: column; 
@@ -129,20 +127,6 @@
     .status-header { display: flex; align-items: center; gap: 14px; width: 100%; }
     .status-icon { background: #FFC107; color: #6D4C00; width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all 0.3s ease;}
     .status-text { color: #6D4C00; font-size: 14px; font-weight: 500; line-height: 1.4;}
-    
-    .missing-list { 
-      max-height: 240px; overflow-y: auto; display: flex; flex-direction: column; 
-      gap: 10px; padding-top: 16px; margin-top: 16px; border-top: 1px dashed rgba(0,0,0,0.1); width: 100%; 
-    }
-    .missing-item { 
-      background: #FFFFFF; padding: 14px 16px; border-radius: 16px; border: 1px solid rgba(0,0,0,0.04); 
-      box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; align-items: center; justify-content: space-between; 
-      cursor: pointer; transition: all 0.2s;
-    }
-    .missing-item:active { transform: scale(0.98); background: #F8F9FA;}
-    .missing-item-left { display: flex; align-items: center; gap: 10px; }
-    .missing-item-info strong { font-size: 14px; font-weight: 800; color: var(--text-main); display: block; margin-bottom: 2px;}
-    .missing-item-info span { font-size: 12px; font-weight: 600; color: var(--text-muted); }
 
     /* STATUS DOTS */
     .status-dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; flex-shrink: 0; }
@@ -338,7 +322,7 @@
 
   <div class="container">
 
-    <!-- DESKTOP CLOCK (Visible only on Desktop Login) -->
+    <!-- DESKTOP CLOCK -->
     <div class="desktop-only" id="desktop-clock" style="position: absolute; top: 40px; right: 40px; text-align: right; color: var(--text-muted);">
       <div id="desk-live-date" style="font-size:13px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;"></div>
       <div id="desk-live-time" style="font-size:22px; font-weight:900; letter-spacing: -0.5px; color: var(--text-main);"></div>
@@ -387,11 +371,10 @@
 
     <!-- OPS TEAM: COMPACT STORE SELECTION -->
     <div class="card" id="ops-selection-section" style="display:none;">
-      <div class="brand-logo-large mobile-only" style="font-size: 28px; margin-bottom: 10px;">MedPlus</div>
-      <h3 style="margin:0 0 8px 0; font-size: 24px; font-weight: 900; text-align: center;">Welcome, <span id="ops-name-display" style="color: var(--med-primary);"></span></h3>
+      <h3 style="margin:0 0 8px 0; font-size: 24px; font-weight: 900; text-align: center;" id="ops-name-display"></h3>
       <p class="sub" style="margin-bottom: 24px; font-size: 14.5px;" id="ops-role-display"></p>
       
-      <!-- Unified Status & Missing Widget -->
+      <!-- Unified Status Widget -->
       <div class="status-widget" id="ops-status-widget">
         <div class="status-header">
           <div class="status-icon" id="ops-status-icon"><span class="material-symbols-outlined">analytics</span></div>
@@ -399,7 +382,6 @@
             <span class="spinner spinner-dark" style="width:14px;height:14px;border-width:2px;display:inline-block;"></span> Fetching live status...
           </div>
         </div>
-        <div class="missing-list" id="ops-missing-list" style="display: none;"></div>
       </div>
 
       <div class="form-group custom-dropdown">
@@ -413,7 +395,6 @@
       <div class="grid-row" style="margin-top:24px;">
         <button class="btn btn-primary" onclick="proceedToOpsStore()">Access Store Dashboard</button>
       </div>
-      <button class="btn btn-gray-outline mobile-only" onclick="logout()" style="margin-top:12px;">Log Out</button>
     </div>
 
     <!-- MAIN DASHBOARD WORKSPACE -->
@@ -571,7 +552,7 @@
 
     // --- SESSION RESTORE ON LOAD ---
     document.addEventListener('DOMContentLoaded', () => {
-      const session = localStorage.getItem('franchise_session');
+      const session = sessionStorage.getItem('franchise_session');
       if (session) {
         const data = JSON.parse(session);
         loginMode = data.mode;
@@ -601,16 +582,8 @@
       }
     });
 
-    // --- Logout Protection ---
-    window.addEventListener('beforeunload', function (e) {
-      if (currentStore && currentStore.id) {
-        e.preventDefault();
-        e.returnValue = ''; 
-      }
-    });
-
     function saveSession() {
-      localStorage.setItem('franchise_session', JSON.stringify({
+      sessionStorage.setItem('franchise_session', JSON.stringify({
         mode: loginMode, store: currentStore, opsUser: opsUserObj, opsAllowed: opsAllowedStores
       }));
     }
@@ -814,10 +787,8 @@
       const widgetEl = document.getElementById('ops-status-widget');
       const textEl = document.getElementById('ops-status-text');
       const iconEl = document.getElementById('ops-status-icon');
-      const missingList = document.getElementById('ops-missing-list');
       
       textEl.innerHTML = `<span class="spinner spinner-dark" style="width:14px;height:14px;border-width:2px;display:inline-block;"></span> Fetching live status...`;
-      missingList.style.display = 'none';
       
       const res = await apiCall({ action: 'getPendingStores', mapping: opsUserObj.mapping });
       if (res.success) {
@@ -832,7 +803,6 @@
           
           textEl.innerHTML = `<strong style="display:block; margin-bottom: 2px;">All caught up!</strong> ${res.total}/${res.total} stores submitted today.`;
           textEl.style.color = '#105C26';
-          missingList.style.display = 'none';
         } else {
           widgetEl.style.background = '#FFF9E6';
           widgetEl.style.borderColor = '#FFE082';
@@ -842,29 +812,6 @@
           
           textEl.innerHTML = `<strong style="display:flex; align-items:center; gap:6px; margin-bottom: 2px;"><span class="status-dot red"></span>Action Required</strong> ${res.missing} out of ${res.total} stores haven't submitted today.`;
           textEl.style.color = '#8F6000';
-          
-          if (res.missingStores && res.missingStores.length > 0) {
-            missingList.innerHTML = '';
-            res.missingStores.forEach(s => {
-              const div = document.createElement('div');
-              div.className = 'missing-item';
-              div.innerHTML = `
-                <div class="missing-item-left">
-                  <div class="missing-item-info">
-                    <strong>${s.id} - ${s.name}</strong>
-                    <span>${s.address}</span>
-                  </div>
-                </div>
-                <span class="material-symbols-outlined" style="font-size:18px; color:var(--med-primary);">arrow_forward_ios</span>
-              `;
-              div.onclick = () => {
-                document.getElementById('ops-store-input').value = s.id;
-                proceedToOpsStore();
-              };
-              missingList.appendChild(div);
-            });
-            missingList.style.display = 'flex';
-          }
         }
       } else {
         textEl.innerText = "Status unavailable.";
@@ -899,6 +846,12 @@
           document.getElementById('header-store-address').innerText = currentStore.address;
         }
 
+        if(document.getElementById('desk-header-store-name')){
+          document.getElementById('desk-header-store-name').innerText = currentStore.name;
+          document.getElementById('desk-header-store-id').innerText = currentStore.id;
+          document.getElementById('desk-header-store-address').innerText = currentStore.address;
+        }
+
         if (loginMode === 'ops') {
           if(document.getElementById('mob-btn-history')) document.getElementById('mob-btn-history').style.display = 'none';
           if(document.getElementById('mob-btn-change')) document.getElementById('mob-btn-change').style.display = 'flex';
@@ -917,17 +870,22 @@
         document.getElementById('header-logged-in').style.display = 'none';
         document.getElementById('header-logged-out').style.display = 'flex';
         if(document.getElementById('header-shortage-pill')) document.getElementById('header-shortage-pill').style.display = 'none';
+        if(document.getElementById('desk-header-shortage-pill')) document.getElementById('desk-header-shortage-pill').style.display = 'none';
         document.getElementById('action-bar-mobile').style.display = 'none';
       }
     }
 
     function updateShortagePill(shortageAmount) {
-      const pill = document.getElementById('header-shortage-pill');
+      const mPill = document.getElementById('header-shortage-pill');
+      const dPill = document.getElementById('desk-header-shortage-pill');
+      
       if (shortageAmount > 0) {
-        pill.style.display = 'inline-flex';
-        pill.innerText = '⚠️ Short: ₹ ' + shortageAmount.toLocaleString('en-IN');
+        const text = '⚠️ Short: ₹ ' + shortageAmount.toLocaleString('en-IN');
+        if(mPill) { mPill.style.display = 'inline-flex'; mPill.innerText = text; }
+        if(dPill) { dPill.style.display = 'inline-flex'; dPill.innerText = text; }
       } else {
-        pill.style.display = 'none';
+        if(mPill) mPill.style.display = 'none';
+        if(dPill) dPill.style.display = 'none';
       }
     }
 
@@ -1136,7 +1094,7 @@
 
     function logout() {
       sessionStorage.removeItem('indent_alert_shown_' + currentStore.id);
-      localStorage.removeItem('franchise_session');
+      sessionStorage.removeItem('franchise_session');
       currentStore = {}; opsAllowedStores = []; opsSubmittedStoreIds = new Set(); opsUserObj = null; preloadedHistory = []; historicalShortage = 0;
       updateHeaderState(false);
       document.getElementById('form-section').style.display = 'none';

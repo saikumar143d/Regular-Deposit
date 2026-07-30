@@ -74,6 +74,7 @@
     .action-pill-mob { flex: 1; display: flex; align-items: center; justify-content: center; gap: 4px; padding: 12px 10px; border-radius: 14px; font-size: 13.5px; font-weight: 800; background: #FFFFFF; border: 1.5px solid var(--border-color); color: var(--text-main); box-shadow: 0 2px 6px rgba(0,0,0,0.02); cursor: pointer; transition: all 0.2s;}
     .action-pill-mob:active { transform: scale(0.96); background: var(--input-bg); }
     .action-pill-mob.danger { color: var(--danger); background: #FFF4F4; border-color: rgba(255,59,48,0.2); }
+    .action-pill-mob.danger:active { background: #FFE8E8; }
 
     /* CONTAINERS & CARDS */
     @keyframes fadeInScale {
@@ -149,6 +150,7 @@
     /* ALERTS & MODALS */
     .holiday-alert-wrapper { position: relative; border-radius: 20px; padding: 3px; background: linear-gradient(124deg, #ff2400, #e81d1d, #e8b71d, #e3e81d, #1de840, #1ddde8, #2b1de8, #dd00f3); background-size: 400% 400%; animation: rainbow-border 4s ease infinite; margin-bottom: 20px; display: none; width: 100%;}
     .holiday-alert-content { background: #FFFFFF; color: var(--text-main); padding: 14px 16px; border-radius: 17px; font-size: 13px; font-weight: 600; line-height: 1.45;}
+    @keyframes rainbow-border { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
     
     .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.45); backdrop-filter: blur(8px); display: flex; justify-content: center; align-items: flex-end; z-index: 1000; opacity: 0; visibility: hidden; transition: opacity 0.3s; }
     .modal-overlay.active { opacity: 1; visibility: visible; }
@@ -240,6 +242,7 @@
         display: grid; grid-template-columns: 1.2fr 1fr 1fr 1fr; align-items: center; 
         padding: 18px 24px; border-radius: 18px;
       }
+      .history-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); border-color: transparent;}
       .hist-header { border-bottom: none; padding-bottom: 0; margin-bottom: 0; flex-direction: column; align-items: flex-start; gap: 4px; }
       .hist-row { margin-bottom: 0; flex-direction: column; align-items: flex-end; gap: 4px; }
     }
@@ -247,8 +250,9 @@
 </head>
 <body>
 
-  <!-- UNIVERSAL STICKY HEADER -->
+  <!-- UNIVERSAL STICKY HEADER WRAPPER -->
   <div class="header-and-actions-wrapper" id="sticky-top-wrapper">
+    
     <div class="top-header" id="main-header">
       <!-- Logged Out Header -->
       <div id="header-logged-out" style="display:flex; justify-content:space-between; width:100%; align-items:center;">
@@ -303,6 +307,7 @@
         <span class="material-symbols-outlined" style="font-size: 18px;">logout</span> Sign Out
       </button>
     </div>
+
   </div>
 
   <div class="container">
@@ -348,13 +353,12 @@
       </div>
     </div>
 
-    <!-- OPS TEAM: STORE SELECTION -->
+    <!-- OPS TEAM: COMPACT STORE SELECTION -->
     <div class="card" id="ops-selection-section" style="display:none;">
       <div class="brand-logo-large mobile-only" style="font-size: 28px; margin-bottom: 10px;">MedPlus</div>
       <h3 style="margin:0 0 8px 0; font-size: 24px; font-weight: 900; text-align: center;">Welcome, <span id="ops-name-display" style="color: var(--med-primary);"></span></h3>
       <p class="sub" style="margin-bottom: 24px; font-size: 14.5px;" id="ops-role-display"></p>
       
-      <!-- Status Summary Card -->
       <div class="status-widget" id="ops-status-widget">
         <div class="status-icon"><span class="material-symbols-outlined">analytics</span></div>
         <div class="status-text" id="ops-status-text">
@@ -362,7 +366,6 @@
         </div>
       </div>
 
-      <!-- Pending Stores Accordion/List -->
       <div class="missing-stores-container" id="ops-missing-container">
         <div class="missing-title">
           <span class="status-dot red"></span> Stores Pending Submission Today:
@@ -378,7 +381,7 @@
       
       <div class="error-msg" id="ops-select-error" style="margin-bottom: 16px;"></div>
       
-      <div class="grid-row" style="margin-top:20px;">
+      <div class="grid-row" style="margin-top:24px;">
         <button class="btn btn-primary" onclick="proceedToOpsStore()">Access Store Dashboard</button>
       </div>
       <button class="btn btn-gray-outline mobile-only" onclick="logout()" style="margin-top:12px;">Log Out</button>
@@ -629,7 +632,7 @@
           div.innerHTML = `
             <div>
               <strong>${s.id}</strong> - ${s.name}<br>
-              <span style="font-size: 12px; color: var(--text-muted); display:inline-flex; align-items:center; gap:4px; margin-top:4px;">
+              <span style="font-size: 12.5px; color: var(--text-muted); display:inline-flex; align-items:center; gap:4px; margin-top:4px;">
                 <span class="material-symbols-outlined" style="font-size: 13px;">location_on</span> ${s.address}
               </span>
             </div>
@@ -793,7 +796,6 @@
           textEl.innerHTML = `<strong>Action Required:</strong> ${res.missing} out of ${res.total} stores haven't submitted today.`;
           textEl.style.color = '#8F6000';
           
-          // Render missing stores list
           if (res.missingStores && res.missingStores.length > 0) {
             missingList.innerHTML = '';
             res.missingStores.forEach(s => {

@@ -27,6 +27,7 @@
       --danger: #FF3B30;
       --success: #34C759;
       --shadow-oneui: 0 10px 28px rgba(28, 38, 56, 0.05);
+      --shadow-sm: 0 4px 12px rgba(0,0,0,0.03);
     }
     
     * { box-sizing: border-box; }
@@ -43,36 +44,57 @@
     }
     input, textarea, select { user-select: auto; }
 
-    /* ONE UI HEADER */
-    .top-header { 
-      background: rgba(255, 255, 255, 0.92); 
-      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); 
-      padding: 14px 20px; display: flex; justify-content: space-between; align-items: center; 
-      position: sticky; top: 0; z-index: 100; border-bottom: 1px solid var(--border-color); 
-      box-shadow: 0 2px 12px rgba(0,0,0,0.02); min-height: 56px; 
+    /* --------------------------------------------------------------------
+       SMART STICKY HEADER & ACTION BAR (MOBILE FIRST)
+       -------------------------------------------------------------------- */
+    .header-and-actions-wrapper {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(255, 255, 255, 0.94);
+      backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+      border-bottom: 1px solid var(--border-color);
+      box-shadow: var(--shadow-sm);
     }
+    
+    .top-header { padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; min-height: 52px; }
     .header-logo { font-weight: 900; font-size: 21px; color: var(--med-primary); letter-spacing: -0.6px;}
     .header-time-block { text-align: right; }
     #live-date { font-size: 11px; color: var(--text-muted); font-weight: 700; text-transform: uppercase; letter-spacing: 0.3px;}
     #live-time { font-size: 14px; font-weight: 900; color: var(--text-main); letter-spacing: -0.5px;}
 
-    /* MAIN CONTAINER (MOBILE VERTICAL STACK) */
-    .container { 
-      padding: 16px; max-width: 500px; margin: 0 auto; 
-      display: flex; flex-direction: column; gap: 16px; align-items: center; width: 100%;
-    }
+    #header-logged-in { flex-direction: column; align-items: flex-start; gap: 8px; width: 100%; }
+    .header-left-side { display: flex; flex-direction: column; gap: 6px; width: 100%; }
     
-    /* ONE UI SQUIRCLE CARD */
-    .card { 
-      background: var(--card-bg); border-radius: 28px; padding: 24px; 
-      box-shadow: var(--shadow-oneui); width: 100%; border: 1px solid rgba(255, 255, 255, 0.8);
+    .header-store-info { display: flex; flex-direction: column; gap: 4px; }
+    .header-store-name { font-size: 18px; font-weight: 900; color: var(--text-main); letter-spacing: -0.3px; line-height: 1.2;}
+    .header-store-meta { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; font-size: 12.5px; font-weight: 800; color: var(--med-primary);}
+    
+    .address-pill { display: inline-flex; align-items: center; gap: 4px; background: var(--input-bg); border: 1px solid var(--border-color); color: var(--text-muted); padding: 4px 10px; border-radius: 10px; font-size: 11px; font-weight: 700; max-width: 100%; }
+    .address-text { white-space: normal; word-break: break-word; }
+    .shortage-pill { background: #FFF0F0; border: 1px solid rgba(255, 59, 48, 0.25); color: var(--danger); padding: 4px 12px; border-radius: 10px; font-size: 11.5px; font-weight: 800; display: none; align-items: center;}
+
+    /* ACTION BAR (MOBILE) ATTACHED TO HEADER */
+    .action-bar-mobile { display: flex; gap: 10px; padding: 0 16px 14px 16px; justify-content: space-between; width: 100%; }
+    .action-pill-mob { flex: 1; display: flex; align-items: center; justify-content: center; gap: 4px; padding: 12px 10px; border-radius: 14px; font-size: 13.5px; font-weight: 800; background: #FFFFFF; border: 1.5px solid var(--border-color); color: var(--text-main); box-shadow: 0 2px 6px rgba(0,0,0,0.02); cursor: pointer; transition: all 0.2s;}
+    .action-pill-mob:active { transform: scale(0.96); background: var(--input-bg); }
+    .action-pill-mob.danger { color: var(--danger); background: #FFF4F4; border-color: rgba(255,59,48,0.2); }
+    .action-pill-mob.danger:active { background: #FFE8E8; }
+
+    /* --------------------------------------------------------------------
+       CONTAINERS & CARDS
+       -------------------------------------------------------------------- */
+    @keyframes fadeInScale {
+      from { opacity: 0; transform: translateY(10px) scale(0.98); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
     }
+
+    .container { padding: 16px; max-width: 500px; margin: 0 auto; display: flex; flex-direction: column; gap: 16px; align-items: center; width: 100%; }
+    .card { background: var(--card-bg); border-radius: 28px; padding: 24px; box-shadow: var(--shadow-oneui); width: 100%; border: 1px solid rgba(255, 255, 255, 0.8); animation: fadeInScale 0.3s ease-out forwards;}
     
     .brand-logo-large { font-size: 36px; font-weight: 900; letter-spacing: -1.5px; color: var(--med-primary); margin-bottom: 6px; display: flex; justify-content: center; }
     h2 { margin: 0 0 6px 0; font-size: 22px; font-weight: 800; letter-spacing: -0.5px; text-align: center;}
     p.sub { color: var(--text-muted); margin: 0 0 20px 0; font-size: 14px; font-weight: 500; text-align: center; line-height: 1.4;}
     
-    /* ONE UI TOGGLE SWITCH */
+    /* TOGGLE SWITCH */
     .toggle-wrapper { display: flex; justify-content: center; margin-bottom: 20px; width: 100%;}
     .toggle-checkbox { display: none; }
     .toggle-label { position: relative; display: flex; align-items: center; width: 100%; max-width: 270px; height: 46px; background-color: var(--input-bg); border-radius: 23px; cursor: pointer; padding: 4px; border: 1px solid var(--border-color); }
@@ -85,57 +107,17 @@
     /* FORMS & INPUTS */
     .form-group { margin-bottom: 16px; width: 100%; text-align: left;}
     label { display: block; margin-bottom: 8px; font-size: 13px; font-weight: 700; color: #3A3F47; margin-left: 4px;}
-    input, textarea { 
-      width: 100%; padding: 16px 18px; border: 2px solid transparent; 
-      border-radius: 18px; font-size: 15px; transition: all 0.2s; 
-      background: var(--input-bg); color: var(--text-main); font-family: inherit; font-weight: 600;
-    }
+    input, textarea { width: 100%; padding: 16px 18px; border: 2px solid transparent; border-radius: 18px; font-size: 15px; transition: all 0.2s; background: var(--input-bg); color: var(--text-main); font-family: inherit; font-weight: 600;}
     input::placeholder, textarea::placeholder { color: #9A9EA6; font-weight: 500;}
     input:focus, textarea:focus { background: #FFFFFF; border-color: rgba(205, 26, 34, 0.35); box-shadow: 0 0 0 4px rgba(205, 26, 34, 0.08); outline: none;}
     input[readonly] { background: #E6E8EE; color: var(--text-muted); opacity: 0.8;}
 
-    /* ONE UI BUTTONS */
+    /* BUTTONS */
     .btn { width: 100%; padding: 16px; border-radius: 20px; border: none; font-size: 15.5px; font-weight: 800; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 8px; transition: all 0.2s; }
     .btn-primary { background: linear-gradient(135deg, #DF2029 0%, #B01017 100%); color: white; margin-top: 8px; box-shadow: 0 8px 20px rgba(205, 26, 34, 0.22); }
     .btn-primary:active { transform: scale(0.97); }
     .btn-gray-outline { border: 2px solid var(--border-color); color: var(--text-main); background: transparent; padding: 14px;}
     .btn-gray-outline:active { background: var(--input-bg); }
-
-    /* ONE UI STORE SUMMARY CARD (MOBILE TOP CARD) */
-    .mob-store-card { 
-      background: #FFFFFF; border: 1px solid var(--border-color); 
-      padding: 22px; text-align: center; border-radius: 28px; 
-      box-shadow: var(--shadow-oneui); width: 100%; 
-    }
-    .mob-store-title { margin: 0 0 4px 0; color: var(--text-main); font-size: 19px; font-weight: 900; letter-spacing: -0.3px; line-height: 1.25;}
-    .mob-store-id { margin: 0 0 14px 0; font-size: 13px; font-weight: 800; color: var(--med-primary); letter-spacing: 0.2px;}
-
-    /* PILLS & BADGES */
-    .address-pill { 
-      display: inline-flex; align-items: center; gap: 4px; 
-      background: var(--input-bg); border: 1px solid var(--border-color); 
-      color: var(--text-muted); padding: 6px 12px; border-radius: 12px; 
-      font-size: 11.5px; font-weight: 700; max-width: 100%; text-align: center; justify-content: center;
-    }
-    .address-text { white-space: normal; word-break: break-word; }
-    
-    .shortage-pill { 
-      background: #FFF0F0; border: 1px solid rgba(255, 59, 48, 0.25); color: var(--danger); 
-      padding: 6px 14px; border-radius: 12px; font-size: 12px; font-weight: 800; 
-      display: none; align-items: center; justify-content: center; width: fit-content; 
-      margin: 10px auto 0 auto; box-shadow: 0 2px 8px rgba(255,59,48,0.12);
-    }
-
-    /* ACTION BUTTON ROW (ONE UI PILLS) */
-    .mob-action-row { display: flex; gap: 10px; margin-top: 18px; width: 100%; justify-content: center;}
-    .mob-action-btn { 
-      flex: 1; display: flex; align-items: center; justify-content: center; gap: 6px; 
-      padding: 12px 14px; border-radius: 16px; font-size: 13.5px; font-weight: 800; 
-      border: 1.5px solid var(--border-color); background: #FFFFFF; color: var(--text-main); 
-      box-shadow: 0 2px 8px rgba(0,0,0,0.02); cursor: pointer; transition: all 0.2s;
-    }
-    .mob-action-btn:active { transform: scale(0.96); background: var(--input-bg); }
-    .mob-action-btn.danger { color: var(--danger); background: #FFF4F4; border-color: rgba(255,59,48,0.2); }
 
     /* WIDGETS & DROPDOWNS */
     .status-widget { background: #FFF9E6; border: 1px solid #FFE082; padding: 16px; border-radius: 20px; margin-bottom: 20px; display: flex; align-items: center; gap: 12px; text-align: left; width: 100%;}
@@ -191,11 +173,31 @@
       .mobile-only { display: none !important; }
       .desktop-only { display: flex !important; }
 
-      .top-header { padding: 16px 40px; }
+      .header-and-actions-wrapper {
+        box-shadow: 0 4px 24px rgba(0,0,0,0.04);
+        border-bottom: none;
+      }
+      .top-header { padding: 16px 40px; box-shadow: none; border: none; background: transparent; }
       .header-logo { font-size: 24px; }
+      
+      #header-logged-in { flex-direction: row; align-items: center; justify-content: space-between; }
+      .header-left-side { flex-direction: row; align-items: center; gap: 24px; width: auto; }
+      .header-store-name { font-size: 18px; letter-spacing: -0.5px;}
+      .address-pill { max-width: 300px; font-size: 11.5px; padding: 6px 12px; margin: 0; }
+      .shortage-pill { margin: 0; font-size: 11.5px; padding: 6px 12px;}
 
-      /* Desktop Dashboard 2-Column Grid */
-      .container { max-width: 1000px; padding: 40px 24px; min-height: 80vh; justify-content: center; }
+      /* Desktop Actions inside Header Wrapper */
+      .header-actions-desktop .action-pill-desk {
+        display: inline-flex; align-items: center; gap: 6px; padding: 10px 18px; 
+        border-radius: 14px; font-size: 13.5px; font-weight: 800; background: #FFFFFF; 
+        border: 1px solid var(--border-color); color: var(--text-main); cursor: pointer; transition: all 0.2s;
+        box-shadow: var(--shadow-sm);
+      }
+      .header-actions-desktop .action-pill-desk:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(0,0,0,0.06); }
+      .header-actions-desktop .action-pill-desk.danger { color: var(--danger); background: #FFF4F4; border-color: rgba(255,59,48,0.2); }
+
+      /* Dashboard Layout Grid */
+      .container { max-width: 1000px; padding: 40px 24px; min-height: 80vh; justify-content: center; flex-direction: row; align-items: flex-start; gap: 32px;}
       
       /* Split Login */
       .desktop-login-wrapper {
@@ -205,87 +207,120 @@
       .login-left {
         background: linear-gradient(145deg, #CD1A22, #9A0E14); padding: 60px 48px; color: white; display: flex; flex-direction: column; justify-content: center; position: relative;
       }
+      .login-left::after { content: ''; position: absolute; width: 400px; height: 400px; background: rgba(255,255,255,0.04); border-radius: 50%; top: -100px; right: -100px; }
       .login-left .brand-logo-large { color: white; justify-content: flex-start; font-size: 48px; margin-bottom: 24px; text-shadow: 0 4px 12px rgba(0,0,0,0.2);}
       .login-left h2 { color: white; font-size: 32px; margin-bottom: 16px; line-height: 1.2; text-align: left;}
       .login-left p { color: rgba(255,255,255,0.9); font-size: 15.5px; line-height: 1.6; text-align: left;}
       .login-right { padding: 60px 48px; display: flex; flex-direction: column; justify-content: center; background: #FFFFFF;}
 
-      /* Main Dashboard Flex/Grid Workspaces */
+      /* Dashboard Forms */
       #form-section { display: flex; flex-direction: column; width: 100%; max-width: 750px; margin: auto; gap: 24px;}
       #input-card { padding: 48px; }
       .grid-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; width: 100%;}
       .grid-row .form-group { margin-bottom: 0; }
+      #ops-selection-section { width: 500px; padding: 48px; margin: auto; }
 
-      /* Desktop Actions Header Controls */
-      .header-actions-desktop { display: flex; gap: 12px; align-items: center; }
-      .header-actions-desktop .action-pill {
-        display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px; 
-        border-radius: 14px; font-size: 13px; font-weight: 800; background: #FFFFFF; 
-        border: 1px solid var(--border-color); color: var(--text-main); cursor: pointer; transition: all 0.2s;
-      }
-      .header-actions-desktop .action-pill:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(0,0,0,0.06); }
-      .header-actions-desktop .action-pill.danger { color: var(--danger); background: #FFF4F4; border-color: rgba(255,59,48,0.2); }
+      .btn-primary:hover { filter: brightness(1.05); transform: translateY(-2px); box-shadow: 0 10px 24px rgba(205, 26, 34, 0.3); }
 
-      /* Desktop History View */
+      /* Desktop Modals */
+      .modal-overlay { align-items: center; padding: 40px; background: rgba(0, 0, 0, 0.4); }
+      .modal-content { max-width: 800px; transform: scale(0.95) !important; opacity: 0; padding: 40px; border-radius: 32px; max-height: 85vh; box-shadow: var(--shadow-lg); }
+      .modal-overlay.active .modal-content { transform: scale(1) !important; opacity: 1; }
+      .modal-pull { display: none; }
+      .sticky-header { padding: 40px 40px 24px 40px; margin: -40px -40px 24px -40px; top: -40px; border-radius: 32px 32px 0 0; }
+      .sticky-footer { padding: 24px 40px 40px 40px; margin: 24px -40px -40px -40px; bottom: -40px; border-radius: 0 0 32px 32px; }
+
+      /* Desktop Table History */
       .history-card { 
         display: grid; grid-template-columns: 1.2fr 1fr 1fr 1fr; align-items: center; 
         padding: 18px 24px; border-radius: 18px;
       }
+      .history-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); border-color: transparent;}
       .hist-header { border-bottom: none; padding-bottom: 0; margin-bottom: 0; flex-direction: column; align-items: flex-start; gap: 4px; }
       .hist-row { margin-bottom: 0; flex-direction: column; align-items: flex-end; gap: 4px; }
+      .hist-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px;}
+      .hist-val { font-size: 16px; }
+
+      .summary-pills-container { gap: 20px; }
+      .summary-pill { padding: 24px; border-radius: 20px; background: var(--input-bg); border: none; }
+      .summary-pill-title { font-size: 11.5px; }
+      .summary-pill-value { font-size: 26px; }
     }
   </style>
 </head>
 <body>
 
-  <!-- UNIVERSAL TOP HEADER -->
-  <div class="top-header" id="main-header">
+  <!-- UNIVERSAL STICKY HEADER WRAPPER -->
+  <div class="header-and-actions-wrapper" id="sticky-top-wrapper">
     
-    <!-- Logged Out Header -->
-    <div id="header-logged-out" style="display:flex; justify-content:space-between; width:100%; align-items:center;">
-      <div class="header-logo">MedPlus</div>
-      <div class="header-time-block">
-        <div id="live-date"></div>
-        <div id="live-time"></div>
+    <div class="top-header" id="main-header">
+      <!-- Logged Out Header -->
+      <div id="header-logged-out" style="display:flex; justify-content:space-between; width:100%; align-items:center;">
+        <div class="header-logo">MedPlus</div>
+        <div class="header-time-block">
+          <div id="live-date"></div>
+          <div id="live-time"></div>
+        </div>
+      </div>
+
+      <!-- Logged In Header (Handles Store Info and Desktop Actions) -->
+      <div id="header-logged-in" style="display:none; width:100%;">
+        <div class="header-left-side">
+          <div class="header-logo desktop-only">MedPlus</div>
+          <div class="header-store-info">
+            <span class="header-store-name" id="header-store-name">Store Name</span>
+            <div class="header-store-meta">
+              <span id="header-store-id">ID</span>
+              <div class="address-pill">
+                <span class="material-symbols-outlined" style="font-size: 13px;">location_on</span>
+                <span class="address-text" id="header-store-address"></span>
+              </div>
+              <span class="shortage-pill" id="header-shortage-pill"></span>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Desktop Header Actions -->
+        <div class="header-actions-desktop desktop-only">
+          <button class="action-pill-desk" id="desk-btn-history" onclick="openHistoryModal()">
+            <span class="material-symbols-outlined">history</span> View History
+          </button>
+          <button class="action-pill-desk" id="desk-btn-change" onclick="changeOpsStore()" style="display:none;">
+            <span class="material-symbols-outlined">swap_horiz</span> Change Store
+          </button>
+          <button class="action-pill-desk danger" onclick="logout()">
+            <span class="material-symbols-outlined">logout</span> Sign Out
+          </button>
+        </div>
       </div>
     </div>
 
-    <!-- Logged In Desktop Header Actions (Hides on Mobile) -->
-    <div id="header-logged-in" class="desktop-only" style="display:none; justify-content:space-between; width:100%; align-items:center;">
-      <div style="display:flex; align-items:center; gap: 20px;">
-        <div class="header-logo">MedPlus</div>
-        <div class="header-store-info">
-          <span class="header-store-name" id="desk-header-store-name">Store Name</span>
-          <div class="header-store-meta">
-            <span id="desk-header-store-id">ID</span>
-            <div class="address-pill">
-              <span class="material-symbols-outlined" style="font-size: 13px;">location_on</span>
-              <span class="address-text" id="desk-header-store-address"></span>
-            </div>
-            <span class="shortage-pill" id="desk-header-shortage-pill"></span>
-          </div>
-        </div>
-      </div>
-      
-      <div class="header-actions-desktop">
-        <button class="action-pill" id="desk-btn-history" onclick="openHistoryModal()">
-          <span class="material-symbols-outlined">history</span> View History
-        </button>
-        <button class="action-pill" id="desk-btn-change" onclick="changeOpsStore()" style="display:none;">
-          <span class="material-symbols-outlined">swap_horiz</span> Change Store
-        </button>
-        <button class="action-pill danger" onclick="logout()">
-          <span class="material-symbols-outlined">logout</span> Sign Out
-        </button>
-      </div>
+    <!-- Mobile Action Bar (Sits directly beneath the header) -->
+    <div class="action-bar-mobile mobile-only" id="action-bar-mobile" style="display:none;">
+      <button class="action-pill-mob" id="mob-btn-history" onclick="openHistoryModal()">
+        <span class="material-symbols-outlined" style="font-size: 18px;">history</span> History
+      </button>
+      <button class="action-pill-mob" id="mob-btn-change" onclick="changeOpsStore()" style="display:none;">
+        <span class="material-symbols-outlined" style="font-size: 18px;">swap_horiz</span> Change
+      </button>
+      <button class="action-pill-mob danger" onclick="logout()">
+        <span class="material-symbols-outlined" style="font-size: 18px;">logout</span> Sign Out
+      </button>
     </div>
+
   </div>
 
   <div class="container">
 
-    <!-- DESKTOP / MOBILE LOGIN CARD -->
-    <div class="card desktop-login-wrapper" id="login-section">
-      <!-- Desktop Left Branding -->
+    <!-- DESKTOP CLOCK (Visible only on Desktop Login) -->
+    <div class="desktop-only" id="desktop-clock" style="position: absolute; top: 40px; right: 40px; text-align: right; color: var(--text-muted);">
+      <div id="desk-live-date" style="font-size:13px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;"></div>
+      <div id="desk-live-time" style="font-size:22px; font-weight:900; letter-spacing: -0.5px; color: var(--text-main);"></div>
+    </div>
+
+    <!-- LOGIN SECTION -->
+    <div class="card desktop-login-wrapper" id="login-section" style="display: none;">
+      <!-- Left Graphic Panel (Desktop only) -->
       <div class="login-left desktop-only">
         <div class="brand-logo-large">MedPlus</div>
         <h2>Franchise Deposit<br>Tracker</h2>
@@ -328,9 +363,9 @@
 
     <!-- OPS TEAM: COMPACT STORE SELECTION -->
     <div class="card" id="ops-selection-section" style="display:none;">
-      <div class="brand-logo-large mobile-only" style="font-size: 28px; margin-bottom: 8px;">MedPlus</div>
-      <h3 style="margin:0 0 6px 0; font-size: 22px; font-weight: 900; text-align: center;">Welcome, <span id="ops-name-display" style="color: var(--med-primary);"></span></h3>
-      <p class="sub" style="margin-bottom: 20px;" id="ops-role-display"></p>
+      <div class="brand-logo-large mobile-only" style="font-size: 28px; margin-bottom: 10px;">MedPlus</div>
+      <h3 style="margin:0 0 8px 0; font-size: 24px; font-weight: 900; text-align: center;">Welcome, <span id="ops-name-display" style="color: var(--med-primary);"></span></h3>
+      <p class="sub" style="margin-bottom: 24px; font-size: 14.5px;" id="ops-role-display"></p>
       
       <div class="status-widget" id="ops-status-widget">
         <div class="status-icon"><span class="material-symbols-outlined">analytics</span></div>
@@ -347,40 +382,13 @@
       
       <div class="error-msg" id="ops-select-error" style="margin-bottom: 16px;"></div>
       
-      <div class="grid-row" style="margin-top:20px;">
+      <div class="grid-row" style="margin-top:24px;">
         <button class="btn btn-primary" onclick="proceedToOpsStore()">Access Store Dashboard</button>
       </div>
-      <button class="btn btn-gray-outline" onclick="logout()" style="margin-top:12px;">Log Out</button>
     </div>
 
-    <!-- MAIN DASHBOARD WORKSPACE (VERTICAL STACK ON MOBILE) -->
+    <!-- MAIN DASHBOARD WORKSPACE (VERTICAL STACK) -->
     <div id="form-section" style="display:none;">
-      
-      <!-- MOBILE STORE SUMMARY CARD & ACTIONS -->
-      <div class="mob-store-card mobile-only" id="mob-store-card">
-        <h3 id="mob-store-name" class="mob-store-title">Store Name</h3>
-        <p id="mob-store-id-wrapper" class="mob-store-id">ID: <span id="mob-store-id">--</span></p>
-        
-        <div style="display:flex; flex-direction:column; gap:8px; align-items:center;">
-          <div class="address-pill">
-            <span class="material-symbols-outlined" style="font-size: 14px;">location_on</span>
-            <span id="mob-store-address" class="address-text"></span>
-          </div>
-          <div class="shortage-pill" id="mob-shortage-pill"></div>
-        </div>
-
-        <div class="mob-action-row">
-          <button class="mob-action-btn" id="mob-btn-history" onclick="openHistoryModal()">
-            <span class="material-symbols-outlined" style="font-size: 18px;">history</span> History
-          </button>
-          <button class="mob-action-btn" id="mob-btn-change" onclick="changeOpsStore()" style="display:none;">
-            <span class="material-symbols-outlined" style="font-size: 18px;">swap_horiz</span> Change
-          </button>
-          <button class="mob-action-btn danger" onclick="logout()">
-            <span class="material-symbols-outlined" style="font-size: 18px;">logout</span> Sign Out
-          </button>
-        </div>
-      </div>
 
       <!-- OPS DASHBOARD -->
       <div class="card" id="ops-summary-card" style="display:none; padding-top: 28px;">
@@ -395,7 +403,7 @@
 
       <!-- DEPOSIT INPUT FORM CARD -->
       <div class="card" id="input-card" style="display:none;">
-        <h3 class="desktop-only" style="margin-top:0; margin-bottom:20px; font-size:20px; font-weight:900;">Daily Deposit Entry</h3>
+        <h3 class="desktop-only" style="margin-top:0; margin-bottom:24px; font-size:22px; font-weight:900;">Daily Deposit Entry</h3>
         <div class="holiday-alert-wrapper" id="holiday-alert">
           <div class="holiday-alert-content">
             <strong id="alert-title">⚠️ Upcoming Non-Banking Day</strong>
@@ -543,6 +551,7 @@
           }
         }
       } else {
+        // Show login securely initially
         document.getElementById('login-section').style.display = window.innerWidth >= 850 ? 'grid' : 'block';
       }
     });
@@ -603,7 +612,7 @@
         filtered.forEach(s => {
           const div = document.createElement('div');
           div.className = 'dropdown-item';
-          div.innerHTML = `<strong>${s.id}</strong> - ${s.name}<br><span style="font-size: 12px; color: var(--text-muted); display:inline-flex; align-items:center; gap:4px; margin-top:4px;"><span class="material-symbols-outlined" style="font-size: 13px;">location_on</span> ${s.address}</span>`;
+          div.innerHTML = `<strong>${s.id}</strong> - ${s.name}<br><span style="font-size: 12.5px; color: var(--text-muted); display:inline-flex; align-items:center; gap:4px; margin-top:4px;"><span class="material-symbols-outlined" style="font-size: 13px;">location_on</span> ${s.address}</span>`;
           div.onclick = () => { document.getElementById('ops-store-input').value = s.id; listEl.style.display = 'none'; };
           listEl.appendChild(div);
         });
@@ -658,6 +667,11 @@
       
       document.getElementById('live-date').innerText = dateStr;
       document.getElementById('live-time').innerText = timeStr;
+      
+      const deskDate = document.getElementById('desk-live-date');
+      const deskTime = document.getElementById('desk-live-time');
+      if(deskDate) deskDate.innerText = dateStr;
+      if(deskTime) deskTime.innerText = timeStr;
       
       const yesterday = new Date(now); yesterday.setDate(now.getDate() - 1);
       const yestDateString = yesterday.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
@@ -715,6 +729,7 @@
       
       if (res.success) {
         document.getElementById('login-section').style.display = 'none';
+        if(document.getElementById('desktop-clock')) document.getElementById('desktop-clock').style.display = 'none';
         
         if (loginMode === 'store') {
           currentStore = { id: id, name: res.storeName, address: res.address, mapping: res.mapping };
@@ -782,53 +797,41 @@
       if (isLoggedIn) {
         document.getElementById('header-logged-out').style.display = 'none';
         
-        // Populating Mobile Card
-        if(document.getElementById('mob-store-name')) {
-          document.getElementById('mob-store-name').innerText = currentStore.name;
-          document.getElementById('mob-store-id').innerText = currentStore.id;
-          document.getElementById('mob-store-address').innerText = currentStore.address;
-        }
+        document.getElementById('header-store-name').innerText = currentStore.name;
+        document.getElementById('header-store-id').innerText = currentStore.id;
+        document.getElementById('header-store-address').innerText = currentStore.address;
 
-        // Populating Desktop Header
-        if(document.getElementById('desk-header-store-name')){
-          document.getElementById('desk-header-store-name').innerText = currentStore.name;
-          document.getElementById('desk-header-store-id').innerText = currentStore.id;
-          document.getElementById('desk-header-store-address').innerText = currentStore.address;
-        }
-
-        // Action Buttons Toggle Logic
         if (loginMode === 'ops') {
-          if(document.getElementById('mob-btn-history')) document.getElementById('mob-btn-history').style.display = 'none';
-          if(document.getElementById('mob-btn-change')) document.getElementById('mob-btn-change').style.display = 'flex';
-          if(document.getElementById('desk-btn-history')) document.getElementById('desk-btn-history').style.display = 'none';
-          if(document.getElementById('desk-btn-change')) document.getElementById('desk-btn-change').style.display = 'flex';
+          document.getElementById('mob-btn-history').style.display = 'none';
+          document.getElementById('mob-btn-change').style.display = 'flex';
+          document.getElementById('desk-btn-history').style.display = 'none';
+          document.getElementById('desk-btn-change').style.display = 'flex';
         } else {
-          if(document.getElementById('mob-btn-history')) document.getElementById('mob-btn-history').style.display = 'flex';
-          if(document.getElementById('mob-btn-change')) document.getElementById('mob-btn-change').style.display = 'none';
-          if(document.getElementById('desk-btn-history')) document.getElementById('desk-btn-history').style.display = 'flex';
-          if(document.getElementById('desk-btn-change')) document.getElementById('desk-btn-change').style.display = 'none';
+          document.getElementById('mob-btn-history').style.display = 'flex';
+          document.getElementById('mob-btn-change').style.display = 'none';
+          document.getElementById('desk-btn-history').style.display = 'flex';
+          document.getElementById('desk-btn-change').style.display = 'none';
         }
         
         document.getElementById('header-logged-in').style.display = 'flex';
+        document.getElementById('action-bar-mobile').style.display = 'flex';
+        
       } else {
         document.getElementById('header-logged-in').style.display = 'none';
         document.getElementById('header-logged-out').style.display = 'flex';
-        if(document.getElementById('mob-shortage-pill')) document.getElementById('mob-shortage-pill').style.display = 'none';
-        if(document.getElementById('desk-header-shortage-pill')) document.getElementById('desk-header-shortage-pill').style.display = 'none';
+        document.getElementById('header-shortage-pill').style.display = 'none';
+        document.getElementById('action-bar-mobile').style.display = 'none';
       }
     }
 
     function updateShortagePill(shortageAmount) {
-      const mPill = document.getElementById('mob-shortage-pill');
-      const dPill = document.getElementById('desk-header-shortage-pill');
+      const pill = document.getElementById('header-shortage-pill');
       
       if (shortageAmount > 0) {
-        const text = '⚠️ Short: ₹ ' + shortageAmount.toLocaleString('en-IN');
-        if(mPill) { mPill.style.display = 'inline-flex'; mPill.innerText = text; }
-        if(dPill) { dPill.style.display = 'inline-flex'; dPill.innerText = text; }
+        pill.style.display = 'inline-flex';
+        pill.innerText = '⚠️ Short: ₹ ' + shortageAmount.toLocaleString('en-IN');
       } else {
-        if(mPill) mPill.style.display = 'none';
-        if(dPill) dPill.style.display = 'none';
+        pill.style.display = 'none';
       }
     }
 
@@ -1032,6 +1035,7 @@
       document.getElementById('ops-selection-section').style.display = 'none';
       
       document.getElementById('login-section').style.display = window.innerWidth >= 850 ? 'grid' : 'block';
+      if(document.getElementById('desktop-clock')) document.getElementById('desktop-clock').style.display = window.innerWidth >= 850 ? 'block' : 'none';
       
       document.getElementById('mode-toggle').checked = false;
       handleToggleChange(document.getElementById('mode-toggle'));

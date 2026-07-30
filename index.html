@@ -18,7 +18,7 @@
       --med-primary: #CD1A22; 
       --med-primary-active: #A8151B;
       --med-green: #44B949; 
-      --bg-color: #F2F4F8; /* One UI soft tint */
+      --bg-color: #F2F4F8; 
       --card-bg: #FFFFFF;
       --text-main: #191C21;
       --text-muted: #707780;
@@ -32,7 +32,6 @@
     
     * { box-sizing: border-box; }
     
-    /* PREVENT TEXT SELECTION & LONG PRESS */
     html, body { 
       font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif; 
       background-color: var(--bg-color); 
@@ -134,6 +133,7 @@
     /* ALERTS & MODALS */
     .holiday-alert-wrapper { position: relative; border-radius: 20px; padding: 3px; background: linear-gradient(124deg, #ff2400, #e81d1d, #e8b71d, #e3e81d, #1de840, #1ddde8, #2b1de8, #dd00f3); background-size: 400% 400%; animation: rainbow-border 4s ease infinite; margin-bottom: 20px; display: none; width: 100%;}
     .holiday-alert-content { background: #FFFFFF; color: var(--text-main); padding: 14px 16px; border-radius: 17px; font-size: 13px; font-weight: 600; line-height: 1.45;}
+    @keyframes rainbow-border { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
     
     .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.45); backdrop-filter: blur(8px); display: flex; justify-content: center; align-items: flex-end; z-index: 1000; opacity: 0; visibility: hidden; transition: opacity 0.3s; }
     .modal-overlay.active { opacity: 1; visibility: visible; }
@@ -170,6 +170,14 @@
        EXTRAORDINARY DESKTOP UI (min-width: 850px)
        -------------------------------------------------------------------- */
     @media (min-width: 850px) {
+      body {
+        background-color: #E8EBF2;
+        background-image: 
+          radial-gradient(circle at 10% 20%, rgba(205, 26, 34, 0.04) 0%, transparent 40%),
+          radial-gradient(circle at 90% 80%, rgba(68, 185, 73, 0.04) 0%, transparent 40%);
+        background-attachment: fixed;
+      }
+      
       .mobile-only { display: none !important; }
       .desktop-only { display: flex !important; }
 
@@ -187,6 +195,7 @@
       .shortage-pill { margin: 0; font-size: 11.5px; padding: 6px 12px;}
 
       /* Desktop Actions inside Header Wrapper */
+      .header-actions-desktop { display: flex; gap: 12px; align-items: center; }
       .header-actions-desktop .action-pill-desk {
         display: inline-flex; align-items: center; gap: 6px; padding: 10px 18px; 
         border-radius: 14px; font-size: 13.5px; font-weight: 800; background: #FFFFFF; 
@@ -213,7 +222,7 @@
       .login-left p { color: rgba(255,255,255,0.9); font-size: 15.5px; line-height: 1.6; text-align: left;}
       .login-right { padding: 60px 48px; display: flex; flex-direction: column; justify-content: center; background: #FFFFFF;}
 
-      /* Dashboard Forms */
+      /* Main Dashboard Flex/Grid Workspaces */
       #form-section { display: flex; flex-direction: column; width: 100%; max-width: 750px; margin: auto; gap: 24px;}
       #input-card { padding: 48px; }
       .grid-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; width: 100%;}
@@ -327,7 +336,7 @@
         <p>Seamlessly manage daily deposits and accurately track historical shortages with enterprise-grade security.</p>
       </div>
       
-      <!-- Form Panel -->
+      <!-- Right Form Panel -->
       <div class="login-right">
         <div class="brand-logo-large mobile-only">MedPlus</div>
         <h2 class="mobile-only">Deposit Tracker</h2>
@@ -387,9 +396,9 @@
       </div>
     </div>
 
-    <!-- MAIN DASHBOARD WORKSPACE (VERTICAL STACK) -->
+    <!-- MAIN DASHBOARD WORKSPACE -->
     <div id="form-section" style="display:none;">
-
+      
       <!-- OPS DASHBOARD -->
       <div class="card" id="ops-summary-card" style="display:none; padding-top: 28px;">
         <h3 style="margin-top:0; margin-bottom: 20px; font-size: 20px; font-weight: 900;">Monthly Overview</h3>
@@ -447,6 +456,21 @@
       </div>
     </div>
 
+    <!-- MANUAL INDENT ALERT MODAL -->
+    <div class="modal-overlay" id="indent-alert-modal" onclick="closeIndentAlert()">
+      <div class="modal-content" onclick="event.stopPropagation()" style="text-align: center; max-width: 450px;">
+        <div class="modal-pull"></div>
+        <div style="width: 72px; height: 72px; margin: 0 auto 20px auto; background: #FFF8E1; color: #F59E0B; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 16px rgba(245, 158, 11, 0.2);">
+          <span class="material-symbols-outlined" style="font-size: 36px;">info</span>
+        </div>
+        <div style="font-size: 22px; font-weight: 900; margin-bottom: 12px; color: var(--text-main);">Important Notice</div>
+        <p style="color: var(--text-muted); margin-bottom: 28px; font-size: 14.5px; font-weight: 600; line-height: 1.5;">
+          Please note: To process manual indents, an additional amount must be deposited over and above your regular daily sales transfers.
+        </p>
+        <button class="btn btn-primary" style="background: #F4F7F9; border: 1px solid var(--border-color); color: var(--text-main); box-shadow: none;" onclick="closeIndentAlert()">Got it</button>
+      </div>
+    </div>
+
     <!-- HISTORY MODAL -->
     <div class="modal-overlay" id="history-modal" onclick="closeHistoryModal(event)">
       <div class="modal-content" onclick="event.stopPropagation()">
@@ -492,7 +516,7 @@
         <div class="receipt-highlight" style="font-size: 20px;">Submission Recorded</div>
         <p style="color: var(--text-muted); margin-bottom: 24px; font-size: 13.5px; font-weight: 500;">Your daily deposit has been securely synced to the master database.</p>
         
-        <div class="history-card" style="text-align: left; background: var(--input-bg); display: block; border-radius: 20px; padding: 18px; border:none;">
+        <div class="history-card" style="text-align: left; background: var(--input-bg); display: block; border-radius: 16px; padding: 20px; border:none;">
           <div class="hist-header" style="flex-direction: row; border-bottom: 1px solid var(--border-color); padding-bottom: 12px; margin-bottom: 12px; width: 100%;">
             <span class="hist-date" id="receipt-date">--</span>
             <span class="hist-time" id="receipt-time">--</span>
@@ -540,6 +564,7 @@
         }
         
         document.getElementById('login-section').style.display = 'none';
+        if(document.getElementById('desktop-clock')) document.getElementById('desktop-clock').style.display = 'none';
         
         if (loginMode === 'store') {
           setupFormScreen();
@@ -797,20 +822,33 @@
       if (isLoggedIn) {
         document.getElementById('header-logged-out').style.display = 'none';
         
-        document.getElementById('header-store-name').innerText = currentStore.name;
-        document.getElementById('header-store-id').innerText = currentStore.id;
-        document.getElementById('header-store-address').innerText = currentStore.address;
+        // Populating Mobile Header
+        if(document.getElementById('header-store-name')) {
+          document.getElementById('header-store-name').innerText = currentStore.name;
+          document.getElementById('header-store-id').innerText = currentStore.id;
+          document.getElementById('header-store-address').innerText = currentStore.address;
+        }
 
+        // Populating Desktop Header
+        if(document.getElementById('desk-header-store-name')){
+          document.getElementById('desk-header-store-name').innerText = currentStore.name;
+          document.getElementById('desk-header-store-id').innerText = currentStore.id;
+          document.getElementById('desk-header-store-address').innerText = currentStore.address;
+        }
+
+        // Action Buttons Toggle Logic
         if (loginMode === 'ops') {
-          document.getElementById('mob-btn-history').style.display = 'none';
-          document.getElementById('mob-btn-change').style.display = 'flex';
-          document.getElementById('desk-btn-history').style.display = 'none';
-          document.getElementById('desk-btn-change').style.display = 'flex';
+          if(document.getElementById('mob-btn-history')) document.getElementById('mob-btn-history').style.display = 'none';
+          if(document.getElementById('mob-btn-change')) document.getElementById('mob-btn-change').style.display = 'flex';
+          
+          if(document.getElementById('desk-btn-history')) document.getElementById('desk-btn-history').style.display = 'none';
+          if(document.getElementById('desk-btn-change')) document.getElementById('desk-btn-change').style.display = 'flex';
         } else {
-          document.getElementById('mob-btn-history').style.display = 'flex';
-          document.getElementById('mob-btn-change').style.display = 'none';
-          document.getElementById('desk-btn-history').style.display = 'flex';
-          document.getElementById('desk-btn-change').style.display = 'none';
+          if(document.getElementById('mob-btn-history')) document.getElementById('mob-btn-history').style.display = 'flex';
+          if(document.getElementById('mob-btn-change')) document.getElementById('mob-btn-change').style.display = 'none';
+          
+          if(document.getElementById('desk-btn-history')) document.getElementById('desk-btn-history').style.display = 'flex';
+          if(document.getElementById('desk-btn-change')) document.getElementById('desk-btn-change').style.display = 'none';
         }
         
         document.getElementById('header-logged-in').style.display = 'flex';
@@ -819,20 +857,29 @@
       } else {
         document.getElementById('header-logged-in').style.display = 'none';
         document.getElementById('header-logged-out').style.display = 'flex';
-        document.getElementById('header-shortage-pill').style.display = 'none';
+        
+        if(document.getElementById('header-shortage-pill')) document.getElementById('header-shortage-pill').style.display = 'none';
+        if(document.getElementById('desk-header-shortage-pill')) document.getElementById('desk-header-shortage-pill').style.display = 'none';
         document.getElementById('action-bar-mobile').style.display = 'none';
       }
     }
 
     function updateShortagePill(shortageAmount) {
-      const pill = document.getElementById('header-shortage-pill');
+      const mPill = document.getElementById('header-shortage-pill');
+      const dPill = document.getElementById('desk-header-shortage-pill');
       
       if (shortageAmount > 0) {
-        pill.style.display = 'inline-flex';
-        pill.innerText = '⚠️ Short: ₹ ' + shortageAmount.toLocaleString('en-IN');
+        const text = '⚠️ Short: ₹ ' + shortageAmount.toLocaleString('en-IN');
+        if(mPill) { mPill.style.display = 'inline-flex'; mPill.innerText = text; }
+        if(dPill) { dPill.style.display = 'inline-flex'; dPill.innerText = text; }
       } else {
-        pill.style.display = 'none';
+        if(mPill) mPill.style.display = 'none';
+        if(dPill) dPill.style.display = 'none';
       }
+    }
+
+    function closeIndentAlert() {
+      document.getElementById('indent-alert-modal').classList.remove('active');
     }
 
     function setupFormScreen() {
@@ -851,6 +898,14 @@
         fetchLatestHistory(true); 
         document.getElementById('form-section').style.display = 'flex'; 
         loadDraft();
+
+        // Show Manual Indent Alert Modal once per session
+        if (!sessionStorage.getItem('indent_alert_shown_' + currentStore.id)) {
+          setTimeout(() => {
+            document.getElementById('indent-alert-modal').classList.add('active');
+            sessionStorage.setItem('indent_alert_shown_' + currentStore.id, 'true');
+          }, 600);
+        }
       }
     }
 
@@ -1028,6 +1083,7 @@
     }
 
     function logout() {
+      sessionStorage.removeItem('indent_alert_shown_' + currentStore.id);
       localStorage.removeItem('franchise_session');
       currentStore = {}; opsAllowedStores = []; opsUserObj = null; preloadedHistory = []; historicalShortage = 0;
       updateHeaderState(false);

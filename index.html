@@ -100,6 +100,7 @@
     .container { padding: 16px; max-width: 500px; margin: 0 auto; display: flex; flex-direction: column; gap: 20px; align-items: center; width: 100%; }
     .card { background: var(--card-bg); border-radius: 28px; padding: 24px; box-shadow: var(--shadow-oneui); width: 100%; border: 1px solid rgba(255, 255, 255, 0.8); animation: fadeInScale 0.3s ease-out forwards;}
     
+    .brand-logo-large { font-size: 36px; font-weight: 900; letter-spacing: -1.5px; color: var(--med-primary); margin-bottom: 6px; display: flex; justify-content: center; }
     h2 { margin: 0 0 6px 0; font-size: 22px; font-weight: 800; letter-spacing: -0.5px; text-align: center;}
     p.sub { color: var(--text-muted); margin: 0 0 20px 0; font-size: 14px; font-weight: 500; text-align: center; line-height: 1.4;}
     
@@ -221,7 +222,7 @@
       /* Elegant, Cute Action Pills */
       .header-actions-desktop { display: flex; gap: 12px; align-items: center; }
       .header-actions-desktop .action-pill-desk {
-        display: inline-flex; align-items: center; gap: 6px; padding: 8px 20px; 
+        display: inline-flex; align-items: center; gap: 6px; padding: 10px 18px; 
         border-radius: 30px; /* Cute rounded pill */
         font-size: 13px; font-weight: 700; background: #FFFFFF; 
         border: 1px solid rgba(0,0,0,0.04); color: var(--text-main); 
@@ -250,11 +251,12 @@
         border: 1px solid rgba(255, 255, 255, 0.8);
       }
 
-      /* Desktop Split Login Card */
+      /* BUG FIX: Removed !important to allow JS to hide it properly */
       .desktop-login-wrapper {
-        display: grid !important; grid-template-columns: 1.1fr 0.9fr; padding: 0 !important; width: 880px; max-width: 100%;
+        display: grid; grid-template-columns: 1.1fr 0.9fr; padding: 0 !important; width: 880px; max-width: 100%;
         box-shadow: 0 40px 80px -20px rgba(0,0,0,0.15); overflow: hidden; margin: 0 auto; border-radius: 32px;
       }
+      
       .login-left {
         background: linear-gradient(145deg, #CD1A22, #9A0E14); padding: 60px 48px; color: white; display: flex; flex-direction: column; justify-content: center; position: relative;
       }
@@ -611,6 +613,14 @@
       }
     });
 
+    // --- Logout Protection ---
+    window.addEventListener('beforeunload', function (e) {
+      if (currentStore && currentStore.id) {
+        e.preventDefault();
+        e.returnValue = ''; 
+      }
+    });
+
     function saveSession() {
       sessionStorage.setItem('franchise_session', JSON.stringify({
         mode: loginMode, store: currentStore, opsUser: opsUserObj, opsAllowed: opsAllowedStores
@@ -722,6 +732,11 @@
       
       document.getElementById('live-date').innerText = dateStr;
       document.getElementById('live-time').innerText = timeStr;
+      
+      const deskDate = document.getElementById('desk-live-date');
+      const deskTime = document.getElementById('desk-live-time');
+      if(deskDate) deskDate.innerText = dateStr;
+      if(deskTime) deskTime.innerText = timeStr;
       
       const yesterday = new Date(now); yesterday.setDate(now.getDate() - 1);
       const yestDateString = yesterday.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
@@ -869,6 +884,12 @@
           document.getElementById('header-store-address').innerText = currentStore.address;
         }
 
+        if(document.getElementById('desk-header-store-name')){
+          document.getElementById('desk-header-store-name').innerText = currentStore.name;
+          document.getElementById('desk-header-store-id').innerText = currentStore.id;
+          document.getElementById('desk-header-store-address').innerText = currentStore.address;
+        }
+
         if (loginMode === 'ops') {
           if(document.getElementById('mob-btn-history')) document.getElementById('mob-btn-history').style.display = 'none';
           if(document.getElementById('mob-btn-change')) document.getElementById('mob-btn-change').style.display = 'flex';
@@ -887,18 +908,22 @@
         document.getElementById('header-logged-in').style.display = 'none';
         document.getElementById('header-logged-out').style.display = 'flex';
         if(document.getElementById('header-shortage-pill')) document.getElementById('header-shortage-pill').style.display = 'none';
+        if(document.getElementById('desk-header-shortage-pill')) document.getElementById('desk-header-shortage-pill').style.display = 'none';
         document.getElementById('action-bar-mobile').style.display = 'none';
       }
     }
 
     function updateShortagePill(shortageAmount) {
       const mPill = document.getElementById('header-shortage-pill');
+      const dPill = document.getElementById('desk-header-shortage-pill');
       
       if (shortageAmount > 0) {
         const text = '⚠️ Short: ₹ ' + shortageAmount.toLocaleString('en-IN');
         if(mPill) { mPill.style.display = 'inline-flex'; mPill.innerText = text; }
+        if(dPill) { dPill.style.display = 'inline-flex'; dPill.innerText = text; }
       } else {
         if(mPill) mPill.style.display = 'none';
+        if(dPill) dPill.style.display = 'none';
       }
     }
 

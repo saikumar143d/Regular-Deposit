@@ -100,7 +100,6 @@
     .container { padding: 16px; max-width: 500px; margin: 0 auto; display: flex; flex-direction: column; gap: 20px; align-items: center; width: 100%; }
     .card { background: var(--card-bg); border-radius: 28px; padding: 24px; box-shadow: var(--shadow-oneui); width: 100%; border: 1px solid rgba(255, 255, 255, 0.8); animation: fadeInScale 0.3s ease-out forwards;}
     
-    .brand-logo-large { font-size: 36px; font-weight: 900; letter-spacing: -1.5px; color: var(--med-primary); margin-bottom: 6px; display: flex; justify-content: center; }
     h2 { margin: 0 0 6px 0; font-size: 22px; font-weight: 800; letter-spacing: -0.5px; text-align: center;}
     p.sub { color: var(--text-muted); margin: 0 0 20px 0; font-size: 14px; font-weight: 500; text-align: center; line-height: 1.4;}
     
@@ -245,23 +244,21 @@
       
       .card { 
         border-radius: 32px; 
-        box-shadow: var(--shadow-oneui); 
-        padding: 48px;
+        box-shadow: 0 32px 64px -16px rgba(0,0,0,0.1), inset 0 1px 2px rgba(255,255,255,1); 
         background: rgba(255, 255, 255, 0.95);
         backdrop-filter: blur(24px);
         border: 1px solid rgba(255, 255, 255, 0.8);
       }
 
-      /* FIX: Desktop Login wrapper has no !important for display */
+      /* Desktop Split Login Card */
       .desktop-login-wrapper {
-        grid-template-columns: 1.1fr 0.9fr; padding: 0 !important; width: 880px; max-width: 100%;
+        display: grid !important; grid-template-columns: 1.1fr 0.9fr; padding: 0 !important; width: 880px; max-width: 100%;
         box-shadow: 0 40px 80px -20px rgba(0,0,0,0.15); overflow: hidden; margin: 0 auto; border-radius: 32px;
       }
       .login-left {
         background: linear-gradient(145deg, #CD1A22, #9A0E14); padding: 60px 48px; color: white; display: flex; flex-direction: column; justify-content: center; position: relative;
       }
       .login-left::after { content: ''; position: absolute; width: 400px; height: 400px; background: rgba(255,255,255,0.04); border-radius: 50%; top: -100px; right: -100px; }
-      .login-left .brand-logo-large { color: white; justify-content: flex-start; font-size: 48px; margin-bottom: 24px; text-shadow: 0 4px 12px rgba(0,0,0,0.2);}
       .login-left h2 { color: white; font-size: 32px; margin-bottom: 16px; line-height: 1.2; text-align: left;}
       .login-left p { color: rgba(255,255,255,0.9); font-size: 15.5px; line-height: 1.6; text-align: left;}
       .login-right { padding: 60px 48px; display: flex; flex-direction: column; justify-content: center; background: #FFFFFF;}
@@ -362,22 +359,14 @@
 
   <div class="container">
 
-    <!-- DESKTOP CLOCK -->
-    <div class="desktop-only" id="desktop-clock" style="position: absolute; top: 80px; right: 40px; text-align: right; color: var(--text-muted);">
-      <div id="desk-live-date" style="font-size:13px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;"></div>
-      <div id="desk-live-time" style="font-size:22px; font-weight:900; letter-spacing: -0.5px; color: var(--text-main);"></div>
-    </div>
-
     <!-- LOGIN CARD -->
     <div class="card desktop-login-wrapper" id="login-section" style="display: none;">
       <div class="login-left desktop-only">
-        <div class="brand-logo-large">MedPlus</div>
         <h2>Franchise Deposit<br>Tracker</h2>
         <p>Seamlessly manage daily deposits and accurately track historical shortages with enterprise-grade security.</p>
       </div>
       
       <div class="login-right">
-        <div class="brand-logo-large mobile-only">MedPlus</div>
         <h2 class="mobile-only">Deposit Tracker</h2>
         <p class="sub mobile-only" id="login-subtitle">Sign in with store credentials</p>
         
@@ -606,7 +595,6 @@
         }
         
         document.getElementById('login-section').style.display = 'none';
-        if(document.getElementById('desktop-clock')) document.getElementById('desktop-clock').style.display = 'none';
         
         if (loginMode === 'store') {
           setupFormScreen();
@@ -618,7 +606,7 @@
           }
         }
       } else {
-        // Show login securely
+        // Show login securely initially
         document.getElementById('login-section').style.display = window.innerWidth >= 850 ? 'grid' : 'block';
       }
     });
@@ -735,11 +723,6 @@
       document.getElementById('live-date').innerText = dateStr;
       document.getElementById('live-time').innerText = timeStr;
       
-      const deskDate = document.getElementById('desk-live-date');
-      const deskTime = document.getElementById('desk-live-time');
-      if(deskDate) deskDate.innerText = dateStr;
-      if(deskTime) deskTime.innerText = timeStr;
-      
       const yesterday = new Date(now); yesterday.setDate(now.getDate() - 1);
       const yestDateString = yesterday.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
       const netSaleLabel = document.getElementById('net-sale-label');
@@ -796,7 +779,6 @@
       
       if (res.success) {
         document.getElementById('login-section').style.display = 'none';
-        if(document.getElementById('desktop-clock')) document.getElementById('desktop-clock').style.display = 'none';
         
         if (loginMode === 'store') {
           currentStore = { id: id, name: res.storeName, address: res.address, mapping: res.mapping };
@@ -1132,7 +1114,6 @@
       document.getElementById('ops-selection-section').style.display = 'none';
       
       document.getElementById('login-section').style.display = window.innerWidth >= 850 ? 'grid' : 'block';
-      if(document.getElementById('desktop-clock')) document.getElementById('desktop-clock').style.display = window.innerWidth >= 850 ? 'block' : 'none';
       
       document.getElementById('mode-toggle').checked = false;
       handleToggleChange(document.getElementById('mode-toggle'));

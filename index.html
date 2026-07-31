@@ -54,6 +54,35 @@
     }
 
     /* --------------------------------------------------------------------
+       BRAND LOGO SQUARED PILL
+       -------------------------------------------------------------------- */
+    .logo-pill {
+      display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+      background: #FFFFFF; border: 1px solid rgba(205, 26, 34, 0.15);
+      padding: 6px 14px; border-radius: 12px; 
+      box-shadow: 0 4px 12px rgba(205, 26, 34, 0.08); width: fit-content;
+    }
+    .logo-pill.large { padding: 10px 20px; border-radius: 16px; }
+    
+    .logo-text { font-weight: 900; color: var(--med-primary); letter-spacing: -0.5px; margin: 0; line-height: 1; }
+    .logo-pill:not(.large) .logo-text { font-size: 20px; }
+    .logo-pill.large .logo-text { font-size: 32px; letter-spacing: -1px; }
+
+    .logo-plus-icon {
+      display: flex; align-items: center; justify-content: center;
+      background: var(--med-primary); color: #FFFFFF; 
+    }
+    .logo-pill:not(.large) .logo-plus-icon { width: 18px; height: 18px; border-radius: 5px; font-size: 15px; font-weight: 900; }
+    .logo-pill.large .logo-plus-icon { width: 28px; height: 28px; border-radius: 8px; font-size: 22px; font-weight: 900; }
+
+    /* Login Left specific overrides for the pill */
+    .login-left .logo-pill {
+      background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); box-shadow: 0 8px 24px rgba(0,0,0,0.1); 
+    }
+    .login-left .logo-text { color: #FFFFFF; }
+    .login-left .logo-plus-icon { background: #FFFFFF; color: var(--med-primary); }
+
+    /* --------------------------------------------------------------------
        SMART STICKY HEADER & ACTION BAR (MOBILE FIRST)
        -------------------------------------------------------------------- */
     .header-and-actions-wrapper {
@@ -66,13 +95,12 @@
     }
     
     .top-header { padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; min-height: 56px; }
-    .header-logo { font-weight: 900; font-size: 21px; color: var(--med-primary); letter-spacing: -0.6px;}
     .header-time-block { text-align: right; }
     #live-date { font-size: 11px; color: var(--text-muted); font-weight: 700; text-transform: uppercase; letter-spacing: 0.3px;}
     #live-time { font-size: 14px; font-weight: 900; color: var(--text-main); letter-spacing: -0.5px;}
 
     #header-logged-in { flex-direction: column; align-items: flex-start; gap: 8px; width: 100%; }
-    .header-left-side { display: flex; flex-direction: column; gap: 6px; width: 100%; }
+    .header-left-side { display: flex; flex-direction: column; gap: 8px; width: 100%; }
     
     .header-store-info { display: flex; flex-direction: column; gap: 4px; }
     .header-store-name { font-size: 18px; font-weight: 900; color: var(--text-main); letter-spacing: -0.3px; line-height: 1.2;}
@@ -100,7 +128,6 @@
     .container { padding: 16px; max-width: 500px; margin: 0 auto; display: flex; flex-direction: column; gap: 20px; align-items: center; width: 100%; }
     .card { background: var(--card-bg); border-radius: 28px; padding: 24px; box-shadow: var(--shadow-oneui); width: 100%; border: 1px solid rgba(255, 255, 255, 0.8); animation: fadeInScale 0.3s ease-out forwards;}
     
-    .brand-logo-large { font-size: 36px; font-weight: 900; letter-spacing: -1.5px; color: var(--med-primary); margin-bottom: 6px; display: flex; justify-content: center; }
     h2 { margin: 0 0 6px 0; font-size: 22px; font-weight: 800; letter-spacing: -0.5px; text-align: center;}
     p.sub { color: var(--text-muted); margin: 0 0 20px 0; font-size: 14px; font-weight: 500; text-align: center; line-height: 1.4;}
     
@@ -198,7 +225,6 @@
         background-attachment: fixed;
       }
       
-      /* Fixed, Minimal & Cute Top Ribbon */
       .header-and-actions-wrapper { 
         position: sticky; top: 0; z-index: 100;
         max-width: 100%; margin: 0; 
@@ -211,20 +237,20 @@
         padding: 12px 24px; box-shadow: none; border: none; background: transparent; 
         min-height: 60px;
       }
-      .header-logo { font-size: 24px; }
       
+      .logo-pill:not(.large) .logo-text { font-size: 22px; }
+      .logo-pill:not(.large) .logo-plus-icon { width: 20px; height: 20px; font-size: 16px; }
+
       #header-logged-in { flex-direction: row; align-items: center; justify-content: space-between; }
       .header-left-side { flex-direction: row; align-items: center; gap: 24px; width: auto; }
       .header-store-name { font-size: 18px; letter-spacing: -0.5px;}
       .address-pill { max-width: 300px; font-size: 11.5px; padding: 6px 12px; margin: 0; }
       .shortage-pill { margin: 0; font-size: 11.5px; padding: 6px 14px;}
 
-      /* Elegant, Cute Action Pills */
       .header-actions-desktop { display: flex; gap: 12px; align-items: center; }
       .header-actions-desktop .action-pill-desk {
         display: inline-flex; align-items: center; gap: 6px; padding: 10px 18px; 
-        border-radius: 30px; /* Cute rounded pill */
-        font-size: 13px; font-weight: 700; background: #FFFFFF; 
+        border-radius: 30px; font-size: 13px; font-weight: 700; background: #FFFFFF; 
         border: 1px solid rgba(0,0,0,0.04); color: var(--text-main); 
         cursor: pointer; transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
         box-shadow: 0 4px 12px rgba(0,0,0,0.03);
@@ -251,12 +277,10 @@
         border: 1px solid rgba(255, 255, 255, 0.8);
       }
 
-      /* BUG FIX: Removed !important to allow JS to hide it properly */
       .desktop-login-wrapper {
         display: grid; grid-template-columns: 1.1fr 0.9fr; padding: 0 !important; width: 880px; max-width: 100%;
         box-shadow: 0 40px 80px -20px rgba(0,0,0,0.15); overflow: hidden; margin: 0 auto; border-radius: 32px;
       }
-      
       .login-left {
         background: linear-gradient(145deg, #CD1A22, #9A0E14); padding: 60px 48px; color: white; display: flex; flex-direction: column; justify-content: center; position: relative;
       }
@@ -306,7 +330,13 @@
       
       <!-- Logged Out Header -->
       <div id="header-logged-out" style="display:flex; justify-content:space-between; width:100%; align-items:center;">
-        <div class="header-logo">MedPlus</div>
+        
+        <!-- NEW LOGO PILL -->
+        <div class="logo-pill">
+          <span class="logo-text">MedPlus</span>
+          <div class="logo-plus-icon"><span class="material-symbols-outlined" style="font-size:inherit; font-weight:inherit;">add</span></div>
+        </div>
+        
         <div class="header-time-block">
           <div id="live-date"></div>
           <div id="live-time"></div>
@@ -316,7 +346,13 @@
       <!-- Logged In Header -->
       <div id="header-logged-in" style="display:none; width:100%;">
         <div class="header-left-side">
-          <div class="header-logo desktop-only">MedPlus</div>
+          
+          <!-- NEW LOGO PILL (DESKTOP) -->
+          <div class="logo-pill desktop-only">
+            <span class="logo-text">MedPlus</span>
+            <div class="logo-plus-icon"><span class="material-symbols-outlined" style="font-size:inherit; font-weight:inherit;">add</span></div>
+          </div>
+          
           <div class="header-store-info">
             <span class="header-store-name" id="header-store-name">Store Name</span>
             <div class="header-store-meta">
@@ -364,11 +400,25 @@
     <!-- LOGIN CARD -->
     <div class="card desktop-login-wrapper" id="login-section" style="display: none;">
       <div class="login-left desktop-only">
+        <!-- NEW LOGO PILL (DESKTOP LOGIN) -->
+        <div class="logo-pill large" style="margin-bottom: 28px; align-self: flex-start;">
+          <span class="logo-text">MedPlus</span>
+          <div class="logo-plus-icon"><span class="material-symbols-outlined" style="font-size:inherit; font-weight:inherit;">add</span></div>
+        </div>
+        
         <h2>Franchise Deposit<br>Tracker</h2>
         <p>Seamlessly manage daily deposits and accurately track historical shortages with enterprise-grade security.</p>
       </div>
       
       <div class="login-right">
+        <!-- NEW LOGO PILL (MOBILE LOGIN) -->
+        <div style="display: flex; justify-content: center; width: 100%; margin-bottom: 20px;" class="mobile-only">
+          <div class="logo-pill large">
+            <span class="logo-text">MedPlus</span>
+            <div class="logo-plus-icon"><span class="material-symbols-outlined" style="font-size:inherit; font-weight:inherit;">add</span></div>
+          </div>
+        </div>
+        
         <h2 class="mobile-only">Deposit Tracker</h2>
         <p class="sub mobile-only" id="login-subtitle">Sign in with store credentials</p>
         
@@ -402,6 +452,14 @@
 
     <!-- OPS TEAM: COMPACT STORE SELECTION -->
     <div class="card" id="ops-selection-section" style="display:none;">
+      <!-- NEW LOGO PILL (MOBILE OPS) -->
+      <div style="display: flex; justify-content: center; width: 100%; margin-bottom: 20px;" class="mobile-only">
+        <div class="logo-pill large">
+          <span class="logo-text">MedPlus</span>
+          <div class="logo-plus-icon"><span class="material-symbols-outlined" style="font-size:inherit; font-weight:inherit;">add</span></div>
+        </div>
+      </div>
+      
       <h3 style="margin:0 0 8px 0; font-size: 24px; font-weight: 900; text-align: center;" id="ops-name-display"></h3>
       <p class="sub" style="margin-bottom: 24px; font-size: 14.5px;" id="ops-role-display"></p>
       
@@ -544,8 +602,8 @@
       <div class="modal-content" onclick="event.stopPropagation()" style="text-align: center; max-width: 450px;">
         <div class="modal-pull"></div>
         
-        <div class="success-icon" style="width: 68px; height: 68px; font-size: 32px; margin-bottom: 20px; background: var(--success);">✓</div>
-        <div class="receipt-highlight" style="font-size: 20px;">Submission Recorded</div>
+        <div class="success-icon" style="width: 68px; height: 68px; font-size: 32px; margin-bottom: 20px; background: var(--success); color: white; display: flex; align-items: center; justify-content: center; margin-left: auto; margin-right: auto; border-radius: 50%;">✓</div>
+        <div class="receipt-highlight" style="font-size: 20px; font-weight: 800; color: var(--text-main); margin-bottom: 8px;">Submission Recorded</div>
         <p style="color: var(--text-muted); margin-bottom: 24px; font-size: 13.5px; font-weight: 500;">Your daily deposit has been securely synced to the master database.</p>
         
         <div class="history-card" style="text-align: left; background: var(--input-bg); display: block; border-radius: 16px; padding: 20px; border:none;">
